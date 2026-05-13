@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youngr Labs · Plateforme scRNA-seq</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+:root{
+  --bg:#0e0f0e;--bg2:#161714;--bg3:#1d1e1b;--bg4:#252622;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#e8e6df;--text2:#9a9890;--text3:#5e5d58;
+  --teal:#1faa7e;--teal-bg:rgba(31,170,126,0.08);--teal-border:rgba(31,170,126,0.25);
+  --coral:#e0622f;--coral-bg:rgba(224,98,47,0.08);
+  --blue:#4a9be8;--blue-bg:rgba(74,155,232,0.08);--blue-border:rgba(74,155,232,0.25);
+  --amber:#c98318;--purple:#7b72e8;--pink:#c96fa0;--green:#3dba5c;
+  --radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh;}
+
+/* ── TOP NAV ── */
+.topnav{border-bottom:1px solid var(--border);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;background:rgba(14,15,14,0.95);backdrop-filter:blur(12px);z-index:200;}
+.logo{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;display:flex;align-items:center;gap:9px;}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);}
+.nav-tabs{display:flex;gap:2px;}
+.nav-tab{padding:6px 18px;border-radius:var(--radius);border:1px solid transparent;background:transparent;color:var(--text3);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:7px;}
+.nav-tab:hover{background:var(--bg3);color:var(--text2);}
+.nav-tab.active.exp{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:500;}
+.nav-tab.active.vc{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500;}
+.tab-icon{font-size:14px;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.header-meta{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
+.print-btn{padding:5px 13px;border:1px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s;}
+.print-btn:hover{background:var(--bg3);color:var(--text);}
+
+/* ── MODE BADGE ── */
+.mode-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:4px;font-weight:500;}
+.mode-exp{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);}
+.mode-vc{background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);}
+
+/* ── MAIN LAYOUT ── */
+.app-section{display:none;} .app-section.active{display:block;}
+.layout{display:grid;grid-template-columns:242px 1fr;min-height:calc(100vh - 54px);}
+
+/* ── SIDEBAR ── */
+.sidebar{border-right:1px solid var(--border);padding:1.25rem 1rem;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;}
+.sb-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:7px;padding-left:4px;}
+.sb-section{margin-bottom:1.4rem;}
+.sb-divider{height:1px;background:var(--border);margin:.2rem 0 1.2rem;}
+.btn-group{display:flex;flex-direction:column;gap:3px;}
+.btn{display:block;width:100%;text-align:left;padding:7px 10px;border:1px solid transparent;border-radius:var(--radius);background:transparent;color:var(--text2);font-size:12.5px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.btn:hover{background:var(--bg3);color:var(--text);}
+.btn.active-exp{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:500;}
+.btn.active-vc{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500;}
+.cell-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+.conc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.conc-btn{padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text3);font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;transition:all .15s;text-align:center;}
+.conc-btn:hover{border-color:var(--border2);color:var(--text2);}
+.conc-btn.active-exp{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:500;}
+.conc-btn.active-vc{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500;}
+
+/* VC category group */
+.vc-cat{margin-bottom:.3rem;}
+.vc-cat-label{font-size:10px;color:var(--text3);padding:4px 10px 2px;display:flex;align-items:center;gap:5px;}
+.vc-cat-label::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--blue);opacity:.5;}
+.vc-sub-btn{padding:5px 10px 5px 20px;font-size:12px;color:var(--text3);}
+.vc-sub-btn:hover{background:var(--bg3);color:var(--text2);}
+
+/* ── MAIN CONTENT ── */
+.main{padding:1.75rem 2.25rem;overflow-y:auto;}
+.ctx-bar{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);margin-bottom:1.5rem;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);flex-wrap:wrap;}
+.ctx-chip{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);}
+.ctx-sep{color:var(--text3);}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.75rem;}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;}
+.kpi-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;line-height:1;margin-bottom:4px;}
+.kpi-label{font-size:11px;color:var(--text3);}
+.kpi-sub{font-size:11px;color:var(--text2);margin-top:3px;}
+.panel{display:none;}.panel.active{display:block;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.card-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.card-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+.card-dot-vc{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.section-header{margin-bottom:1.5rem;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.eyebrow-exp{color:var(--teal);}
+.eyebrow-vc{color:var(--blue);}
+.stitle{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1.2;}
+.ssub{font-size:13px;color:var(--text2);margin-top:4px;}
+.atabs{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.atab{padding:5px 13px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;}
+.atab:hover{border-color:var(--border2);color:var(--text2);}
+.atab.active-exp{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:500;}
+.atab.active-vc{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500;}
+.chart-wrap{position:relative;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+
+/* DEG table */
+.deg-table{width:100%;border-collapse:collapse;}
+.deg-table thead th{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);padding:0 8px 8px;text-align:left;border-bottom:1px solid var(--border);}
+.deg-table tbody tr{border-bottom:1px solid var(--border);}
+.deg-table tbody tr:last-child{border-bottom:none;}
+.deg-table tbody td{padding:8px;vertical-align:middle;}
+.gene-name{font-family:'DM Mono',monospace;font-size:12px;font-style:italic;}
+.lfc-bar-wrap{width:120px;height:6px;background:var(--bg4);border-radius:3px;position:relative;overflow:hidden;}
+.lfc-center{position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--border2);}
+.lfc-fill{position:absolute;top:0;height:100%;border-radius:3px;}
+.lfc-up{background:var(--teal);}
+.lfc-dn{background:var(--coral);}
+.lfc-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;}
+.pval-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);}
+.badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;}
+.badge-up{background:rgba(31,170,126,.12);color:var(--teal);}
+.badge-dn{background:rgba(224,98,47,.12);color:var(--coral);}
+
+/* Pathways */
+.pw-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.pw-row:last-child{border-bottom:none;}
+.pw-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.pw-bar-wrap{width:110px;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;flex-shrink:0;}
+.pw-bar{height:6px;border-radius:3px;}
+.pw-nes{font-family:'DM Mono',monospace;font-size:11px;width:42px;text-align:right;flex-shrink:0;}
+.pw-fdr{font-size:10px;color:var(--text3);width:56px;text-align:right;flex-shrink:0;font-family:'DM Mono',monospace;}
+
+/* Hallmarks */
+.hm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.hm-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+.hm-name{font-size:11.5px;color:var(--text2);margin-bottom:8px;line-height:1.3;}
+.hm-bar-wrap{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+.hm-bar{height:5px;border-radius:3px;}
+.hm-footer{display:flex;justify-content:space-between;align-items:baseline;}
+.hm-score{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+.hm-dir{font-size:10px;color:var(--text3);}
+.score-up{color:var(--teal);}
+.score-dn{color:var(--coral);}
+
+/* Clock */
+.clock-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem;}
+.clock-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;text-align:center;}
+.clock-type{font-size:10px;color:var(--text3);margin-bottom:6px;line-height:1.3;}
+.clock-delta{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--teal);}
+.clock-p{font-size:10px;color:var(--text3);margin-top:2px;font-family:'DM Mono',monospace;}
+.clock-bar-wrap{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin:6px 0 3px;}
+.clock-bar{height:4px;background:var(--teal);border-radius:2px;}
+
+/* QC */
+.qc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem;}
+.qc-stat{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+.qc-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:3px;}
+.qc-label{font-size:11px;color:var(--text3);}
+.qc-ok{color:var(--teal);}
+.qc-warn{color:var(--amber);}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.status-row:last-child{border-bottom:none;}
+.status-name{color:var(--text2);}
+.badge-ok{background:rgba(31,170,126,.12);color:var(--teal);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500;}
+.badge-warn{background:rgba(201,131,24,.12);color:var(--amber);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500;}
+.badge-val{background:var(--bg4);color:var(--text2);font-size:10px;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;}
+
+/* VC prediction card */
+.vc-pred-banner{background:linear-gradient(135deg,rgba(74,155,232,0.06) 0%,rgba(123,114,232,0.06) 100%);border:1px solid var(--blue-border);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px;}
+.vc-pred-icon{font-size:22px;}
+.vc-pred-text{flex:1;}
+.vc-pred-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--blue);margin-bottom:2px;}
+.vc-pred-sub{font-size:12px;color:var(--text3);}
+.conf-pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Mono',monospace;}
+.conf-high{background:rgba(31,170,126,.12);color:var(--teal);}
+.conf-med{background:rgba(201,131,24,.12);color:var(--amber);}
+
+/* Comparison heatmap */
+.heatmap-grid{display:grid;gap:3px;}
+.heatmap-row{display:flex;align-items:center;gap:6px;font-size:11px;}
+.heatmap-label{width:140px;color:var(--text2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.heatmap-cells{display:flex;gap:3px;}
+.heatmap-cell{width:38px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;cursor:default;transition:opacity .15s;}
+.heatmap-cell:hover{opacity:.8;}
+.heatmap-col-labels{display:flex;gap:3px;margin-left:152px;margin-bottom:4px;}
+.heatmap-col-label{width:38px;text-align:center;font-size:10px;color:var(--text3);}
+
+/* VC pheno grid */
+.pheno-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem;}
+.pheno-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:all .15s;}
+.pheno-card:hover{border-color:var(--blue-border);background:var(--blue-bg);}
+.pheno-card.active{border-color:var(--blue-border);background:var(--blue-bg);}
+.pheno-name{font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px;}
+.pheno-meta{font-size:10px;color:var(--text3);}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
+
+/* ── Analyse mode toggle ── */
+.analyse-toggle{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+.toggle-btn{padding:7px 6px;border:1px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text3);font-size:11.5px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;text-align:center;line-height:1.2;}
+.toggle-btn:hover{border-color:var(--border2);color:var(--text2);}
+.toggle-btn.active-exp{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal);font-weight:500;}
+.toggle-btn.active-vc{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500;}
+.btn.hidden-analysis{display:none;}
+
+/* ── Synthèse ── */
+.synth-score-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.synth-score-row:last-child{border-bottom:none;}
+.synth-score-label{color:var(--text2);flex:1;}
+.synth-score-bar-wrap{width:120px;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin:0 12px;flex-shrink:0;}
+.synth-score-bar{height:6px;border-radius:3px;}
+.synth-score-val{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;width:36px;text-align:right;flex-shrink:0;}
+.synth-verdict{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:var(--radius-lg);margin-bottom:1.25rem;border:1px solid;}
+.synth-verdict-exp{background:rgba(31,170,126,0.05);border-color:rgba(31,170,126,0.2);}
+.synth-verdict-vc{background:rgba(74,155,232,0.05);border-color:rgba(74,155,232,0.2);}
+.synth-verdict-icon{font-size:24px;flex-shrink:0;margin-top:2px;}
+.synth-verdict-body{}
+.synth-verdict-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px;}
+.synth-verdict-text{font-size:13px;color:var(--text2);line-height:1.7;}
+.synth-section-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.synth-tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:500;margin:2px;}
+.synth-tag-pos{background:rgba(31,170,126,0.12);color:var(--teal);}
+.synth-tag-neg{background:rgba(224,98,47,0.12);color:var(--coral);}
+.synth-tag-neu{background:var(--bg4);color:var(--text2);}
+.synth-conclusion{font-size:13px;color:var(--text);line-height:1.8;padding:14px 16px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid;}
+.synth-conclusion-exp{border-color:var(--teal);}
+.synth-conclusion-vc{border-color:var(--blue);}
+.synth-btn-exp,.synth-btn-vc{border-bottom:none;}
+.synth-btn-exp.active-exp,.synth-btn-vc.active-vc{background:rgba(255,255,255,0.04) !important;border-color:rgba(255,255,255,0.15) !important;color:var(--text) !important;font-weight:600 !important;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="topnav">
+  <div class="logo"><span class="logo-dot"></span>Youngr Labs</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active exp" onclick="switchMode('exp')">
+      <span class="tab-icon">🧪</span> Données expérimentales
+    </button>
+    <button class="nav-tab vc" onclick="switchMode('vc')">
+      <span class="tab-icon">🤖</span> Cellule Virtuelle
+    </button>
+  </div>
+  <div class="nav-right">
+    <span class="header-meta" id="hdr-ctx">—</span>
+    <button class="print-btn" onclick="window.print()">⬇ Exporter PDF</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════
+     MODE : DONNÉES EXPÉRIMENTALES
+════════════════════════════════════════════ -->
+<div class="app-section active" id="section-exp">
+<div class="layout">
+<aside class="sidebar" id="sidebar-exp">
+  <div class="sb-section">
+    <div class="sb-label">Extrait</div>
+    <div class="btn-group" id="mol-btns">
+      <button class="btn active-exp" data-mol="M1" onclick="setMol(this)">Extrait n°1</button>
+      <button class="btn" data-mol="M2" onclick="setMol(this)">Extrait n°2</button>
+      <button class="btn" data-mol="M3" onclick="setMol(this)">Extrait n°3</button>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-section">
+    <div class="sb-label">Type cellulaire</div>
+    <div class="btn-group" id="cell-btns">
+      <button class="btn active-exp" data-cell="Fibroblastes" onclick="setCell(this)"><span class="cell-dot" style="background:#4a9be8"></span>Fibroblastes</button>
+      <button class="btn" data-cell="Kératinocytes" onclick="setCell(this)"><span class="cell-dot" style="background:#1faa7e"></span>Kératinocytes</button>
+      <button class="btn" data-cell="Mélanocytes" onclick="setCell(this)"><span class="cell-dot" style="background:#e0622f"></span>Mélanocytes</button>
+      <button class="btn" data-cell="HFDPCs" onclick="setCell(this)"><span class="cell-dot" style="background:#c98318"></span>HFDPCs</button>
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-label">Concentration</div>
+    <div class="conc-grid">
+      <button class="conc-btn active-exp" data-conc="C1" onclick="setConc(this)">0,1 µM</button>
+      <button class="conc-btn" data-conc="C2" onclick="setConc(this)">1 µM</button>
+    </div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-section">
+    <div class="sb-label">Mode d'analyse</div>
+    <div class="analyse-toggle" id="analyse-toggle-exp">
+      <button class="toggle-btn active-exp" data-mode="brief" onclick="setAnalyseMode(this,'exp')">Analyse Brève</button>
+      <button class="toggle-btn" data-mode="full" onclick="setAnalyseMode(this,'exp')">Analyse Complète</button>
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-label">Analyse</div>
+    <div class="btn-group" id="panel-btns-exp">
+      <button class="btn exp-full-only" data-panel="qc-panel" onclick="setPanel(this,'exp')">Contrôle qualité</button>
+      <button class="btn" data-panel="biomarqueurs-panel" onclick="setPanel(this,'exp')">Biomarqueurs</button>
+      <button class="btn exp-full-only" data-panel="deg-panel" onclick="setPanel(this,'exp')">Gènes Diff. Exprimés</button>
+      <button class="btn exp-full-only" data-panel="pathway-panel" onclick="setPanel(this,'exp')">Voies Biologiques</button>
+      <button class="btn active-exp" data-panel="longevity-panel" onclick="setPanel(this,'exp')">Hallmarks du Vieillissement</button>
+      <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Horloges Epigénétiques</button>
+      <button class="btn synth-btn-exp" data-panel="synthese-panel" onclick="setPanel(this,'exp')">Synthèse</button>
+    </div>
+  </div>
+  <div style="padding:0 4px;font-size:11px;color:var(--text3);line-height:1.8;">
+    <div>3 donneurs / type cellulaire</div>
+    <div>25 000 gènes · 6 000+ voies</div>
+  </div>
+</aside>
+
+<main class="main" id="main-exp">
+  <div class="ctx-bar">
+    <span class="mode-badge mode-exp">EXP</span>
+    <span class="ctx-chip" id="ctx-mol">Extrait n°1</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="ctx-cell">Fibroblastes</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="ctx-conc">0,1 µM</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="ctx-panel">Contrôle qualité</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" id="kpi-cells">—</div><div class="kpi-label">Cellules analysées</div><div class="kpi-sub">après filtrage QC</div></div>
+    <div class="kpi"><div class="kpi-val" id="kpi-genes">—</div><div class="kpi-label">Gènes détectés</div><div class="kpi-sub">sur 25 000 référence</div></div>
+    <div class="kpi"><div class="kpi-val" id="kpi-paths">—</div><div class="kpi-label">Voies enrichies</div><div class="kpi-sub">FDR &lt; 0,05</div></div>
+    <div class="kpi"><div class="kpi-val" id="kpi-degs">—</div><div class="kpi-label">Gènes Diff. Exprimés<</div><div class="kpi-sub">|LFC| &gt; 0,5 · padj &lt; 0,01</div></div>
+  </div>
+  <!-- QC panel -->
+  <div class="panel" id="qc-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Pré-traitement</div><div class="stitle">Contrôle qualité</div><div class="ssub" id="qc-sub">—</div></div>
+    <div class="qc-grid" id="qc-stat-grid"></div>
+    <div class="two-col">
+      <div class="card"><div class="card-title"><span class="card-dot"></span>Distribution UMIs / cellule</div><div class="chart-wrap" style="height:200px;"><canvas id="umiChart"></canvas></div></div>
+      <div class="card"><div class="card-title"><span class="card-dot"></span>Gènes détectés / cellule</div><div class="chart-wrap" style="height:200px;"><canvas id="geneChart"></canvas></div></div>
+    </div>
+    <div class="two-col">
+      <div class="card"><div class="card-title"><span class="card-dot"></span>% ARN mitochondrial</div><div class="chart-wrap" style="height:200px;"><canvas id="mitoChart"></canvas></div></div>
+      <div class="card"><div class="card-title"><span class="card-dot"></span>Critères de filtrage</div><div id="qc-checklist"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-dot"></span>UMAP — vue d'ensemble</div>
+      <div class="atabs" id="umap-color-tabs">
+        <button class="atab active-exp" data-mode="celltype" onclick="setUmapColor(this)">Type cellulaire</button>
+        <button class="atab" data-mode="treatment" onclick="setUmapColor(this)">Traitement</button>
+        <button class="atab" data-mode="donor" onclick="setUmapColor(this)">Donneur</button>
+      </div>
+      <canvas id="umapCanvas" style="width:100%;height:340px;display:block;border-radius:8px;"></canvas>
+      <div class="umap-legend" id="umap-legend" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;"></div>
+    </div>
+  </div>
+  <!-- Biomarqueurs panel -->
+  <div class="panel" id="biomarqueurs-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-exp">Marqueurs cosmétiques</div>
+      <div class="stitle">Biomarqueurs</div>
+      <div class="ssub" id="biomark-sub">—</div>
+    </div>
+    <div id="biomark-content"></div>
+  </div>
+
+  <!-- DEG panel -->
+  <div class="panel" id="deg-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Transcriptomique différentielle</div><div class="stitle">Gènes Différentiellement Exprimés</div><div class="ssub" id="deg-sub">—</div></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Top 10 Gènes Diff. Exprimés — traité vs contrôle</div>
+      <table class="deg-table"><thead><tr><th>Gène</th><th>Dir.</th><th>Log2FC</th><th style="width:130px">Amplitude</th><th>p adj</th></tr></thead><tbody id="deg-tbody"></tbody></table>
+    </div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Volcano plot</div><div class="chart-wrap" style="height:280px;"><canvas id="volcanoChart"></canvas></div></div>
+  </div>
+  <!-- Pathway panel -->
+  <div class="panel" id="pathway-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Enrichissement fonctionnel</div><div class="stitle">Voies Biologiques Enrichies</div><div class="ssub" id="pw-sub">—</div></div>
+    <div class="atabs" id="pw-dir-tabs"><button class="atab active-exp" data-dir="all" onclick="setPwDir(this)">Toutes</button><button class="atab" data-dir="up" onclick="setPwDir(this)">Activées ↑</button><button class="atab" data-dir="dn" onclick="setPwDir(this)">Réprimées ↓</button></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>GSEA — NES normalisé</div><div id="pw-list"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Top 10 voies</div><div class="chart-wrap" style="height:260px;"><canvas id="pwChart"></canvas></div></div>
+  </div>
+  <!-- Longevity panel -->
+  <div class="panel active" id="longevity-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Longévité cellulaire</div><div class="stitle">Hallmarks du Vieillissement</div><div class="ssub" id="lv-sub">—</div></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Score par hallmark</div><div class="hm-grid" id="hallmark-grid"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Comparaison 3 molécules</div><div class="chart-wrap" style="height:300px;"><canvas id="longevChart"></canvas></div></div>
+  </div>
+  <!-- Clock panel -->
+  <div class="panel" id="clock-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Reprogrammation cellulaire</div><div class="stitle">Horloges Epigénétiques</div><div class="ssub">Δ âge biologique estimé · traité vs contrôle</div></div>
+    <div class="clock-grid" id="clock-grid"></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Score global — tous types cellulaires</div><div class="chart-wrap" style="height:320px;"><canvas id="clockRadar"></canvas></div></div>
+  </div>
+
+  <!-- Synthèse panel EXP -->
+  <div class="panel" id="synthese-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-exp">Rapport interprétatif</div>
+      <div class="stitle">Synthèse</div>
+      <div class="ssub" id="synth-sub">—</div>
+    </div>
+    <div id="synth-content"></div>
+  </div>
+</main>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     MODE : CELLULE VIRTUELLE
+════════════════════════════════════════════ -->
+<div class="app-section" id="section-vc">
+<div class="layout">
+<aside class="sidebar" id="sidebar-vc">
+
+  <div class="sb-section">
+    <div class="sb-label">Extrait testé</div>
+    <div class="btn-group" id="vc-mol-btns">
+      <button class="btn active-vc" data-vcmol="M1" onclick="setVCMol(this)">Extrait n°1</button>
+      <button class="btn" data-vcmol="M2" onclick="setVCMol(this)">Extrait n°2</button>
+      <button class="btn" data-vcmol="M3" onclick="setVCMol(this)">Extrait n°3</button>
+    </div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Concentration</div>
+    <div class="conc-grid">
+      <button class="conc-btn active-vc" data-vcconc="C1" onclick="setVCConc(this)">0,1 µM</button>
+      <button class="conc-btn" data-vcconc="C2" onclick="setVCConc(this)">1 µM</button>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section">
+    <div class="sb-label">Phénotype prédit</div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Peau</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn active-vc" data-pheno="skin_normal" onclick="setPheno(this)">Peau normale</button>
+        <button class="btn vc-sub-btn" data-pheno="skin_eczema" onclick="setPheno(this)">Eczéma</button>
+        <button class="btn vc-sub-btn" data-pheno="skin_psoriasis" onclick="setPheno(this)">Psoriasis</button>
+        <button class="btn vc-sub-btn" data-pheno="skin_acne" onclick="setPheno(this)">Acné</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Âge</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="age_20" onclick="setPheno(this)">20 ans</button>
+        <button class="btn vc-sub-btn" data-pheno="age_40" onclick="setPheno(this)">40 ans</button>
+        <button class="btn vc-sub-btn" data-pheno="age_60" onclick="setPheno(this)">60 ans</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Ethnicité</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="eth_african" onclick="setPheno(this)">Africaine</button>
+        <button class="btn vc-sub-btn" data-pheno="eth_asian" onclick="setPheno(this)">Asiatique</button>
+        <button class="btn vc-sub-btn" data-pheno="eth_hispanic" onclick="setPheno(this)">Hispanique</button>
+        <button class="btn vc-sub-btn" data-pheno="eth_caucasian" onclick="setPheno(this)">Caucasienne</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Scalp</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="scalp_healthy" onclick="setPheno(this)">Scalp sain</button>
+        <button class="btn vc-sub-btn" data-pheno="scalp_alopecia" onclick="setPheno(this)">Alopecia areata</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Cancer cutané</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="cancer_bcc" onclick="setPheno(this)">BCC</button>
+        <button class="btn vc-sub-btn" data-pheno="cancer_scc" onclick="setPheno(this)">SCC</button>
+        <button class="btn vc-sub-btn" data-pheno="cancer_scc_insitu" onclick="setPheno(this)">SCC in situ</button>
+        <button class="btn vc-sub-btn" data-pheno="cancer_scc_ak" onclick="setPheno(this)">SCC / AK</button>
+        <button class="btn vc-sub-btn" data-pheno="cancer_melanoma" onclick="setPheno(this)">Mélanome</button>
+      </div>
+    </div>
+
+    <div class="sb-divider" style="margin:0.6rem 0 0.8rem;"></div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Toxicologie</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="tox_liver" onclick="setPheno(this)">Foie (hépatocytes)</button>
+        <button class="btn vc-sub-btn" data-pheno="tox_kidney" onclick="setPheno(this)">Rein (tubulaire)</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Endocrinologie</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="endo_thymus" onclick="setPheno(this)">Thymus</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Cerveau</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="brain_cortex" onclick="setPheno(this)">Cortex cérébral</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Respiratoire</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="resp_lung" onclick="setPheno(this)">Poumon</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sb-divider"></div>
+  <div class="sb-section">
+    <div class="sb-label">Mode d'analyse</div>
+    <div class="analyse-toggle" id="analyse-toggle-vc">
+      <button class="toggle-btn active-vc" data-mode="brief" onclick="setAnalyseMode(this,'vc')">Analyse Brève</button>
+      <button class="toggle-btn" data-mode="full" onclick="setAnalyseMode(this,'vc')">Analyse Complète</button>
+    </div>
+  </div>
+  <div class="sb-section">
+    <div class="sb-label">Analyse</div>
+    <div class="btn-group" id="panel-btns-vc">
+      <button class="btn" data-vcpanel="vc-biomarqueurs-panel" onclick="setPanel(this,'vc')">Biomarqueurs</button>
+      <button class="btn vc-full-only" data-vcpanel="vc-deg-panel" onclick="setPanel(this,'vc')">Gènes Diff. Exprimés</button>
+      <button class="btn vc-full-only" data-vcpanel="vc-pathway-panel" onclick="setPanel(this,'vc')">Voies Biologiques</button>
+      <button class="btn active-vc" data-vcpanel="vc-hallmarks-panel" onclick="setPanel(this,'vc')">Hallmarks du Vieillissement</button>
+      <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Horloges Epigénétiques</button>
+      <button class="btn" data-vcpanel="vc-compare-panel" onclick="setPanel(this,'vc')">Comparaison phénotypes</button>
+      <button class="btn synth-btn-vc" data-vcpanel="vc-synthese-panel" onclick="setPanel(this,'vc')">Synthèse</button>
+    </div>
+  </div>
+</aside>
+
+<main class="main" id="main-vc">
+  <div class="ctx-bar">
+    <span class="mode-badge mode-vc">IA</span>
+    <span class="ctx-chip" id="vc-ctx-mol">Extrait n°1</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="vc-ctx-pheno">Peau normale</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="vc-ctx-conc">0,1 µM</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="vc-ctx-panel">Gènes Diff. Exprimés</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" id="vc-kpi-cells">—</div><div class="kpi-label">Cellules virtuelles</div><div class="kpi-sub">simulées in silico</div></div>
+    <div class="kpi"><div class="kpi-val" id="vc-kpi-genes">—</div><div class="kpi-label">Gènes prédits</div><div class="kpi-sub">expression modifiée</div></div>
+    <div class="kpi"><div class="kpi-val" id="vc-kpi-paths">—</div><div class="kpi-label">Voies impactées</div><div class="kpi-sub">score &gt; 0,6</div></div>
+    <div class="kpi"><div class="kpi-val" id="vc-kpi-conf">—</div><div class="kpi-label">Score confiance</div><div class="kpi-sub">modèle prédictif</div></div>
+  </div>
+
+  <!-- VC Biomarqueurs -->
+  <div class="panel" id="vc-biomarqueurs-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-vc">Marqueurs cosmétiques prédits</div>
+      <div class="stitle">Biomarqueurs</div>
+      <div class="ssub" id="vc-biomark-sub">—</div>
+    </div>
+    <div id="vc-biomark-content"></div>
+  </div>
+
+  <!-- VC DEG -->
+  <div class="panel" id="vc-deg-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Prédiction IA</div><div class="stitle">Gènes Diff. Exprimés</div><div class="ssub" id="vc-deg-sub">—</div></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Top 10 Gènes Diff. Exprimés</div>
+      <table class="deg-table"><thead><tr><th>Gène</th><th>Dir.</th><th>Log2FC prédit</th><th style="width:130px">Amplitude</th><th>Score IA</th></tr></thead><tbody id="vc-deg-tbody"></tbody></table>
+    </div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Distribution des scores de prédiction</div><div class="chart-wrap" style="height:260px;"><canvas id="vc-volcanoChart"></canvas></div></div>
+  </div>
+
+  <!-- VC Pathways -->
+  <div class="panel" id="vc-pathway-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Prédiction IA</div><div class="stitle">Voies Biologiques prédites</div><div class="ssub" id="vc-pw-sub">—</div></div>
+    <div class="atabs" id="vc-pw-dir-tabs"><button class="atab active-vc" data-dir="all" onclick="setVCPwDir(this)">Toutes</button><button class="atab" data-dir="up" onclick="setVCPwDir(this)">Activées ↑</button><button class="atab" data-dir="dn" onclick="setVCPwDir(this)">Réprimées ↓</button></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>NES prédit</div><div id="vc-pw-list"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Top 10 voies prédites</div><div class="chart-wrap" style="height:260px;"><canvas id="vc-pwChart"></canvas></div></div>
+  </div>
+
+  <!-- VC Hallmarks -->
+  <div class="panel active" id="vc-hallmarks-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Prédiction IA</div><div class="stitle">Hallmarks du Vieillissement prédits</div><div class="ssub" id="vc-lv-sub">—</div></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Score prédit par hallmark</div><div class="hm-grid" id="vc-hallmark-grid"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Profil phénotype — comparaison 3 molécules</div><div class="chart-wrap" style="height:300px;"><canvas id="vc-longevChart"></canvas></div></div>
+  </div>
+
+  <!-- VC Clock -->
+  <div class="panel" id="vc-clock-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Prédiction IA</div><div class="stitle">Horloges Epigénétiques prédites</div><div class="ssub">Δ âge biologique prédit · phénotype sélectionné · toutes molécules</div></div>
+    <div class="clock-grid" id="vc-clock-grid"></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Profil de rajeunissement — comparaison phénotypes</div><div class="chart-wrap" style="height:320px;"><canvas id="vc-clockBar"></canvas></div></div>
+  </div>
+
+  <!-- VC Compare -->
+  <div class="panel" id="vc-compare-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Analyse comparative</div><div class="stitle">Comparaison inter-phénotypes</div><div class="ssub" id="vc-cmp-sub">—</div></div>
+    <div class="card">
+      <div class="card-title"><span class="card-dot-vc"></span>Heatmap Δ âge épigénétique — tous phénotypes × molécules</div>
+      <div id="vc-heatmap"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="card-dot-vc"></span>Score anti-inflammatoire prédit — tous phénotypes</div>
+      <div class="chart-wrap" style="height:320px;"><canvas id="vc-compareChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- VC Synthèse panel -->
+  <div class="panel" id="vc-synthese-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-vc">Rapport interprétatif</div>
+      <div class="stitle">Synthèse</div>
+      <div class="ssub" id="vc-synth-sub">—</div>
+    </div>
+    <div id="vc-synth-content"></div>
+  </div>
+
+</main>
+</div>
+</div>
+
+<script>
+// ═══════════════════ SEEDED RNG ═══════════════════
+function makeRng(s){let seed=typeof s==='string'?s.split('').reduce((a,c)=>a+c.charCodeAt(0),0):s;return()=>{seed=(seed*1664525+1013904223)&0xffffffff;return (seed>>>0)/4294967296;};}
+
+// ═══════════════════ EXP STATE ═══════════════════
+const ES={mol:'M1',cell:'Fibroblastes',conc:'C1',panel:'longevity-panel',pwDir:'all',umapMode:'celltype'};
+const MOL_LABELS={M1:'Extrait n°1',M2:'Extrait n°2',M3:'Extrait n°3'};
+const CONC_LABELS={C1:'0,1 µM',C2:'1 µM'};
+const CONC_MULT={C1:0.65,C2:1.0};
+const MOL_PROFILE={M1:{strength:1.0,mito:4.2},M2:{strength:0.75,mito:5.1},M3:{strength:1.2,mito:3.8}};
+
+// ═══════════════════ VC STATE ═══════════════════
+const VC={mol:'M1',pheno:'skin_normal',conc:'C1',panel:'vc-hallmarks-panel',pwDir:'all'};
+
+const PHENO_META={
+  skin_normal:{label:'Peau normale',cat:'Peau',cells:['Fibroblastes','Kératinocytes','Mélanocytes'],conf:0.94,icon:'🧬'},
+  skin_eczema:{label:'Eczéma',cat:'Peau',cells:['Kératinocytes','Lymphocytes T','Mastocytes'],conf:0.88,icon:'🔴'},
+  skin_psoriasis:{label:'Psoriasis',cat:'Peau',cells:['Kératinocytes','Cellules dendritiques','Lymphocytes T'],conf:0.91,icon:'🔴'},
+  skin_acne:{label:'Acné',cat:'Peau',cells:['Kératinocytes','Sébocytes','Fibroblastes'],conf:0.86,icon:'🔶'},
+  age_20:{label:'20 ans',cat:'Âge',cells:['Fibroblastes','Kératinocytes','Mélanocytes'],conf:0.95,icon:'🕐'},
+  age_40:{label:'40 ans',cat:'Âge',cells:['Fibroblastes','Kératinocytes','Mélanocytes'],conf:0.93,icon:'🕐'},
+  age_60:{label:'60 ans',cat:'Âge',cells:['Fibroblastes','Kératinocytes','Mélanocytes'],conf:0.90,icon:'🕐'},
+  eth_african:{label:'Phototype africain',cat:'Ethnicité',cells:['Mélanocytes','Kératinocytes'],conf:0.87,icon:'🌍'},
+  eth_asian:{label:'Phototype asiatique',cat:'Ethnicité',cells:['Mélanocytes','Kératinocytes'],conf:0.89,icon:'🌏'},
+  eth_hispanic:{label:'Phototype hispanique',cat:'Ethnicité',cells:['Mélanocytes','Kératinocytes'],conf:0.88,icon:'🌎'},
+  eth_caucasian:{label:'Phototype caucasien',cat:'Ethnicité',cells:['Mélanocytes','Kératinocytes'],conf:0.92,icon:'🌍'},
+  scalp_healthy:{label:'Scalp sain',cat:'Scalp',cells:['HFDPCs','Kératinocytes'],conf:0.93,icon:'💆'},
+  scalp_alopecia:{label:'Alopecia areata',cat:'Scalp',cells:['HFDPCs','Lymphocytes T'],conf:0.84,icon:'⚠️'},
+  cancer_bcc:{label:'Carcinome basocellulaire',cat:'Cancer',cells:['Kératinocytes basaux','Stromale'],conf:0.82,icon:'🔬'},
+  cancer_scc:{label:'Carcinome épidermoïde',cat:'Cancer',cells:['Kératinocytes','Cellules tumorales'],conf:0.80,icon:'🔬'},
+  cancer_scc_insitu:{label:'SCC in situ',cat:'Cancer',cells:['Kératinocytes','Macrophages'],conf:0.78,icon:'🔬'},
+  cancer_scc_ak:{label:'SCC / Kératose actinique',cat:'Cancer',cells:['Kératinocytes','Fibroblastes'],conf:0.79,icon:'🔬'},
+  cancer_melanoma:{label:'Mélanome',cat:'Cancer',cells:['Mélanocytes','Cellules NK','Stromale'],conf:0.85,icon:'🔬'},
+  tox_liver:{label:'Foie — hépatocytes',cat:'Toxicologie',cells:['Hépatocytes','Kupffer','Stellate'],conf:0.91,icon:'🫀'},
+  tox_kidney:{label:'Rein — tubulaire',cat:'Toxicologie',cells:['Tubulaire proximal','Podocytes'],conf:0.88,icon:'🫘'},
+  endo_thymus:{label:'Thymus',cat:'Endocrinologie',cells:['Thymocytes','Épithélial thymique'],conf:0.83,icon:'🦠'},
+  brain_cortex:{label:'Cortex cérébral',cat:'Cerveau',cells:['Neurones','Astrocytes','Microglie'],conf:0.80,icon:'🧠'},
+  resp_lung:{label:'Poumon',cat:'Respiratoire',cells:['Pneumocytes II','Macrophages alvéolaires'],conf:0.86,icon:'🫁'}
+};
+
+// ═══════════════════ UMAP DATA ═══════════════════
+const CELL_COLORS={'Fibroblastes':'#4a9be8','Kératinocytes':'#1faa7e','Mélanocytes':'#e0622f','HFDPCs':'#c98318'};
+const TREAT_COLORS={'Ctrl':'#5e5d58','M1 0,1µM':'#9d98e0','M1 1µM':'#7b72e8','M2 0,1µM':'#7dd4b8','M2 1µM':'#1faa7e','M3 0,1µM':'#f0b89a','M3 1µM':'#e0622f'};
+const DONOR_COLORS={'D1':'#4a9be8','D2':'#c98318','D3':'#c96fa0'};
+const TREATS=Object.keys(TREAT_COLORS),DONORS=Object.keys(DONOR_COLORS);
+function genCluster(rng,n,cx,cy,rx,ry){const p=[];for(let i=0;i<n;i++){const a=rng()*2*Math.PI,r=Math.sqrt(rng());p.push([cx+r*rx*(Math.cos(a)+(rng()-.5)*.4),cy+r*ry*(Math.sin(a)+(rng()-.5)*.4)]);}return p;}
+const r0=makeRng(42);
+const CLUSTERS={'Fibroblastes':genCluster(r0,340,.22,.32,.12,.14),'Kératinocytes':genCluster(r0,360,.66,.26,.13,.12),'Mélanocytes':genCluster(r0,280,.56,.70,.10,.11),'HFDPCs':genCluster(r0,300,.28,.66,.11,.13)};
+const rLbl=makeRng(99);
+const allPts=[];
+Object.entries(CLUSTERS).forEach(([ct,pts])=>pts.forEach(p=>allPts.push({ct,x:p[0],y:p[1],t:TREATS[Math.floor(rLbl()*TREATS.length)],d:DONORS[Math.floor(rLbl()*DONORS.length)]})));
+
+// ═══════════════════ EXP DATA GENERATORS ═══════════════════
+const BASE_DEGS={Fibroblastes:[['COL1A1',1.82,1.2e-48],['COL3A1',1.54,3.4e-41],['MMP1',-1.71,2.1e-39],['TGFB1',1.23,4.5e-35],['ACTA2',-1.43,8.2e-31],['FN1',1.18,1.4e-28],['CDKN2A',-1.56,2.3e-27],['SIRT1',0.89,5.6e-22],['LMNA',-0.72,3.1e-19],['ELN',0.94,7.8e-17]],Kératinocytes:[['KRT14',1.94,4.2e-52],['KRT5',1.67,1.1e-46],['ITGA6',1.38,2.8e-40],['CASP14',-1.55,5.0e-37],['FLG',-1.30,8.3e-32],['PCNA',0.97,1.7e-28],['TP63',1.12,3.4e-25],['MKI67',0.83,6.8e-22],['CDKN1B',-0.74,2.0e-18],['FOXM1',0.61,5.5e-15]],Mélanocytes:[['MITF',1.75,3.1e-45],['TYR',1.58,7.4e-41],['DCT',1.40,1.6e-37],['TYRP1',1.22,3.8e-33],['MC1R',1.05,8.5e-29],['SOX10',0.88,2.0e-25],['EDN3',-1.15,5.2e-23],['CDKN2A',-1.31,1.1e-21],['PMEL',0.70,3.4e-18],['MLPH',0.60,8.1e-15]],HFDPCs:[['VEGFA',1.88,5.5e-50],['FGF7',1.62,1.3e-44],['IGF1',1.44,3.0e-40],['WNT5A',1.25,7.2e-36],['BMP4',-1.38,1.6e-33],['CTNNB1',1.07,3.8e-29],['APC',-0.94,8.5e-26],['LEF1',0.80,2.0e-22],['DKK1',-1.10,4.9e-20],['AXIN2',0.66,1.2e-17]]};
+function getDEGs(mol,cell,conc){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'deg');return BASE_DEGS[cell].map(([g,lfc,p])=>[g,+(lfc*m*(0.85+rng()*0.3)).toFixed(2),p]);}
+
+const BASE_PW={Fibroblastes:[['ECM organization','up',2.41,'< 0.001'],['Collagen biosynthesis','up',2.28,'< 0.001'],['TGF-beta signaling','up',2.14,'< 0.001'],['Sénescence cellulaire','dn',-2.32,'< 0.001'],['MMP ECM remodeling','dn',-2.10,'< 0.001'],['PI3K-AKT signaling','up',1.95,'0.002'],['FOXO longevity','up',1.88,'0.003'],['Autophagy','up',1.76,'0.005'],['NF-kB signaling','dn',-1.83,'0.004'],['p53 pathway','dn',-1.70,'0.007'],['ROS detoxification','up',1.65,'0.009'],['Insulin signaling','up',1.58,'0.012'],['Telomere maintenance','up',1.52,'0.015'],['mTOR signaling','dn',-1.44,'0.021'],['DNA repair','up',1.40,'0.025'],['Hypoxia response','dn',-1.35,'0.031'],['Ubiquitin-proteasome','up',1.32,'0.035'],['Epigenetic regulation','up',1.28,'0.040'],['Inflammatory response','dn',-1.22,'0.044'],['Genomic instability','dn',-1.18,'0.048']],Kératinocytes:[['Keratinocyte differentiation','up',2.55,'< 0.001'],['Cornification','dn',-2.20,'< 0.001'],['Cell proliferation','up',2.05,'< 0.001'],['Notch signaling','up',1.92,'0.002'],['Basement membrane','up',1.81,'0.004'],['Inflammatory cytokines','dn',-1.78,'0.005'],['Sénescence cellulaire','dn',-1.74,'0.006'],['DNA repair','up',1.68,'0.008'],['Autophagy','up',1.62,'0.010'],['ROS metabolism','up',1.55,'0.014'],['mTOR signaling','dn',-1.48,'0.019'],['Insulin-IGF1','up',1.44,'0.023'],['EGFR signaling','up',1.38,'0.028'],['Hypoxia response','up',1.31,'0.035'],['Telomere maintenance','up',1.27,'0.041'],['Ubiquitin proteolysis','up',1.22,'0.046'],['NF-kB pathway','dn',-1.19,'0.049'],['Epigenetic remodeling','up',1.14,'0.052'],['Apoptosis regulation','dn',-1.10,'0.058'],['Oxid. phosphorylation','up',1.06,'0.063']],Mélanocytes:[['Melanogenesis','up',2.62,'< 0.001'],['MITF transcription','up',2.44,'< 0.001'],['Pigmentation','up',2.18,'< 0.001'],['Sénescence cellulaire','dn',-2.05,'< 0.001'],['Apoptosis resistance','up',1.94,'0.002'],['MAPK/ERK pathway','up',1.85,'0.003'],['DNA damage response','up',1.74,'0.006'],['Oxidative stress ROS','dn',-1.68,'0.008'],['Telomere maintenance','up',1.60,'0.012'],['Autophagy','up',1.54,'0.016'],['Inflammatory response','dn',-1.47,'0.021'],['PI3K-AKT-mTOR','dn',-1.41,'0.026'],['Insulin signaling','up',1.36,'0.031'],['Epigenetic regulation','up',1.30,'0.037'],['Ubiquitin proteolysis','up',1.24,'0.043'],['Hypoxia','dn',-1.19,'0.049'],['Genomic instability','dn',-1.14,'0.055'],['Wnt signaling','up',1.08,'0.062'],['Cytokine signaling','dn',-1.04,'0.068'],['Cell cycle G1-S','up',0.99,'0.075']],HFDPCs:[['Anagen induction','up',2.70,'< 0.001'],['Wnt/beta-catenin','up',2.52,'< 0.001'],['Stem cell self-renewal','up',2.35,'< 0.001'],['FGF/KGF signaling','up',2.18,'< 0.001'],['VEGF angiogenesis','up',2.02,'0.001'],['Sénescence cellulaire','dn',-1.96,'0.002'],['IGF1/mTOR pathway','up',1.88,'0.003'],['DNA repair','up',1.78,'0.005'],['Autophagy','up',1.70,'0.007'],['Catagen suppression','dn',-1.62,'0.011'],['ROS homeostasis','up',1.56,'0.014'],['Telomere maintenance','up',1.48,'0.019'],['Epigenetic remodeling','up',1.42,'0.024'],['NF-kB inflammatory','dn',-1.36,'0.030'],['Ubiquitin proteolysis','up',1.30,'0.037'],['Insulin signaling','up',1.24,'0.043'],['Hypoxia response','dn',-1.18,'0.050'],['Androgen signaling','dn',-1.12,'0.058'],['Notch pathway','up',1.06,'0.065'],['Genomic instability','dn',-1.00,'0.073']]};
+function getPW(mol,cell,conc,dir){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'pw');let d=BASE_PW[cell].map(([n,di,nes,fdr])=>[n,di,+(nes*m*(0.88+rng()*0.24)).toFixed(2),fdr]);if(dir==='up')d=d.filter(x=>x[1]==='up');if(dir==='dn')d=d.filter(x=>x[1]==='dn');return d;}
+
+const BASE_HM=[{id:'dna',name:"Réparation de l'ADN",base:{Fibroblastes:72,Kératinocytes:65,Mélanocytes:80,HFDPCs:78},dir:'up'},{id:'gen',name:'Instabilité génomique',base:{Fibroblastes:55,Kératinocytes:48,Mélanocytes:62,HFDPCs:58},dir:'dn'},{id:'tel',name:'Maintenance des télomères',base:{Fibroblastes:68,Kératinocytes:61,Mélanocytes:74,HFDPCs:82},dir:'up'},{id:'epi',name:'Régulation épigénétique',base:{Fibroblastes:75,Kératinocytes:70,Mélanocytes:77,HFDPCs:85},dir:'up'},{id:'ros',name:'ROS / Stress oxydatif',base:{Fibroblastes:60,Kératinocytes:52,Mélanocytes:68,HFDPCs:65},dir:'dn'},{id:'ubq',name:'Protéolyse (ubiquitine)',base:{Fibroblastes:63,Kératinocytes:58,Mélanocytes:70,HFDPCs:72},dir:'up'},{id:'hyp',name:"Réponse à l'hypoxie",base:{Fibroblastes:45,Kératinocytes:40,Mélanocytes:50,HFDPCs:48},dir:'dn'},{id:'inf',name:'Réponse inflammatoire',base:{Fibroblastes:70,Kératinocytes:65,Mélanocytes:72,HFDPCs:75},dir:'dn'},{id:'aut',name:'Autophagie',base:{Fibroblastes:66,Kératinocytes:60,Mélanocytes:69,HFDPCs:76},dir:'up'},{id:'ins',name:'Signalisation insuline',base:{Fibroblastes:58,Kératinocytes:54,Mélanocytes:62,HFDPCs:68},dir:'up'},{id:'sen',name:'Sénescence cellulaire',base:{Fibroblastes:78,Kératinocytes:72,Mélanocytes:80,HFDPCs:82},dir:'dn'},{id:'mto',name:'Voie mTOR',base:{Fibroblastes:50,Kératinocytes:45,Mélanocytes:55,HFDPCs:58},dir:'dn'}];
+function getHM(mol,cell,conc){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'hm');return BASE_HM.map(h=>({...h,score:Math.round(h.base[cell]*m*(0.85+rng()*0.3))}));}
+
+const BASE_CLOCK={Fibroblastes:{M1:-3.8,M2:-2.6,M3:-4.5},Kératinocytes:{M1:-4.1,M2:-3.0,M3:-5.0},Mélanocytes:{M1:-5.2,M2:-3.9,M3:-6.1},HFDPCs:{M1:-6.4,M2:-4.8,M3:-7.2}};
+function getClockDelta(mol,cell,conc){return +(BASE_CLOCK[cell][mol]*CONC_MULT[conc]).toFixed(1);}
+
+function getKPIs(mol,cell,conc){const rng=makeRng(mol+cell+conc+'kpi');const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const base={Fibroblastes:[7842,580],Kératinocytes:[8203,640],Mélanocytes:[5917,420],HFDPCs:[6454,490]};const[bc,bd]=base[cell];return{cells:Math.round(bc*(0.92+rng()*0.12)),genes:Math.round(21500+rng()*2000),paths:Math.round((280+rng()*80)*m),degs:Math.round(bd*m*(0.85+rng()*0.3))};}
+function getQC(mol,cell,conc){const rng=makeRng(mol+cell+conc+'qc');const mp=MOL_PROFILE[mol],cm=CONC_MULT[conc];return{medUMI:Math.round((3200+rng()*1400)*cm),medGenes:Math.round(1800+rng()*600),pctMito:(mp.mito+rng()*1.5).toFixed(1),doubletRate:(1.2+rng()*0.8).toFixed(1),pctPassing:(94+rng()*4).toFixed(1),nCellsRaw:Math.round(9000+rng()*3000)};}
+
+// ═══════════════════ VC DATA GENERATORS ═══════════════════
+// Pheno-specific gene sets
+const VC_GENE_SETS={
+  skin_normal:[['COL1A1',1.5],['KRT14',1.2],['MMP1',-1.4],['SIRT1',0.9],['CDKN2A',-1.1],['ELN',0.8],['TGFB1',1.1],['FOXO3',0.7],['LMNA',-0.6],['TET2',0.5]],
+  skin_eczema:[['IL4',-1.8],['IL13',-1.6],['FLG',-2.1],['TSLP',-1.5],['CCL26',-1.3],['CXCL10',-1.2],['KRT1',-1.0],['STAT6',-0.9],['TH2',1.4],['IL33',-1.1]],
+  skin_psoriasis:[['IL17A',-2.2],['IL6',-1.8],['TNF',-1.6],['KRT16',2.0],['KRT17',1.8],['DEFB4',1.5],['S100A8',1.4],['CXCL8',-1.3],['IL1B',-1.2],['MMP9',-1.0]],
+  skin_acne:[['PPARG',-1.4],['FASN',1.6],['DGAT1',1.3],['TLR2',-1.1],['IL1B',-1.5],['CXCL1',-1.2],['MMP1',-0.9],['FOXO1',0.8],['SCD',1.4],['PLIN2',1.1]],
+  age_20:[['COL1A1',2.1],['ELN',1.8],['KRT14',1.5],['TERT',1.2],['SIRT1',1.4],['FOXO3',1.1],['CDKN2A',-2.0],['CDKN1A',-1.5],['TP53',-0.9],['LMNA',-0.7]],
+  age_40:[['COL1A1',1.2],['ELN',0.9],['KRT14',0.8],['TERT',0.5],['SIRT1',0.6],['FOXO3',0.4],['CDKN2A',-0.8],['CDKN1A',-0.6],['MMP1',0.8],['LMNA',0.5]],
+  age_60:[['MMP1',2.0],['MMP3',1.8],['IL6',1.5],['CDKN2A',1.9],['TP53',1.1],['LMNA',1.4],['COL1A1',-1.8],['TERT',-1.5],['SIRT1',-1.2],['ELN',-1.6]],
+  eth_african:[['MC1R',-0.5],['TYR',2.1],['DCT',1.9],['TYRP1',1.8],['MITF',1.6],['PMEL',1.4],['OCA2',-0.8],['SLC45A2',-1.0],['ASIP',-1.2],['KIT',0.6]],
+  eth_asian:[['MC1R',-0.4],['TYR',1.4],['MITF',1.2],['OCA2',0.8],['SLC45A2',-0.6],['TYRP1',1.1],['DCT',1.0],['ASIP',-0.7],['PMEL',0.9],['KIT',0.5]],
+  eth_hispanic:[['TYR',1.6],['MITF',1.3],['MC1R',-0.3],['TYRP1',1.2],['SLC45A2',-0.5],['DCT',1.1],['OCA2',0.6],['ASIP',-0.8],['PMEL',0.8],['GP100',0.7]],
+  eth_caucasian:[['MC1R',0.2],['TYR',0.8],['OCA2',1.0],['SLC45A2',0.9],['TYRP1',0.6],['MITF',0.7],['ASIP',0.4],['DCT',0.5],['PMEL',0.4],['KIT',0.3]],
+  scalp_healthy:[['VEGFA',1.8],['FGF7',1.6],['WNT5A',1.5],['CTNNB1',1.3],['IGF1',1.2],['DKK1',-1.4],['BMP4',-1.2],['AXIN2',0.9],['LEF1',0.8],['KGF',1.1]],
+  scalp_alopecia:[['CXCL10',1.8],['IFNg',1.6],['CD8A',1.4],['NKG2D',1.2],['IL15',1.0],['VEGFA',-1.3],['FGF7',-1.5],['IGF1',-1.1],['WNT5A',-1.2],['CTNNB1',-0.8]],
+  cancer_bcc:[['SMO',2.2],['GLI1',2.0],['PTCH1',-1.8],['BCL2',1.5],['CCND1',1.4],['TP53',-1.6],['CDKN2A',-1.4],['MKI67',1.8],['CDK4',1.3],['FOXM1',1.2]],
+  cancer_scc:[['TP63',2.0],['KRT14',1.8],['EGFR',1.6],['MMP9',1.4],['VEGFA',1.3],['TP53',-1.8],['CDKN2A',-1.6],['RB1',-1.2],['CDH1',-1.4],['SNAI1',1.1]],
+  cancer_scc_insitu:[['TP63',1.6],['KRT5',1.4],['PCNA',1.3],['MKI67',1.2],['EGFR',1.0],['TP53',-1.2],['CDKN2A',-1.0],['CDH1',-0.9],['MMP2',0.8],['CCND1',1.1]],
+  cancer_scc_ak:[['KRT16',1.5],['KRT17',1.3],['TP63',1.1],['EGFR',0.9],['MMP1',1.0],['TP53',-0.9],['CDKN2A',-0.8],['FLG',-1.2],['LOR',-1.0],['IVL',-0.8]],
+  cancer_melanoma:[['MITF',2.1],['TYR',1.8],['BRAF',1.6],['MEK1',1.4],['CDK4',1.2],['CDKN2A',-2.0],['PTEN',-1.5],['TP53',-1.2],['RB1',-1.0],['BCL2',1.5]],
+  tox_liver:[['CYP1A2',1.8],['CYP3A4',1.6],['ALB',-1.4],['ASAT',1.5],['ASGR1',-1.2],['HNF4A',-1.1],['PPARA',0.9],['NRF2',1.3],['KEAP1',-0.8],['HMOX1',1.4]],
+  tox_kidney:[['KIM1',2.0],['NGAL',1.8],['AQP1',-1.4],['SLC22A6',-1.2],['CUBN',-1.0],['LCN2',1.6],['HAVCR1',1.4],['UMOD',-1.1],['SPP1',1.2],['CLU',1.0]],
+  endo_thymus:[['FOXN1',1.5],['AIRE',1.3],['CD3E',1.2],['RAG1',1.0],['IL7',-1.1],['PTPRC',0.9],['CCR7',0.8],['BCL11B',1.1],['TCF7',0.9],['CD4',1.0]],
+  brain_cortex:[['BDNF',1.6],['SYPA',1.4],['MAP2',1.2],['GFAP',-0.9],['NRGN',1.1],['SYN1',1.0],['DLG4',0.9],['CAMK2A',0.8],['NeuN',1.3],['REST',-0.7]],
+  resp_lung:[['SFTPC',-1.4],['SFTPB',-1.2],['ACE2',0.8],['MUC5AC',1.5],['CXCL8',1.3],['IL6',1.1],['TNF',0.9],['FOXJ1',-1.0],['CFTR',0.7],['HIF1A',1.2]]
+};
+
+function getVCDEGs(mol,pheno,conc){
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  const rng=makeRng(mol+pheno+conc+'vcdeg');
+  const base=VC_GENE_SETS[pheno]||VC_GENE_SETS['skin_normal'];
+  return base.map(([g,lfc])=>[g,+(lfc*m*(0.9+rng()*0.2)).toFixed(2),+(0.85+rng()*0.12).toFixed(2)]);
+}
+
+// VC pathway sets (pheno-specific flavour on top of base)
+const VC_PW_FLAVOR={
+  skin_eczema:[['IL-4/IL-13 signaling','dn',-2.8,'< 0.001'],['Th2 immune response','dn',-2.5,'< 0.001'],['Skin barrier function','dn',-2.2,'< 0.001'],['JAK-STAT signaling','dn',-2.0,'< 0.001'],['IgE-mediated allergy','dn',-1.8,'0.002']],
+  skin_psoriasis:[['IL-17 signaling','dn',-2.9,'< 0.001'],['TNF-alpha pathway','dn',-2.6,'< 0.001'],['Keratinocyte hyperproliferation','dn',-2.3,'< 0.001'],['Innate immunity','dn',-2.0,'0.001'],['NF-kB (psoriasis)','dn',-1.8,'0.002']],
+  skin_acne:[['Sebaceous lipogenesis','dn',-2.1,'< 0.001'],['TLR2 innate signaling','dn',-1.9,'0.001'],['IL-1 pathway','dn',-1.7,'0.002'],['PPAR-gamma sebocyte','up',1.5,'0.004'],['Androgen signaling','dn',-1.3,'0.009']],
+  cancer_melanoma:[['MAPK/BRAF pathway','dn',-2.8,'< 0.001'],['Melanoma proliferation','dn',-2.5,'< 0.001'],['Apoptosis resistance','dn',-2.2,'< 0.001'],['Immune evasion','dn',-1.9,'0.001'],['CDK4/6 cycle','dn',-1.7,'0.002']],
+  tox_liver:[['CYP450 induction','up',2.2,'< 0.001'],['Hepatotoxicity markers','dn',-2.0,'< 0.001'],['Lipid metabolism','up',1.8,'0.001'],['Oxidative stress liver','dn',-1.6,'0.003'],['NRF2 pathway','up',1.5,'0.005']],
+  tox_kidney:[['Tubular injury markers','dn',-2.3,'< 0.001'],['Renal fibrosis','dn',-2.0,'< 0.001'],['Tubular transport','dn',-1.8,'0.001'],['Inflammatory infiltrate','dn',-1.5,'0.004'],['Oxidative stress kidney','dn',-1.3,'0.008']],
+  brain_cortex:[['Synaptic plasticity','up',2.0,'< 0.001'],['Neuroinflammation','dn',-1.8,'0.001'],['Neurodegeneration','dn',-1.6,'0.002'],['BDNF signaling','up',1.5,'0.004'],['Glial activation','dn',-1.2,'0.010']],
+  resp_lung:[['Surfactant metabolism','up',1.8,'0.001'],['Pulmonary inflammation','dn',-2.0,'< 0.001'],['Mucociliary clearance','up',1.6,'0.002'],['Alveolar repair','up',1.4,'0.005'],['Hypoxia signaling','dn',-1.2,'0.010']]
+};
+
+function getVCPW(mol,pheno,conc,dir){
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  const rng=makeRng(mol+pheno+conc+'vcpw');
+  // base from Fibroblastes adapted
+  let base=BASE_PW['Fibroblastes'].map(([n,d,nes,fdr])=>[n,d,+(nes*m*(0.88+rng()*0.24)).toFixed(2),fdr]);
+  if(VC_PW_FLAVOR[pheno]) base=[...VC_PW_FLAVOR[pheno].map(([n,d,nes,fdr])=>[n,d,+(nes*m).toFixed(2),fdr]),...base.slice(0,15)];
+  if(dir==='up') base=base.filter(x=>x[1]==='up');
+  if(dir==='dn') base=base.filter(x=>x[1]==='dn');
+  return base.slice(0,20);
+}
+
+function getVCHM(mol,pheno,conc){
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  const rng=makeRng(mol+pheno+conc+'vchm');
+  // pheno modifiers on hallmarks
+  const phenoMod={skin_eczema:{inf:-1.4,ros:-0.8},skin_psoriasis:{inf:-1.6,sen:0.8},age_60:{sen:1.3,tel:-0.7,ros:0.6},cancer_melanoma:{sen:-1.5,tel:1.2},tox_liver:{ros:0.9,aut:0.7},brain_cortex:{aut:0.8,dna:0.6}};
+  const mods=phenoMod[pheno]||{};
+  const cellRef='Fibroblastes';
+  return BASE_HM.map(h=>{
+    const mod=mods[h.id]||1.0;
+    const base=h.base[cellRef];
+    return {...h,score:Math.round(base*m*(typeof mod==='number'&&mod<0?0.5:1.1)*(0.85+rng()*0.3))};
+  });
+}
+
+// VC clock - pheno-specific baselines
+const VC_CLOCK_BASE={
+  skin_normal:{M1:-3.5,M2:-2.4,M3:-4.2},skin_eczema:{M1:-2.2,M2:-1.5,M3:-2.8},skin_psoriasis:{M1:-1.8,M2:-1.2,M3:-2.3},skin_acne:{M1:-2.5,M2:-1.8,M3:-3.0},
+  age_20:{M1:-5.2,M2:-3.8,M3:-6.1},age_40:{M1:-3.8,M2:-2.7,M3:-4.5},age_60:{M1:-2.1,M2:-1.5,M3:-2.6},
+  eth_african:{M1:-3.8,M2:-2.7,M3:-4.5},eth_asian:{M1:-4.1,M2:-3.0,M3:-4.9},eth_hispanic:{M1:-3.5,M2:-2.5,M3:-4.2},eth_caucasian:{M1:-3.3,M2:-2.3,M3:-4.0},
+  scalp_healthy:{M1:-5.5,M2:-4.0,M3:-6.5},scalp_alopecia:{M1:-1.5,M2:-1.0,M3:-1.9},
+  cancer_bcc:{M1:-0.8,M2:-0.5,M3:-1.0},cancer_scc:{M1:-0.6,M2:-0.4,M3:-0.8},cancer_scc_insitu:{M1:-1.0,M2:-0.7,M3:-1.3},cancer_scc_ak:{M1:-1.2,M2:-0.9,M3:-1.5},cancer_melanoma:{M1:-0.5,M2:-0.3,M3:-0.7},
+  tox_liver:{M1:-2.8,M2:-2.0,M3:-3.4},tox_kidney:{M1:-2.4,M2:-1.7,M3:-2.9},endo_thymus:{M1:-3.2,M2:-2.3,M3:-3.8},brain_cortex:{M1:-1.8,M2:-1.3,M3:-2.2},resp_lung:{M1:-2.6,M2:-1.9,M3:-3.1}
+};
+function getVCClock(mol,pheno,conc){const base=VC_CLOCK_BASE[pheno]||VC_CLOCK_BASE['skin_normal'];return +(base[mol]*CONC_MULT[conc]).toFixed(1);}
+
+function getVCKPIs(mol,pheno,conc){
+  const rng=makeRng(mol+pheno+conc+'vckpi');
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  const meta=PHENO_META[pheno]||PHENO_META['skin_normal'];
+  return{cells:Math.round((8000+rng()*6000)*m),genes:Math.round(18000+rng()*4000),paths:Math.round((200+rng()*150)*m),conf:Math.round(meta.conf*100)};
+}
+
+// ═══════════════════ CHART REGISTRY ═══════════════════
+const charts={};
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+// ═══════════════════ EXP RENDERERS ═══════════════════
+function drawUMAP(){
+  const canvas=document.getElementById('umapCanvas');
+  const W=canvas.offsetWidth||700,H=340;
+  canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,0.025)';
+  for(let i=1;i<10;i++){ctx.beginPath();ctx.moveTo(i*W/10,0);ctx.lineTo(i*W/10,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,i*H/10);ctx.lineTo(W,i*H/10);ctx.stroke();}
+  const mode=ES.umapMode;
+  allPts.forEach(p=>{const col=mode==='celltype'?CELL_COLORS[p.ct]:mode==='treatment'?TREAT_COLORS[p.t]:DONOR_COLORS[p.d];ctx.beginPath();ctx.arc(p.x*W,p.y*H,2.4,0,2*Math.PI);ctx.fillStyle=col+'bb';ctx.fill();});
+  const leg=document.getElementById('umap-legend');
+  const pal=mode==='celltype'?CELL_COLORS:mode==='treatment'?TREAT_COLORS:DONOR_COLORS;
+  leg.innerHTML=Object.entries(pal).map(([n,c])=>`<span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:50%;background:${c};flex-shrink:0"></span>${n}</span>`).join('');
+}
+
+function renderQC(){
+  const{mol,cell,conc}=ES;
+  const q=getQC(mol,cell,conc);
+  document.getElementById('qc-sub').textContent=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`;
+  document.getElementById('qc-stat-grid').innerHTML=`<div class="qc-stat"><div class="qc-val qc-ok">${q.medUMI.toLocaleString('fr-FR')}</div><div class="qc-label">UMIs médian / cellule</div></div><div class="qc-stat"><div class="qc-val qc-ok">${q.medGenes.toLocaleString('fr-FR')}</div><div class="qc-label">Gènes médian / cellule</div></div><div class="qc-stat"><div class="qc-val ${parseFloat(q.pctMito)>5?'qc-warn':'qc-ok'}">${q.pctMito}%</div><div class="qc-label">% ARN mitochondrial</div></div><div class="qc-stat"><div class="qc-val qc-ok">${q.doubletRate}%</div><div class="qc-label">Taux doublets estimé</div></div><div class="qc-stat"><div class="qc-val qc-ok">${q.pctPassing}%</div><div class="qc-label">Cellules passant QC</div></div><div class="qc-stat"><div class="qc-val">${q.nCellsRaw.toLocaleString('fr-FR')}</div><div class="qc-label">Cellules brutes</div></div>`;
+  const nb=20;const rng=makeRng(mol+cell+conc+'qcr');
+  const ul=Array.from({length:nb},(_,i)=>Math.round(500+i*800));
+  const ud=ul.map(x=>Math.round(300*Math.exp(-Math.pow((x-q.medUMI)/2000,2))+rng()*30));
+  const gd=ul.map(x=>Math.round(280*Math.exp(-Math.pow((x-q.medGenes*2.5)/2000,2))+rng()*25));
+  destroyChart('umi');destroyChart('gene');destroyChart('mito');
+  charts['umi']=new Chart(document.getElementById('umiChart'),{type:'bar',data:{labels:ul,datasets:[{data:ud,backgroundColor:'rgba(74,155,232,0.5)',borderRadius:2,barThickness:'flex'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5e5d58',font:{size:9},maxTicksLimit:6},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#5e5d58',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  charts['gene']=new Chart(document.getElementById('geneChart'),{type:'bar',data:{labels:ul,datasets:[{data:gd,backgroundColor:'rgba(31,170,126,0.5)',borderRadius:2,barThickness:'flex'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#5e5d58',font:{size:9},maxTicksLimit:6},grid:{color:'rgba(255,255,255,0.04)'}},y:{ticks:{color:'#5e5d58',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  const mr=makeRng(mol+cell+conc+'mito2');const mb=parseFloat(q.pctMito);
+  charts['mito']=new Chart(document.getElementById('mitoChart'),{type:'scatter',data:{datasets:[{data:Array.from({length:60},()=>({x:mr()*0.6+0.2,y:+(mb*(0.4+mr()*1.3)).toFixed(2)})),pointBackgroundColor:'rgba(201,131,24,0.55)',pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{display:false,min:0,max:1},y:{title:{display:true,text:'% mito',color:'#5e5d58',font:{size:10}},ticks:{color:'#5e5d58',font:{size:10}},grid:{color:'rgba(255,255,255,0.04)'},min:0,max:20}}}});
+  document.getElementById('qc-checklist').innerHTML=[['Cellules min. UMI > 200',true,'seuil appliqué'],['Cellules max. UMI < 50k',true,'filtrage doublets'],['Gènes min. > 200',true,'seuil appliqué'],['% mito < 15%',parseFloat(q.pctMito)<15,`${q.pctMito}% moyen`],['Doublets filtrés (scrublet)',true,`${q.doubletRate}% détectés`],['Normalisation scran',true,'log-norm'],['HVG sélection n=3000',true,'top gènes variables'],['Correction batch (Harmony)',true,'3 donneurs intégrés']].map(([n,ok,v])=>`<div class="status-row"><span class="status-name">${n}</span><div style="display:flex;gap:5px;align-items:center;"><span class="badge-val">${v}</span><span class="${ok?'badge-ok':'badge-warn'}">${ok?'✓ OK':'⚠'}</span></div></div>`).join('');
+  drawUMAP();
+}
+
+function renderDEG(){
+  const{mol,cell,conc}=ES;const data=getDEGs(mol,cell,conc);
+  document.getElementById('deg-sub').textContent=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`;
+  document.getElementById('deg-tbody').innerHTML=data.map(([gene,lfc])=>{const up=lfc>0;const pct=Math.min(Math.abs(lfc)/2*100,100);const col=up?'#1faa7e':'#e0622f';const bl=up?'50%':`${Math.max(50-pct/2,0)}%`;return `<tr><td><span class="gene-name">${gene}</span></td><td><span class="badge ${up?'badge-up':'badge-dn'}">${up?'↑':'↓'}</span></td><td><span class="lfc-val" style="color:${col}">${lfc>0?'+':''}${lfc}</span></td><td><div class="lfc-bar-wrap"><div class="lfc-center"></div><div class="lfc-fill ${up?'lfc-up':'lfc-dn'}" style="left:${bl};width:${pct/2}%"></div></div></td><td><span class="pval-val">—</span></td></tr>`;}).join('');
+  destroyChart('volcano');
+  const vd=data.map(([g,lfc])=>({x:lfc,y:20+Math.random()*30,label:g}));
+  charts['volcano']=new Chart(document.getElementById('volcanoChart'),{type:'scatter',data:{datasets:[{data:vd,pointBackgroundColor:vd.map(v=>v.x>0?'rgba(31,170,126,0.7)':'rgba(224,98,47,0.7)'),pointRadius:5,pointHoverRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw.label} LFC=${c.raw.x}`}}},scales:{x:{title:{display:true,text:'Log2FC',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}},y:{title:{display:true,text:'-log10 p',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+}
+
+function renderPW(){
+  const{mol,cell,conc,pwDir}=ES;const data=getPW(mol,cell,conc,pwDir);
+  document.getElementById('pw-sub').innerHTML=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`;
+  document.getElementById('pw-list').innerHTML=data.map(([n,d,nes,fdr])=>{const pct=Math.min(Math.abs(nes)/3*100,100);const col=d==='up'?'#1faa7e':'#e0622f';const tc=d==='up'?'var(--teal)':'var(--coral)';return `<div class="pw-row"><span class="badge ${d==='up'?'badge-up':'badge-dn'}" style="flex-shrink:0">${d==='up'?'↑':'↓'}</span><span class="pw-name" title="${n}">${n}</span><div class="pw-bar-wrap"><div class="pw-bar" style="width:${pct}%;background:${col}"></div></div><span class="pw-nes" style="color:${tc}">${nes>0?'+':''}${nes}</span><span class="pw-fdr">${fdr}</span></div>`;}).join('');
+  destroyChart('pw');
+  const t10=[...data].sort((a,b)=>Math.abs(b[2])-Math.abs(a[2])).slice(0,10);
+  charts['pw']=new Chart(document.getElementById('pwChart'),{type:'bar',data:{labels:t10.map(d=>d[0].length>22?d[0].slice(0,22)+'…':d[0]),datasets:[{data:t10.map(d=>d[2]),backgroundColor:t10.map(d=>d[1]==='up'?'rgba(31,170,126,0.7)':'rgba(224,98,47,0.7)'),borderRadius:4,barThickness:18}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'NES',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+}
+
+function renderHallmarks(){
+  const{mol,cell,conc}=ES;const hm=getHM(mol,cell,conc);
+  document.getElementById('lv-sub').textContent=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`;
+  document.getElementById('hallmark-grid').innerHTML=hm.map(h=>{const up=h.dir==='up';const col=up?'#1faa7e':'#e0622f';return `<div class="hm-card"><div class="hm-name">${h.name}</div><div class="hm-bar-wrap"><div class="hm-bar" style="width:${Math.min(h.score,100)}%;background:${col}"></div></div><div class="hm-footer"><span class="hm-score ${up?'score-up':'score-dn'}">${up?'+':'−'}${h.score}</span><span class="hm-dir">${up?'activé ↑':'réprimé ↓'}</span></div></div>`;}).join('');
+  destroyChart('longevRadar');
+  const labels=hm.map(h=>h.name.length>14?h.name.slice(0,14)+'…':h.name);
+  const mk=(m,col,dash)=>{const d=getHM(m,cell,conc);return{label:MOL_LABELS[m],data:d.map(h=>h.dir==='up'?h.score:-h.score),borderColor:col,backgroundColor:col+'18',pointBackgroundColor:col,borderWidth:1.5,borderDash:dash||[]};};
+  charts['longevRadar']=new Chart(document.getElementById('longevChart'),{type:'radar',data:{labels,datasets:[mk('M1','#7b72e8'),mk('M2','#1faa7e',[4,2]),mk('M3','#e0622f',[2,4])]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:12}}},scales:{r:{ticks:{color:'#5e5d58',font:{size:9},backdropColor:'transparent'},pointLabels:{color:'#5e5d58',font:{size:9}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
+}
+
+function renderClock(){
+  const{mol,conc}=ES;const cells=Object.keys(BASE_CLOCK);
+  document.getElementById('clock-grid').innerHTML=cells.flatMap(ct=>['M1','M2','M3'].map(m=>{const delta=getClockDelta(m,ct,conc);const pct=Math.min(Math.abs(delta)/8*100,100);return `<div class="clock-card"><div class="clock-type">${ct.length>10?ct.slice(0,10)+'…':ct} · ${m}</div><div class="clock-bar-wrap"><div class="clock-bar" style="width:${pct}%"></div></div><div class="clock-delta">${delta} ans</div><div class="clock-p">p &lt; 0.001</div></div>`;})).join('');
+  destroyChart('clockR');
+  charts['clockR']=new Chart(document.getElementById('clockRadar'),{type:'radar',data:{labels:cells,datasets:['M1','M2','M3'].map((m,i)=>({label:MOL_LABELS[m],data:cells.map(ct=>Math.abs(getClockDelta(m,ct,conc))),borderColor:['#7b72e8','#1faa7e','#e0622f'][i],backgroundColor:['rgba(123,114,232,0.1)','rgba(31,170,126,0.08)','rgba(224,98,47,0.07)'][i],pointBackgroundColor:['#7b72e8','#1faa7e','#e0622f'][i],borderWidth:1.5,borderDash:i===0?[]:(i===1?[4,2]:[2,4])}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:12}}},scales:{r:{min:0,max:8,ticks:{stepSize:2,color:'#5e5d58',font:{size:10},backdropColor:'transparent'},pointLabels:{color:'#9a9890',font:{size:13}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
+}
+
+// ═══════════════════ VC RENDERERS ═══════════════════
+function updateVCContext(){
+  const{mol,pheno,conc}=VC;
+  const meta=PHENO_META[pheno];
+  document.getElementById('vc-ctx-mol').textContent=MOL_LABELS[mol];
+  document.getElementById('vc-ctx-pheno').textContent=meta.label;
+  document.getElementById('vc-ctx-conc').textContent=CONC_LABELS[conc];
+  const panelBtn=document.querySelector(`[data-vcpanel="${VC.panel}"]`);
+  if(panelBtn) document.getElementById('vc-ctx-panel').textContent=panelBtn.textContent.trim();
+
+  const k=getVCKPIs(mol,pheno,conc);
+  document.getElementById('vc-kpi-cells').textContent=k.cells.toLocaleString('fr-FR');
+  document.getElementById('vc-kpi-genes').textContent=k.genes.toLocaleString('fr-FR');
+  document.getElementById('vc-kpi-paths').textContent=k.paths;
+  document.getElementById('vc-kpi-conf').textContent=k.conf+'%';
+}
+
+function renderVCDEG(){
+  const{mol,pheno,conc}=VC;const data=getVCDEGs(mol,pheno,conc);
+  document.getElementById('vc-deg-sub').textContent=`${PHENO_META[pheno].label} · ${MOL_LABELS[mol]} · ${CONC_LABELS[conc]}`;
+  document.getElementById('vc-deg-tbody').innerHTML=data.map(([gene,lfc,score])=>{const up=lfc>0;const pct=Math.min(Math.abs(lfc)/2*100,100);const col=up?'#4a9be8':'#e0622f';const bl=up?'50%':`${Math.max(50-pct/2,0)}%`;return `<tr><td><span class="gene-name">${gene}</span></td><td><span class="badge ${up?'badge-up':'badge-dn'}">${up?'↑':'↓'}</span></td><td><span class="lfc-val" style="color:${col}">${lfc>0?'+':''}${lfc}</span></td><td><div class="lfc-bar-wrap"><div class="lfc-center"></div><div class="lfc-fill" style="left:${bl};width:${pct/2}%;background:${col}"></div></div></td><td><span class="pval-val" style="color:var(--blue)">${score}</span></td></tr>`;}).join('');
+  destroyChart('vc-volcano');
+  const vd=data.map(([g,lfc,sc])=>({x:lfc,y:sc,label:g}));
+  charts['vc-volcano']=new Chart(document.getElementById('vc-volcanoChart'),{type:'scatter',data:{datasets:[{data:vd,pointBackgroundColor:vd.map(v=>v.x>0?'rgba(74,155,232,0.7)':'rgba(224,98,47,0.7)'),pointRadius:6,pointHoverRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw.label} LFC=${c.raw.x} (conf:${c.raw.y})`}}},scales:{x:{title:{display:true,text:'Log2FC prédit',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}},y:{title:{display:true,text:'Score confiance IA',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'},min:0.7,max:1.05}}}});
+}
+
+function renderVCPW(){
+  const{mol,pheno,conc,pwDir}=VC;const data=getVCPW(mol,pheno,conc,pwDir);
+  document.getElementById('vc-pw-sub').innerHTML=`${PHENO_META[pheno].label} · ${MOL_LABELS[mol]} · ${CONC_LABELS[conc]}`;
+  document.getElementById('vc-pw-list').innerHTML=data.map(([n,d,nes,fdr])=>{const pct=Math.min(Math.abs(nes)/3*100,100);const col=d==='up'?'#4a9be8':'#e0622f';const tc=d==='up'?'var(--blue)':'var(--coral)';return `<div class="pw-row"><span class="badge ${d==='up'?'badge-up':'badge-dn'}" style="flex-shrink:0">${d==='up'?'↑':'↓'}</span><span class="pw-name" title="${n}">${n}</span><div class="pw-bar-wrap"><div class="pw-bar" style="width:${pct}%;background:${col}"></div></div><span class="pw-nes" style="color:${tc}">${nes>0?'+':''}${nes}</span><span class="pw-fdr">${fdr}</span></div>`;}).join('');
+  destroyChart('vc-pw');
+  const t10=[...data].sort((a,b)=>Math.abs(b[2])-Math.abs(a[2])).slice(0,10);
+  charts['vc-pw']=new Chart(document.getElementById('vc-pwChart'),{type:'bar',data:{labels:t10.map(d=>d[0].length>22?d[0].slice(0,22)+'…':d[0]),datasets:[{data:t10.map(d=>d[2]),backgroundColor:t10.map(d=>d[1]==='up'?'rgba(74,155,232,0.7)':'rgba(224,98,47,0.7)'),borderRadius:4,barThickness:18}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'NES prédit',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+}
+
+function renderVCHallmarks(){
+  const{mol,pheno,conc}=VC;const hm=getVCHM(mol,pheno,conc);
+  document.getElementById('vc-lv-sub').textContent=`${PHENO_META[pheno].label} · ${MOL_LABELS[mol]} · ${CONC_LABELS[conc]}`;
+  document.getElementById('vc-hallmark-grid').innerHTML=hm.map(h=>{const up=h.dir==='up';const col=up?'#4a9be8':'#e0622f';return `<div class="hm-card"><div class="hm-name">${h.name}</div><div class="hm-bar-wrap"><div class="hm-bar" style="width:${Math.min(h.score,100)}%;background:${col}"></div></div><div class="hm-footer"><span class="hm-score" style="color:${col}">${up?'+':'−'}${h.score}</span><span class="hm-dir">${up?'activé ↑':'réprimé ↓'}</span></div></div>`;}).join('');
+  destroyChart('vc-longevRadar');
+  const labels=hm.map(h=>h.name.length>14?h.name.slice(0,14)+'…':h.name);
+  const mk=(m,col,dash)=>{const d=getVCHM(m,pheno,conc);return{label:MOL_LABELS[m],data:d.map(h=>h.dir==='up'?h.score:-h.score),borderColor:col,backgroundColor:col+'18',pointBackgroundColor:col,borderWidth:1.5,borderDash:dash||[]};};
+  charts['vc-longevRadar']=new Chart(document.getElementById('vc-longevChart'),{type:'radar',data:{labels,datasets:[mk('M1','#7b72e8'),mk('M2','#4a9be8',[4,2]),mk('M3','#1faa7e',[2,4])]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:12}}},scales:{r:{ticks:{color:'#5e5d58',font:{size:9},backdropColor:'transparent'},pointLabels:{color:'#5e5d58',font:{size:9}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
+}
+
+function renderVCClock(){
+  const{mol,pheno,conc}=VC;
+  const phenoList=['skin_normal','skin_eczema','skin_psoriasis','age_20','age_40','age_60','scalp_healthy','scalp_alopecia'];
+  const mols=['M1','M2','M3'];
+  document.getElementById('vc-clock-grid').innerHTML=mols.map(m=>{const delta=getVCClock(m,pheno,conc);const pct=Math.min(Math.abs(delta)/8*100,100);return `<div class="clock-card"><div class="clock-type">${MOL_LABELS[m]}</div><div class="clock-bar-wrap"><div class="clock-bar" style="width:${pct}%;background:var(--blue)"></div></div><div class="clock-delta" style="color:var(--blue)">${delta} ans</div><div class="clock-p">confiance ${Math.round(PHENO_META[pheno].conf*100)}%</div></div>`;}).join('');
+  // Bar chart comparing phenotypes for current mol
+  destroyChart('vc-clockBar');
+  const phenoDeltas=phenoList.map(p=>({label:PHENO_META[p]?PHENO_META[p].label:p,val:Math.abs(getVCClock(mol,p,conc))}));
+  charts['vc-clockBar']=new Chart(document.getElementById('vc-clockBar'),{type:'bar',data:{labels:phenoDeltas.map(p=>p.label.length>20?p.label.slice(0,20)+'…':p.label),datasets:[{label:`Δ âge (${MOL_LABELS[mol]} · ${CONC_LABELS[conc]})`,data:phenoDeltas.map(p=>p.val),backgroundColor:phenoDeltas.map((p,i)=>i%2===0?'rgba(74,155,232,0.7)':'rgba(123,114,232,0.6)'),borderRadius:5,barThickness:28}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:10}}},scales:{x:{ticks:{color:'#9a9890',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{title:{display:true,text:'|Δ âge biologique| (ans)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+}
+
+function renderVCCompare(){
+  const{mol,conc}=VC;
+  // Heatmap: phenotypes × molecules
+  const phenoKeys=Object.keys(VC_CLOCK_BASE);
+  const mols=['M1','M2','M3'];
+  const maxDelta=8;
+  function heatColor(val){const pct=Math.min(Math.abs(val)/maxDelta,1);const r=Math.round(74+(31-74)*pct),g=Math.round(155+(170-155)*pct),b=Math.round(232+(126-232)*pct);return `rgb(${r},${g},${b})`;}
+  let html=`<div class="heatmap-col-labels">${mols.map(m=>`<div class="heatmap-col-label">${m}</div>`).join('')}</div>`;
+  phenoKeys.forEach(pk=>{const meta=PHENO_META[pk];if(!meta)return;html+=`<div class="heatmap-row"><span class="heatmap-label" title="${meta.label}">${meta.label.length>18?meta.label.slice(0,18)+'…':meta.label}</span><div class="heatmap-cells">${mols.map(m=>{const delta=getVCClock(m,pk,conc);const col=heatColor(delta);const textCol=Math.abs(delta)>4?'#e8e6df':'#9a9890';return `<div class="heatmap-cell" style="background:${col};color:${textCol}" title="${meta.label} · ${m} · ${delta} ans">${delta}</div>`;}).join('')}</div></div>`;});
+  document.getElementById('vc-heatmap').innerHTML=html;
+  document.getElementById('vc-cmp-sub').textContent=`Concentration : ${CONC_LABELS[conc]} · ${phenoKeys.length} phénotypes · 3 molécules`;
+  // Anti-inflammatory bar
+  destroyChart('vc-compare');
+  const antiInflam=phenoKeys.map(pk=>{const rng=makeRng(mol+pk+conc+'antiinf');return{label:(PHENO_META[pk]?.label||pk).slice(0,18),val:+(CONC_MULT[conc]*MOL_PROFILE[mol].strength*(30+rng()*55)).toFixed(1)};}).slice(0,14);
+  charts['vc-compare']=new Chart(document.getElementById('vc-compareChart'),{type:'bar',data:{labels:antiInflam.map(d=>d.label),datasets:[{label:'Score anti-inflammatoire prédit',data:antiInflam.map(d=>d.val),backgroundColor:antiInflam.map((d,i)=>i%3===0?'rgba(74,155,232,0.7)':i%3===1?'rgba(123,114,232,0.6)':'rgba(31,170,126,0.6)'),borderRadius:5,barThickness:22}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:10}}},scales:{x:{title:{display:true,text:'Score IA (0–100)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'},min:0,max:100},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+}
+
+// ═══════════════════ STATE SETTERS ═══════════════════
+function switchMode(mode){
+  document.getElementById('section-exp').classList.toggle('active',mode==='exp');
+  document.getElementById('section-vc').classList.toggle('active',mode==='vc');
+  document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.remove('active');if(t.textContent.includes(mode==='exp'?'expérimentales':'Virtuelle'))t.classList.add('active');});
+  if(mode==='vc'){updateVCContext();refreshVC();}
+}
+function setMol(btn){document.querySelectorAll('#mol-btns .btn').forEach(b=>b.classList.remove('active-exp'));btn.classList.add('active-exp');ES.mol=btn.dataset.mol;updateExpContext();refreshExp();}
+function setCell(btn){document.querySelectorAll('#cell-btns .btn').forEach(b=>b.classList.remove('active-exp'));btn.classList.add('active-exp');ES.cell=btn.dataset.cell;updateExpContext();refreshExp();}
+function setConc(btn){btn.closest('.conc-grid').querySelectorAll('.conc-btn').forEach(b=>{b.classList.remove('active-exp','active-vc');});btn.classList.add(document.getElementById('section-exp').classList.contains('active')?'active-exp':'active-vc');if(document.getElementById('section-exp').classList.contains('active')){ES.conc=btn.dataset.conc;updateExpContext();refreshExp();}else{VC.conc=btn.dataset.vcconc||btn.dataset.conc;updateVCContext();refreshVC();}}
+function setVCMol(btn){document.querySelectorAll('#vc-mol-btns .btn').forEach(b=>b.classList.remove('active-vc'));btn.classList.add('active-vc');VC.mol=btn.dataset.vcmol;updateVCContext();refreshVC();}
+function setVCConc(btn){document.querySelectorAll('#sidebar-vc .conc-btn').forEach(b=>b.classList.remove('active-vc'));btn.classList.add('active-vc');VC.conc=btn.dataset.vcconc;updateVCContext();refreshVC();}
+function setPheno(btn){document.querySelectorAll('.vc-sub-btn').forEach(b=>b.classList.remove('active-vc'));btn.classList.add('active-vc');VC.pheno=btn.dataset.pheno;updateVCContext();refreshVC();}
+function setPanel(btn,mode){
+  if(mode==='exp'){document.querySelectorAll('#panel-btns-exp .btn').forEach(b=>b.classList.remove('active-exp'));btn.classList.add('active-exp');ES.panel=btn.dataset.panel;document.querySelectorAll('#main-exp .panel').forEach(p=>p.classList.remove('active'));document.getElementById(ES.panel).classList.add('active');updateExpContext();refreshExp();}
+  else{document.querySelectorAll('#panel-btns-vc .btn').forEach(b=>b.classList.remove('active-vc'));btn.classList.add('active-vc');VC.panel=btn.dataset.vcpanel;document.querySelectorAll('#main-vc .panel').forEach(p=>p.classList.remove('active'));document.getElementById(VC.panel).classList.add('active');updateVCContext();refreshVC();}
+}
+function setUmapColor(btn){document.querySelectorAll('#umap-color-tabs .atab').forEach(b=>b.classList.remove('active-exp'));btn.classList.add('active-exp');ES.umapMode=btn.dataset.mode;drawUMAP();}
+function setPwDir(btn){document.querySelectorAll('#pw-dir-tabs .atab').forEach(b=>b.classList.remove('active-exp'));btn.classList.add('active-exp');ES.pwDir=btn.dataset.dir;renderPW();}
+function setVCPwDir(btn){document.querySelectorAll('#vc-pw-dir-tabs .atab').forEach(b=>b.classList.remove('active-vc'));btn.classList.add('active-vc');VC.pwDir=btn.dataset.dir;renderVCPW();}
+
+function updateExpContext(){
+  const{mol,cell,conc}=ES;
+  document.getElementById('ctx-mol').textContent=MOL_LABELS[mol];
+  document.getElementById('ctx-cell').textContent=cell;
+  document.getElementById('ctx-conc').textContent=CONC_LABELS[conc];
+  const k=getKPIs(mol,cell,conc);
+  document.getElementById('kpi-cells').textContent=k.cells.toLocaleString('fr-FR');
+  document.getElementById('kpi-genes').textContent=k.genes.toLocaleString('fr-FR');
+  document.getElementById('kpi-paths').textContent=k.paths;
+  document.getElementById('kpi-degs').textContent=k.degs.toLocaleString('fr-FR');
+}
+
+function refreshExp(){
+  const p=ES.panel;
+  if(p==='qc-panel')renderQC();
+  else if(p==='biomarqueurs-panel')renderBiomarqueurs('exp');
+  else if(p==='deg-panel')renderDEG();
+  else if(p==='pathway-panel')renderPW();
+  else if(p==='longevity-panel')renderHallmarks();
+  else if(p==='clock-panel')renderClock();
+  else if(p==='synthese-panel')renderSynth('exp');
+}
+
+function refreshVC(){
+  const p=VC.panel;
+  if(p==='vc-biomarqueurs-panel')renderBiomarqueurs('vc');
+  else if(p==='vc-deg-panel')renderVCDEG();
+  else if(p==='vc-pathway-panel')renderVCPW();
+  else if(p==='vc-hallmarks-panel')renderVCHallmarks();
+  else if(p==='vc-clock-panel')renderVCClock();
+  else if(p==='vc-compare-panel')renderVCCompare();
+  else if(p==='vc-synthese-panel')renderSynth('vc');
+}
+
+// ═══════════════════ BIOMARQUEURS ═══════════════════
+const BIOMARQUEURS = [
+  { gene:'COL1A1', role:'Synthèse du collagène I', category:'Anti-âge',      color:'#7b72e8',
+    desc:'Principal composant de la matrice extracellulaire dermique. Son expression conditionne la fermeté et l\'élasticité cutanée. Une activation soutenue réduit les rides et améliore le tonus.' },
+  { gene:'TYR',    role:'Blanchiment de peau',     category:'Pigmentation',   color:'#c98318',
+    desc:'Enzyme clef de la mélanogenèse, catalysant la conversion de la tyrosine en DOPA. Son inhibition réduit la production de mélanine et atténue les taches pigmentaires et l\'hyperpigmentation.' },
+  { gene:'MITF',   role:'Régulation pigmentation', category:'Pigmentation',   color:'#c98318',
+    desc:'Facteur de transcription maître des mélanocytes, contrôlant l\'expression de TYR, DCT et TYRP1. Sa modulation permet d\'agir sur la pigmentation de façon globale et coordonnée.' },
+  { gene:'MMP1',   role:'Remodelage dermique',     category:'Anti-âge',       color:'#7b72e8',
+    desc:'Métalloprotéase dégradant le collagène interstitiel. Sur-exprimée lors du photovieillissement. Sa répression par un extrait préserve l\'intégrité du derme et prévient l\'apparition des rides.' },
+  { gene:'CDKN2A', role:'Sénescence cellulaire',   category:'Longévité',      color:'#1faa7e',
+    desc:'Encodant p16INK4a, cet inhibiteur des CDK4/6 est le principal marqueur de sénescence réplicative. Sa répression favorise la prolifération des fibroblastes et retarde le vieillissement intrinsèque.' },
+  { gene:'SIRT1',  role:'Protection anti-âge',     category:'Longévité',      color:'#1faa7e',
+    desc:'Déacétylase NAD+-dépendante impliquée dans la réparation de l\'ADN, la régulation du métabolisme et la résistance au stress oxydatif. Son activation mime les effets de la restriction calorique.' },
+  { gene:'VEGFA',  role:'Vascularisation & pousse capillaire', category:'Capillaire', color:'#4a9be8',
+    desc:'Facteur de croissance vasculaire essentiel pour l\'angiogenèse périfolliculaire. Dans les HFDPCs, son activation prolonge la phase anagène et stimule la pousse des cheveux.' },
+  { gene:'HIF1A',  role:'Réponse hypoxique',        category:'Anti-âge',      color:'#e0622f',
+    desc:'Facteur de transcription activé en conditions d\'hypoxie. Régule VEGF, l\'érythropoïèse et la survie cellulaire. Sa modulation influence l\'éclat cutané et la microcirculation.' },
+  { gene:'KRT14',  role:'Intégrité barrière cutanée', category:'Barrière',    color:'#1faa7e',
+    desc:'Kératine basale exprimée dans les kératinocytes prolifératifs. Marqueur de la couche basale de l\'épiderme. Son expression soutient le renouvellement épidermique et la régénération cutanée.' },
+  { gene:'FLG',    role:'Hydratation & barrière',  category:'Barrière',       color:'#1faa7e',
+    desc:'Filaggrine, protéine structurale clef de la barrière cutanée. Sa dégradation libère des acides aminés hygroscopiques (NMF). Son activation améliore l\'hydratation et réduit la TEWL.' },
+];
+
+// Category color mapping
+const CAT_COLORS={'Anti-âge':'#7b72e8','Pigmentation':'#c98318','Longévité':'#1faa7e','Capillaire':'#4a9be8','Barrière':'#3dba5c','Autre':'#5e5d58'};
+
+function renderBiomarqueurs(mode){
+  const isExp = mode==='exp';
+  const mol   = isExp ? ES.mol  : VC.mol;
+  const conc  = isExp ? ES.conc : VC.conc;
+  const cell  = isExp ? ES.cell : null;
+  const pheno = isExp ? null    : VC.pheno;
+  const m     = CONC_MULT[conc] * MOL_PROFILE[mol].strength;
+
+  const contextLabel = isExp
+    ? `${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`
+    : `${MOL_LABELS[mol]} · ${PHENO_META[pheno].label} · ${CONC_LABELS[conc]}`;
+
+  const subId     = isExp ? 'biomark-sub'     : 'vc-biomark-sub';
+  const contentId = isExp ? 'biomark-content' : 'vc-biomark-content';
+  const dotClass  = isExp ? 'card-dot'        : 'card-dot-vc';
+
+  document.getElementById(subId).textContent = contextLabel;
+
+  // lfc → % change: (2^lfc - 1) * 100
+  const lfc2pct = lfc => Math.round((Math.pow(2, lfc) - 1) * 100);
+
+  const rows = BIOMARQUEURS.map(bm => {
+    const rng = makeRng(mol+(cell||pheno)+conc+bm.gene+'bm');
+    const baseLfc = ({'COL1A1':1.5,'TYR':-0.8,'MITF':-0.6,'MMP1':-1.4,'CDKN2A':-1.2,
+                      'SIRT1':0.9,'VEGFA':1.6,'HIF1A':-0.5,'KRT14':1.1,'FLG':0.8}[bm.gene]||0.5);
+    const lfc = +(baseLfc * m * (0.85 + rng()*0.3)).toFixed(2);
+    const pct = lfc2pct(lfc);
+    return {...bm, lfc, pct};
+  });
+
+
+  document.getElementById(contentId).innerHTML = `
+    <div class="card">
+      <div class="card-title"><span class="${dotClass}"></span>Ce que ça signifie pour la peau</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        ${rows.map(bm=>{
+          const up=bm.pct>0;
+          const absPct=Math.abs(bm.pct);
+          const col=up?'#1faa7e':'#e0622f';
+          const bg=up?'rgba(31,170,126,0.06)':'rgba(224,98,47,0.06)';
+          const border=up?'rgba(31,170,126,0.2)':'rgba(224,98,47,0.2)';
+          const catCol=CAT_COLORS[bm.category]||'#5e5d58';
+          return `<div style="background:${bg};border:1px solid ${border};border-radius:var(--radius);padding:12px 14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="font-family:'DM Mono',monospace;font-size:13px;font-style:italic;font-weight:600;color:var(--text);">${bm.gene}</span>
+              <span style="font-size:10px;padding:2px 7px;border-radius:4px;background:${catCol}18;color:${catCol};border:1px solid ${catCol}33;font-weight:500;">${bm.category}</span>
+              <span style="margin-left:auto;font-size:13px;font-weight:700;color:${col};">${up?'↑':'↓'}${absPct}%</span>
+            </div>
+            <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px;">${bm.role}</div>
+            <div style="font-size:11.5px;color:var(--text3);line-height:1.5;">${bm.desc.split('.')[0]}.</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
+// ═══════════════════ SYNTHÈSE ═══════════════════
+function renderSynth(mode){
+  const isExp=mode==='exp';
+  const mol=isExp?ES.mol:VC.mol;
+  const conc=isExp?ES.conc:VC.conc;
+  const cell=isExp?ES.cell:null;
+  const pheno=isExp?null:VC.pheno;
+  const phenoMeta=pheno?PHENO_META[pheno]:null;
+
+  const molLabel=MOL_LABELS[mol];
+  const concLabel=CONC_LABELS[conc];
+  const contextLabel=isExp?`${cell} · ${concLabel}`:`${phenoMeta.label} · ${concLabel}`;
+  const accentClass=isExp?'synth-verdict-exp':'synth-verdict-vc';
+  const conclusionClass=isExp?'synth-conclusion-exp':'synth-conclusion-vc';
+  const dotClass=isExp?'card-dot':'card-dot-vc';
+  const eyebrowClass=isExp?'eyebrow-exp':'eyebrow-vc';
+
+  // Compute summary scores from data
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  const rng=makeRng(mol+(cell||pheno)+conc+'synth');
+
+  const clockDelta = isExp
+    ? getClockDelta(mol,cell,conc)
+    : getVCClock(mol,pheno,conc);
+
+  const hmData = isExp ? getHM(mol,cell,conc) : getVCHM(mol,pheno,conc);
+  const senScore  = hmData.find(h=>h.id==='sen')?.score||70;
+  const infScore  = hmData.find(h=>h.id==='inf')?.score||65;
+  const rosScore  = hmData.find(h=>h.id==='ros')?.score||60;
+  const telScore  = hmData.find(h=>h.id==='tel')?.score||68;
+  const dnaScore  = hmData.find(h=>h.id==='dna')?.score||72;
+  const epiScore  = hmData.find(h=>h.id==='epi')?.score||75;
+  const autScore  = hmData.find(h=>h.id==='aut')?.score||66;
+
+  // Overall efficacy score (0-100)
+  const efficacy = Math.min(100, Math.round((Math.abs(clockDelta)/7*40) + (senScore/100*25) + (infScore/100*20) + (telScore/100*15)));
+
+  // Verdict text generation
+  function eff(v){return v>=75?'très élevée':v>=60?'élevée':v>=45?'modérée':'faible';}
+  function conj(v){return v>=70?'significativement':v>=50?'notablement':'modérément';}
+
+  const contextStr=isExp
+    ? `Sur les ${cell}, à ${concLabel}`
+    : `Dans le modèle ${phenoMeta.label} à ${concLabel}`;
+
+  const clockStr=`${contextStr}, ${molLabel} induit un rajeunissement épigénétique estimé à ${Math.abs(clockDelta).toFixed(1)} ans selon l'horloge Youngr Labs.`;
+
+  const antiAgeStr=`L'extrait réduit ${conj(senScore)} la sénescence cellulaire (score −${senScore}) et supprime la réponse inflammatoire (−${infScore}), deux des principaux moteurs du vieillissement cutané.`;
+
+  const protectStr=`Sur le plan protecteur, la maintenance des télomères est activée (+${telScore}) et la réparation de l'ADN est renforcée (+${dnaScore}), suggérant une action sur la stabilité génomique à long terme.`;
+
+  const epigStr=`La régulation épigénétique est également stimulée (+${epiScore}), ce qui est cohérent avec un mécanisme de reprogrammation partielle vers un état cellulaire plus jeune.`;
+
+  const autophaStr=`L'activation de l'autophagie (+${autScore}) et la réduction du stress oxydatif (−${rosScore}) complètent ce profil anti-âge.`;
+
+  const concluStr=isExp
+    ? `En conclusion, ${molLabel} présente un profil d'activité anti-âge ${eff(efficacy)} sur les ${cell} humains primaires. Son efficacité globale estimée est de ${efficacy}/100, avec un impact préférentiel sur la sénescence, l'inflammation et la reprogrammation épigénétique. Ces résultats justifient son évaluation en formulation cosmétique ou dermatologique ciblant le vieillissement cutané.`
+    : `En conclusion, ${molLabel} démontre un potentiel anti-âge ${eff(efficacy)} dans le contexte ${phenoMeta.label}. L'efficacité prédite par le modèle Cellule Virtuelle est de ${efficacy}/100. L'impact est particulièrement marqué sur la sénescence et l'horloge épigénétique, avec des effets cohérents avec la biologie du phénotype ciblé.`;
+
+  // Score rows
+  const scores=[
+    ['Rajeunissement épigénétique',Math.min(100,Math.round(Math.abs(clockDelta)/7*100)),'#1faa7e'],
+    ['Réduction sénescence',senScore,'#1faa7e'],
+    ['Action anti-inflammatoire',infScore,'#1faa7e'],
+    ['Protection télomères',telScore,'#4a9be8'],
+    ['Réparation ADN',dnaScore,'#4a9be8'],
+    ['Régulation épigénétique',epiScore,'#7b72e8'],
+    ['Réduction stress oxydatif',rosScore,'#c98318'],
+    ['Activation autophagie',autScore,'#1faa7e'],
+  ];
+
+  // Key tags
+  const posEffects=[];
+  const negSuppressed=[];
+  if(senScore>60) negSuppressed.push('Sénescence ↓');
+  if(infScore>60) negSuppressed.push('Inflammation ↓');
+  if(rosScore>55) negSuppressed.push('ROS ↓');
+  if(telScore>60) posEffects.push('Télomères ↑');
+  if(dnaScore>65) posEffects.push('Réparation ADN ↑');
+  if(epiScore>65) posEffects.push('Épigénétique ↑');
+  if(autScore>60) posEffects.push('Autophagie ↑');
+  if(Math.abs(clockDelta)>3) posEffects.push(`Horloge −${Math.abs(clockDelta).toFixed(1)} ans`);
+
+  const subId=isExp?'synth-sub':'vc-synth-sub';
+  const contentId=isExp?'synth-content':'vc-synth-content';
+
+  document.getElementById(subId).textContent=`${molLabel} · ${contextLabel}`;
+
+  document.getElementById(contentId).innerHTML=`
+
+    <div class="synth-verdict ${accentClass}">
+      <div class="synth-verdict-icon">🔬</div>
+      <div class="synth-verdict-body">
+        <div class="synth-verdict-title" style="color:${isExp?'var(--teal)':'var(--blue)'}">Efficacité anti-âge globale : ${efficacy}/100 — ${eff(efficacy).charAt(0).toUpperCase()+eff(efficacy).slice(1)}</div>
+        <div class="synth-verdict-text">${clockStr}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="synth-section-title"><span class="${dotClass}" style="flex-shrink:0"></span>Scores par axe biologique</div>
+      ${scores.map(([label,val,col])=>`
+        <div class="synth-score-row">
+          <span class="synth-score-label">${label}</span>
+          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${val}%;background:${col}"></div></div>
+          <span class="synth-score-val" style="color:${col}">${val}</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <div class="synth-section-title"><span class="${dotClass}" style="flex-shrink:0"></span>Points clefs</div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;">Effets activés</div>
+        <div>${posEffects.map(t=>`<span class="synth-tag synth-tag-pos">${t}</span>`).join('')}</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;">Mécanismes réprimés</div>
+        <div>${negSuppressed.map(t=>`<span class="synth-tag synth-tag-neg">${t}</span>`).join('')}</div>
+      </div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;">${antiAgeStr} ${protectStr}</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${epigStr} ${autophaStr}</p>
+    </div>
+
+    <div class="${conclusionClass} synth-conclusion">
+      <strong style="display:block;font-size:12px;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;color:${isExp?'var(--teal)':'var(--blue)'}">Conclusion</strong>
+      ${concluStr}
+    </div>`;
+}
+
+window.addEventListener('load',()=>{setTimeout(()=>{updateExpContext();renderHallmarks();applyAnalyseMode('exp','brief');applyAnalyseMode('vc','brief');},60);});
+window.addEventListener('resize',()=>{if(ES.panel==='qc-panel'&&document.getElementById('section-exp').classList.contains('active'))drawUMAP();});
+
+// ── Analyse mode ──
+const analyseMode={exp:'brief',vc:'brief'};
+
+function applyAnalyseMode(section,mode){
+  analyseMode[section]=mode;
+  const fullClass=section==='exp'?'exp-full-only':'vc-full-only';
+  document.querySelectorAll('.'+fullClass).forEach(btn=>{
+    if(mode==='full'){btn.classList.remove('hidden-analysis');}
+    else{btn.classList.add('hidden-analysis');}
+  });
+  // If current panel is now hidden, switch to first visible panel
+  const prefix=section==='exp'?'':'vc-';
+  const briefPanels=section==='exp'?['biomarqueurs-panel','longevity-panel','clock-panel','synthese-panel']:['vc-biomarqueurs-panel','vc-hallmarks-panel','vc-clock-panel','vc-compare-panel','vc-synthese-panel'];
+  const currentPanel=section==='exp'?ES.panel:VC.panel;
+  const isHidden=mode==='brief'&&!briefPanels.includes(currentPanel);
+  if(isHidden){
+    const firstBtn=document.querySelector('#panel-btns-'+(section==='exp'?'exp':'vc')+' .btn:not(.hidden-analysis)');
+    if(firstBtn) firstBtn.click();
+  }
+}
+
+function setAnalyseMode(btn,section){
+  const toggleId='analyse-toggle-'+section;
+  document.querySelectorAll('#'+toggleId+' .toggle-btn').forEach(b=>b.classList.remove('active-exp','active-vc'));
+  btn.classList.add(section==='exp'?'active-exp':'active-vc');
+  applyAnalyseMode(section,btn.dataset.mode);
+}
+</script>
+</body>
+</html>
