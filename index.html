@@ -290,7 +290,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn exp-full-only" data-panel="deg-panel" onclick="setPanel(this,'exp')">Diff. Expressed Genes</button>
       <button class="btn exp-full-only" data-panel="pathway-panel" onclick="setPanel(this,'exp')">Biological Pathways</button>
       <button class="btn active-exp" data-panel="longevity-panel" onclick="setPanel(this,'exp')">Aging Hallmarks</button>
-      <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Epigenetic Clocks</button>
+      <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Transcriptomic Clocks</button>
       <button class="btn" data-panel="ic-panel" onclick="setPanel(this,'exp')">Intrinsic Capacity</button>
       <button class="btn" data-panel="reversal-panel" onclick="setPanel(this,'exp')">Disease Reversal Score</button>
       <button class="btn synth-btn-exp" data-panel="synthese-panel" onclick="setPanel(this,'exp')">Summary</button>
@@ -372,7 +372,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   </div>
   <!-- Clock panel -->
   <div class="panel" id="clock-panel">
-    <div class="section-header"><div class="eyebrow eyebrow-exp">Cellular Reprogramming</div><div class="stitle">Epigenetic Clocks</div><div class="ssub">Estimated Δ biological age · treated vs. control</div></div>
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Cellular Reprogramming</div><div class="stitle">Transcriptomic Clocks</div><div class="ssub">Estimated Δ biological age · treated vs. control</div></div>
     <div class="clock-grid" id="clock-grid"></div>
     <div class="card"><div class="card-title"><span class="card-dot"></span>Global Score — all cell types</div><div class="chart-wrap" style="height:320px;"><canvas id="clockRadar"></canvas></div></div>
   </div>
@@ -534,7 +534,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn vc-full-only" data-vcpanel="vc-deg-panel" onclick="setPanel(this,'vc')">Diff. Expressed Genes</button>
       <button class="btn vc-full-only" data-vcpanel="vc-pathway-panel" onclick="setPanel(this,'vc')">Biological Pathways</button>
       <button class="btn active-vc" data-vcpanel="vc-hallmarks-panel" onclick="setPanel(this,'vc')">Aging Hallmarks</button>
-      <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Epigenetic Clocks</button>
+      <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Transcriptomic Clocks</button>
       <button class="btn" data-vcpanel="vc-ic-panel" onclick="setPanel(this,'vc')">Intrinsic Capacity</button>
       <button class="btn" data-vcpanel="vc-reversal-panel" onclick="setPanel(this,'vc')">Disease Reversal Score</button>
       <button class="btn synth-btn-vc" data-vcpanel="vc-synthese-panel" onclick="setPanel(this,'vc')">Summary</button>
@@ -593,7 +593,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
   <!-- VC Clock -->
   <div class="panel" id="vc-clock-panel">
-    <div class="section-header"><div class="eyebrow eyebrow-vc">AI Prediction</div><div class="stitle">Predicted Epigenetic Clocks</div><div class="ssub">Predicted Δ biological age · selected phenotype · all molecules</div></div>
+    <div class="section-header"><div class="eyebrow eyebrow-vc">AI Prediction</div><div class="stitle">Predicted Transcriptomic Clocks</div><div class="ssub">Predicted Δ biological age · selected phenotype · all molecules</div></div>
     <div class="clock-grid" id="vc-clock-grid"></div>
     <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Rejuvenation Profile — phenotype comparison</div><div class="chart-wrap" style="height:320px;"><canvas id="vc-clockBar"></canvas></div></div>
   </div>
@@ -714,7 +714,7 @@ const BASE_IC_EXP={
   'Immune Cells (PBMCs)':{loco:42,vital:58,cog:38,psych:43,sens:20}
 };
 function getIC(mol,cell,conc){
-  // Global IC magnitude is derived directly from the epigenetic clock's age-reversal magnitude,
+  // Global IC magnitude is derived directly from the transcriptomic clock's age-reversal magnitude,
   // so that a drug predicted to reduce biological age by more also predicts a larger IC gain
   // (younger biological age == higher intrinsic capacity). BASE_IC_EXP supplies only the
   // *relative* emphasis across the 5 domains for that cell type, not an independent magnitude.
@@ -859,7 +859,7 @@ const BASE_IC_VC={
 };
 function getVCIC(mol,pheno,conc){
   // Same coupling as the Experimental side: global IC magnitude tracks the predicted age-reversal
-  // magnitude from the Virtual Cell epigenetic clock; BASE_IC_VC only sets the relative emphasis
+  // magnitude from the Virtual Cell transcriptomic clock; BASE_IC_VC only sets the relative emphasis
   // across the 5 domains for that phenotype.
   const ageMag=Math.abs(getVCClock(mol,pheno,conc));
   const global=Math.round(Math.min(100,(ageMag/7)*100));
@@ -1399,7 +1399,7 @@ function renderSynth(mode){
 
   // Score rows
   const scores=[
-    ['Epigenetic Rejuvenation',Math.min(100,Math.round(Math.abs(clockDelta)/7*100)),'#1faa7e'],
+    ['Transcriptomic Rejuvenation',Math.min(100,Math.round(Math.abs(clockDelta)/7*100)),'#1faa7e'],
     ['Senescence Reduction',senScore,'#1faa7e'],
     ['Anti-inflammatory Action',infScore,'#1faa7e'],
     ['Telomere Protection',telScore,'#4a9be8'],
