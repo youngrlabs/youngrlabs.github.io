@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Youngr Labs · scRNA-seq Platform</title>
+<title>Youngr Labs · Fibrosis scRNA-seq Platform</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&family=DM+Syrs:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
@@ -229,7 +229,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
 <!-- TOP NAVIGATION -->
 <nav class="topnav">
-  <div class="logo"><span class="logo-dot"></span>Youngr Labs</div>
+  <div class="logo"><img src="data:image/png;base64,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" alt="Youngr Labs" style="height:48px;width:auto;display:block;"></div>
   <div class="nav-tabs">
     <button class="nav-tab active exp" onclick="switchMode('exp')">
       <span class="tab-icon">🧪</span> Experimental Data
@@ -262,10 +262,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="sb-section">
     <div class="sb-label">Cell Type</div>
     <div class="btn-group" id="cell-btns">
-      <button class="btn active-exp" data-cell="Fibroblasts" onclick="setCell(this)"><span class="cell-dot" style="background:#4a9be8"></span>Fibroblasts</button>
-      <button class="btn" data-cell="Keratinocytes" onclick="setCell(this)"><span class="cell-dot" style="background:#1faa7e"></span>Keratinocytes</button>
-      <button class="btn" data-cell="Melanocytes" onclick="setCell(this)"><span class="cell-dot" style="background:#e0622f"></span>Melanocytes</button>
-      <button class="btn" data-cell="HFDPCs" onclick="setCell(this)"><span class="cell-dot" style="background:#c98318"></span>HFDPCs</button>
+      <button class="btn" data-cell="Fibroblasts" onclick="setCell(this)"><span class="cell-dot" style="background:#1faa7e"></span>Fibroblasts</button>
+      <button class="btn active-exp" data-cell="Hepatic Stellate Cells" onclick="setCell(this)"><span class="cell-dot" style="background:#4a9be8"></span>Hepatic Stellate Cells</button>
+      <button class="btn" data-cell="Immune Cells (PBMCs)" onclick="setCell(this)"><span class="cell-dot" style="background:#e0622f"></span>Immune Cells (PBMCs)</button>
     </div>
   </div>
   <div class="sb-section">
@@ -292,6 +291,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn exp-full-only" data-panel="pathway-panel" onclick="setPanel(this,'exp')">Biological Pathways</button>
       <button class="btn active-exp" data-panel="longevity-panel" onclick="setPanel(this,'exp')">Aging Hallmarks</button>
       <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Epigenetic Clocks</button>
+      <button class="btn" data-panel="ic-panel" onclick="setPanel(this,'exp')">Intrinsic Capacity</button>
+      <button class="btn" data-panel="reversal-panel" onclick="setPanel(this,'exp')">Disease Reversal Score</button>
       <button class="btn synth-btn-exp" data-panel="synthese-panel" onclick="setPanel(this,'exp')">Summary</button>
     </div>
   </div>
@@ -305,7 +306,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="ctx-bar">
     <span class="mode-badge mode-exp">EXP</span>
     <span class="ctx-chip" id="ctx-mol">Molecule #1</span><span class="ctx-sep">·</span>
-    <span class="ctx-chip" id="ctx-cell">Fibroblasts</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="ctx-cell">Hepatic Stellate Cells</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="ctx-conc">0.1 µM</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="ctx-panel">Quality Control</span>
   </div>
@@ -341,7 +342,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <!-- Biomarkers panel -->
   <div class="panel" id="biomarqueurs-panel">
     <div class="section-header">
-      <div class="eyebrow eyebrow-exp">Cosmetic Markers</div>
+      <div class="eyebrow eyebrow-exp">Anti-fibrotic Markers</div>
       <div class="stitle">Biomarkers</div>
       <div class="ssub" id="biomark-sub">—</div>
     </div>
@@ -374,6 +375,21 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="section-header"><div class="eyebrow eyebrow-exp">Cellular Reprogramming</div><div class="stitle">Epigenetic Clocks</div><div class="ssub">Estimated Δ biological age · treated vs. control</div></div>
     <div class="clock-grid" id="clock-grid"></div>
     <div class="card"><div class="card-title"><span class="card-dot"></span>Global Score — all cell types</div><div class="chart-wrap" style="height:320px;"><canvas id="clockRadar"></canvas></div></div>
+  </div>
+
+  <!-- Intrinsic Capacity panel EXP -->
+  <div class="panel" id="ic-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Functional Outcome Prediction</div><div class="stitle">Intrinsic Capacity</div><div class="ssub" id="ic-sub">—</div></div>
+    <div class="card" id="ic-global"></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Score by Component</div><div class="hm-grid" id="ic-grid"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Comparison of 3 Molecules</div><div class="chart-wrap" style="height:300px;"><canvas id="icRadar"></canvas></div></div>
+  </div>
+
+  <!-- Disease Reversal Score panel EXP -->
+  <div class="panel" id="reversal-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Connectivity Analysis</div><div class="stitle">Disease Reversal Score</div><div class="ssub" id="rev-sub">—</div></div>
+    <div class="card" id="rev-headline"></div>
+    <div class="card"><div class="card-title"><span class="card-dot"></span>Reversal Score — All Cell Types (current molecule)</div><div class="chart-wrap" style="height:280px;"><canvas id="reversalChart"></canvas></div></div>
   </div>
 
   <!-- Summary panel EXP -->
@@ -419,17 +435,43 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="sb-label">Predicted Phenotype</div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Skin</div>
+      <div class="vc-cat-label">Liver Fibrosis</div>
       <div class="btn-group">
-        <button class="btn vc-sub-btn active-vc" data-pheno="skin_normal" onclick="setPheno(this)">Normal Skin</button>
-        <button class="btn vc-sub-btn" data-pheno="skin_eczema" onclick="setPheno(this)">Eczema</button>
-        <button class="btn vc-sub-btn" data-pheno="skin_psoriasis" onclick="setPheno(this)">Psoriasis</button>
-        <button class="btn vc-sub-btn" data-pheno="skin_acne" onclick="setPheno(this)">Acne</button>
+        <button class="btn vc-sub-btn active-vc" data-pheno="liver_normal" onclick="setPheno(this)">Normal Liver</button>
+        <button class="btn vc-sub-btn" data-pheno="liver_mash" onclick="setPheno(this)">NASH / MASH Fibrosis</button>
+        <button class="btn vc-sub-btn" data-pheno="liver_cirrhosis" onclick="setPheno(this)">Cirrhosis</button>
       </div>
     </div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Age</div>
+      <div class="vc-cat-label">Kidney Fibrosis</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="kidney_normal" onclick="setPheno(this)">Normal Kidney</button>
+        <button class="btn vc-sub-btn" data-pheno="kidney_dn" onclick="setPheno(this)">Diabetic Nephropathy</button>
+        <button class="btn vc-sub-btn" data-pheno="kidney_ckd" onclick="setPheno(this)">CKD / Advanced Fibrosis</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Pulmonary Fibrosis</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="lung_normal" onclick="setPheno(this)">Normal Lung</button>
+        <button class="btn vc-sub-btn" data-pheno="lung_ipf" onclick="setPheno(this)">IPF</button>
+      </div>
+    </div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Cardiac Fibrosis</div>
+      <div class="btn-group">
+        <button class="btn vc-sub-btn" data-pheno="cardiac_normal" onclick="setPheno(this)">Normal Heart</button>
+        <button class="btn vc-sub-btn" data-pheno="cardiac_postmi" onclick="setPheno(this)">Post-MI Fibrosis</button>
+      </div>
+    </div>
+
+    <div class="sb-divider" style="margin:0.6rem 0 0.8rem;"></div>
+
+    <div class="vc-cat">
+      <div class="vc-cat-label">Age <span style="opacity:.6;font-weight:400;">(Fibroblasts only)</span></div>
       <div class="btn-group">
         <button class="btn vc-sub-btn" data-pheno="age_20" onclick="setPheno(this)">20 yrs</button>
         <button class="btn vc-sub-btn" data-pheno="age_40" onclick="setPheno(this)">40 yrs</button>
@@ -438,7 +480,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     </div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Ethnicity</div>
+      <div class="vc-cat-label">Ethnicity <span style="opacity:.6;font-weight:400;">(Fibroblasts only)</span></div>
       <div class="btn-group">
         <button class="btn vc-sub-btn" data-pheno="eth_african" onclick="setPheno(this)">African</button>
         <button class="btn vc-sub-btn" data-pheno="eth_asian" onclick="setPheno(this)">Asian</button>
@@ -448,60 +490,30 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     </div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Sexe</div>
+      <div class="vc-cat-label">Sex <span style="opacity:.6;font-weight:400;">(Fibroblasts only)</span></div>
       <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="sex_female" onclick="setPheno(this)">Femme</button>
-        <button class="btn vc-sub-btn" data-pheno="sex_male" onclick="setPheno(this)">Homme</button>
-      </div>
-    </div>
-
-    <div class="vc-cat">
-      <div class="vc-cat-label">Scalp</div>
-      <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="scalp_healthy" onclick="setPheno(this)">Healthy Scalp</button>
-        <button class="btn vc-sub-btn" data-pheno="scalp_alopecia" onclick="setPheno(this)">Alopecia Areata</button>
-      </div>
-    </div>
-
-    <div class="vc-cat">
-      <div class="vc-cat-label">Skin Cancer</div>
-      <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="cancer_bcc" onclick="setPheno(this)">BCC</button>
-        <button class="btn vc-sub-btn" data-pheno="cancer_scc" onclick="setPheno(this)">SCC</button>
-        <button class="btn vc-sub-btn" data-pheno="cancer_scc_insitu" onclick="setPheno(this)">SCC in situ</button>
-        <button class="btn vc-sub-btn" data-pheno="cancer_scc_ak" onclick="setPheno(this)">SCC / AK</button>
-        <button class="btn vc-sub-btn" data-pheno="cancer_melanoma" onclick="setPheno(this)">Melanoma</button>
+        <button class="btn vc-sub-btn" data-pheno="sex_female" onclick="setPheno(this)">Woman</button>
+        <button class="btn vc-sub-btn" data-pheno="sex_male" onclick="setPheno(this)">Man</button>
       </div>
     </div>
 
     <div class="sb-divider" style="margin:0.6rem 0 0.8rem;"></div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Toxicology</div>
+      <div class="vc-cat-label">Side Effects — Other Organs</div>
       <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="tox_liver" onclick="setPheno(this)">Liver (hepatocytes)</button>
-        <button class="btn vc-sub-btn" data-pheno="tox_kidney" onclick="setPheno(this)">Kidney (tubular)</button>
+        <button class="btn vc-sub-btn" data-pheno="se_skin" onclick="setPheno(this)">Skin (irritation)</button>
+        <button class="btn vc-sub-btn" data-pheno="se_brain" onclick="setPheno(this)">Cerebral Cortex</button>
+        <button class="btn vc-sub-btn" data-pheno="se_thymus" onclick="setPheno(this)">Thymus (Endocrine)</button>
       </div>
     </div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Endocrinology</div>
+      <div class="vc-cat-label">Side Effects — Cancer Risk</div>
       <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="endo_thymus" onclick="setPheno(this)">Thymus</button>
-      </div>
-    </div>
-
-    <div class="vc-cat">
-      <div class="vc-cat-label">Brain</div>
-      <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="brain_cortex" onclick="setPheno(this)">Cerebral Cortex</button>
-      </div>
-    </div>
-
-    <div class="vc-cat">
-      <div class="vc-cat-label">Respiratory</div>
-      <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="resp_lung" onclick="setPheno(this)">Lung</button>
+        <button class="btn vc-sub-btn" data-pheno="se_hcc" onclick="setPheno(this)">Hepatocellular Carcinoma</button>
+        <button class="btn vc-sub-btn" data-pheno="se_breast" onclick="setPheno(this)">Breast Cancer</button>
+        <button class="btn vc-sub-btn" data-pheno="se_crc" onclick="setPheno(this)">Colorectal Cancer</button>
       </div>
     </div>
 
@@ -523,7 +535,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn vc-full-only" data-vcpanel="vc-pathway-panel" onclick="setPanel(this,'vc')">Biological Pathways</button>
       <button class="btn active-vc" data-vcpanel="vc-hallmarks-panel" onclick="setPanel(this,'vc')">Aging Hallmarks</button>
       <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Epigenetic Clocks</button>
-      <button class="btn" data-vcpanel="vc-compare-panel" onclick="setPanel(this,'vc')">Phenotype Comparison</button>
+      <button class="btn" data-vcpanel="vc-ic-panel" onclick="setPanel(this,'vc')">Intrinsic Capacity</button>
+      <button class="btn" data-vcpanel="vc-reversal-panel" onclick="setPanel(this,'vc')">Disease Reversal Score</button>
       <button class="btn synth-btn-vc" data-vcpanel="vc-synthese-panel" onclick="setPanel(this,'vc')">Summary</button>
     </div>
   </div>
@@ -533,7 +546,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="ctx-bar">
     <span class="mode-badge mode-vc">IA</span>
     <span class="ctx-chip" id="vc-ctx-mol">Molecule #1</span><span class="ctx-sep">·</span>
-    <span class="ctx-chip" id="vc-ctx-pheno">Normal Skin</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="vc-ctx-pheno">Normal Liver</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="vc-ctx-conc">0.1 µM</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="vc-ctx-panel">Diff. Expressed Genes</span>
   </div>
@@ -547,7 +560,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <!-- VC Biomarkers -->
   <div class="panel" id="vc-biomarqueurs-panel">
     <div class="section-header">
-      <div class="eyebrow eyebrow-vc">Predicted Cosmetic Markers</div>
+      <div class="eyebrow eyebrow-vc">Predicted Anti-fibrotic Markers</div>
       <div class="stitle">Biomarkers</div>
       <div class="ssub" id="vc-biomark-sub">—</div>
     </div>
@@ -585,16 +598,22 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Rejuvenation Profile — phenotype comparison</div><div class="chart-wrap" style="height:320px;"><canvas id="vc-clockBar"></canvas></div></div>
   </div>
 
-  <!-- VC Compare -->
-  <div class="panel" id="vc-compare-panel">
-    <div class="section-header"><div class="eyebrow eyebrow-vc">Analysis comparative</div><div class="stitle">Cross-Phenotype Comparison</div><div class="ssub" id="vc-cmp-sub">—</div></div>
+  <!-- VC Intrinsic Capacity -->
+  <div class="panel" id="vc-ic-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">AI Prediction</div><div class="stitle">Predicted Intrinsic Capacity</div><div class="ssub" id="vc-ic-sub">—</div></div>
+    <div class="card" id="vc-ic-global"></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Predicted Score by Component</div><div class="hm-grid" id="vc-ic-grid"></div></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Comparison of 3 Molecules</div><div class="chart-wrap" style="height:300px;"><canvas id="vc-icRadar"></canvas></div></div>
+  </div>
+
+  <!-- VC Disease Reversal Score -->
+  <div class="panel" id="vc-reversal-panel">
+    <div class="section-header"><div class="eyebrow eyebrow-vc">Connectivity Analysis</div><div class="stitle">Disease Reversal Score</div><div class="ssub" id="vc-rev-sub">—</div></div>
+    <div class="card" id="vc-rev-headline"></div>
+    <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Reversal Score — All Fibrosis Types (current molecule)</div><div class="chart-wrap" style="height:300px;"><canvas id="vc-reversalChart"></canvas></div></div>
     <div class="card">
-      <div class="card-title"><span class="card-dot-vc"></span>Epigenetic Age Δ Heatmap — all phenotypes × molecules</div>
-      <div id="vc-heatmap"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="card-dot-vc"></span>Predicted Anti-inflammatory Score — all phenotypes</div>
-      <div class="chart-wrap" style="height:320px;"><canvas id="vc-compareChart"></canvas></div>
+      <div class="card-title"><span class="card-dot-vc"></span>Connectivity Heatmap — Molecules × Disease States</div>
+      <div id="vc-reversal-heatmap"></div>
     </div>
   </div>
 
@@ -617,127 +636,163 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 function makeRng(s){let seed=typeof s==='string'?s.split('').reduce((a,c)=>a+c.charCodeAt(0),0):s;return()=>{seed=(seed*1664525+1013904223)&0xffffffff;return (seed>>>0)/4294967296;};}
 
 // ═══════════════════ EXP STATE ═══════════════════
-const ES={mol:'M1',cell:'Fibroblasts',conc:'C1',panel:'longevity-panel',pwDir:'all',umapMode:'celltype'};
+const ES={mol:'M1',cell:'Hepatic Stellate Cells',conc:'C1',panel:'longevity-panel',pwDir:'all',umapMode:'celltype'};
 const MOL_LABELS={M1:'Molecule #1',M2:'Molecule #2',M3:'Molecule #3'};
 const CONC_LABELS={C1:'0.1 µM',C2:'1 µM'};
 const CONC_MULT={C1:0.65,C2:1.0};
 const MOL_PROFILE={M1:{strength:1.0,mito:4.2},M2:{strength:0.75,mito:5.1},M3:{strength:1.2,mito:3.8}};
 
 // ═══════════════════ VC STATE ═══════════════════
-const VC={mol:'M1',pheno:'skin_normal',conc:'C1',panel:'vc-hallmarks-panel',pwDir:'all'};
+const VC={mol:'M1',pheno:'liver_normal',conc:'C1',panel:'vc-hallmarks-panel',pwDir:'all'};
 
 const PHENO_META={
-  skin_normal:{label:'Normal Skin',cat:'Skin',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.94,icon:'🧬'},
-  skin_eczema:{label:'Eczema',cat:'Skin',cells:['Keratinocytes','T Lymphocytes','Mast cells'],conf:0.88,icon:'🔴'},
-  skin_psoriasis:{label:'Psoriasis',cat:'Skin',cells:['Keratinocytes','Dendritic cells','T Lymphocytes'],conf:0.91,icon:'🔴'},
-  skin_acne:{label:'Acne',cat:'Skin',cells:['Keratinocytes','Sebocytes','Fibroblasts'],conf:0.86,icon:'🔶'},
-  age_20:{label:'20 yrs',cat:'Age',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.95,icon:'🕐'},
-  age_40:{label:'40 yrs',cat:'Age',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.93,icon:'🕐'},
-  age_60:{label:'60 yrs',cat:'Age',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.90,icon:'🕐'},
-  eth_african:{label:'African Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.87,icon:'🌍'},
-  eth_asian:{label:'Asian Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.89,icon:'🌏'},
-  eth_hispanic:{label:'Hispanic Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.88,icon:'🌎'},
-  eth_caucasian:{label:'Caucasian Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.92,icon:'🌍'},
-  scalp_healthy:{label:'Healthy Scalp',cat:'Scalp',cells:['HFDPCs','Keratinocytes'],conf:0.93,icon:'💆'},
-  sex_female:{label:'Female',cat:'Sex',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.92,icon:'♀️'},
-  sex_male:{label:'Male',cat:'Sex',cells:['Fibroblasts','Keratinocytes','Sebocytes'],conf:0.91,icon:'♂️'},
-  scalp_alopecia:{label:'Alopecia Areata',cat:'Scalp',cells:['HFDPCs','Lymphocytes T'],conf:0.84,icon:'⚠️'},
-  cancer_bcc:{label:'Basal Cell Carcinoma',cat:'Cancer',cells:['Basal Keratinocytes','Stromal cells'],conf:0.82,icon:'🔬'},
-  cancer_scc:{label:'Squamous Cell Carcinoma',cat:'Cancer',cells:['Keratinocytes','Tumor cells'],conf:0.80,icon:'🔬'},
-  cancer_scc_insitu:{label:'SCC in situ',cat:'Cancer',cells:['Keratinocytes','Macrophages'],conf:0.78,icon:'🔬'},
-  cancer_scc_ak:{label:'SCC / Actinic Keratosis',cat:'Cancer',cells:['Keratinocytes','Fibroblasts'],conf:0.79,icon:'🔬'},
-  cancer_melanoma:{label:'Melanoma',cat:'Cancer',cells:['Melanocytes','NK Cells','Stromal cells'],conf:0.85,icon:'🔬'},
-  tox_liver:{label:'Liver — Hepatocytes',cat:'Toxicology',cells:['Hepatocytes','Kupffer cells','Stellate cells'],conf:0.91,icon:'🫀'},
-  tox_kidney:{label:'Kidney — Tubular',cat:'Toxicology',cells:['Proximal Tubular','Podocytes'],conf:0.88,icon:'🫘'},
-  endo_thymus:{label:'Thymus',cat:'Endocrinology',cells:['Thymocytes','Thymic Epithelial'],conf:0.83,icon:'🦠'},
-  brain_cortex:{label:'Cerebral Cortex',cat:'Brain',cells:['Neurons','Astrocytes','Microglia'],conf:0.80,icon:'🧠'},
-  resp_lung:{label:'Lung',cat:'Respiratory',cells:['Pneumocytes II','Alveolar Macrophages'],conf:0.86,icon:'🫁'}
+  liver_normal:{label:'Normal Liver',cat:'Liver Fibrosis',cells:['Hepatic Stellate Cells'],conf:0.94,icon:'🧬'},
+  liver_mash:{label:'NASH / MASH Fibrosis',cat:'Liver Fibrosis',cells:['Hepatic Stellate Cells','Hepatocytes'],conf:0.89,icon:'🔶'},
+  liver_cirrhosis:{label:'Cirrhosis',cat:'Liver Fibrosis',cells:['Hepatic Stellate Cells','Hepatocytes'],conf:0.85,icon:'🔴'},
+  kidney_normal:{label:'Normal Kidney',cat:'Kidney Fibrosis',cells:['Renal Fibroblasts'],conf:0.93,icon:'🧬'},
+  kidney_dn:{label:'Diabetic Nephropathy',cat:'Kidney Fibrosis',cells:['Renal Fibroblasts','Tubular Epithelial Cells'],conf:0.87,icon:'🔶'},
+  kidney_ckd:{label:'CKD / Advanced Fibrosis',cat:'Kidney Fibrosis',cells:['Renal Fibroblasts','Tubular Epithelial Cells'],conf:0.84,icon:'🔴'},
+  lung_normal:{label:'Normal Lung',cat:'Pulmonary Fibrosis',cells:['Lung Fibroblasts'],conf:0.92,icon:'🧬'},
+  lung_ipf:{label:'IPF',cat:'Pulmonary Fibrosis',cells:['Lung Fibroblasts','Alveolar Epithelial Cells'],conf:0.86,icon:'🔴'},
+  cardiac_normal:{label:'Normal Heart',cat:'Cardiac Fibrosis',cells:['Cardiac Fibroblasts'],conf:0.92,icon:'🧬'},
+  cardiac_postmi:{label:'Post-MI Fibrosis',cat:'Cardiac Fibrosis',cells:['Cardiac Fibroblasts'],conf:0.85,icon:'🔴'},
+  age_20:{label:'20 yrs',cat:'Age',cells:['Fibroblasts'],conf:0.95,icon:'🕐'},
+  age_40:{label:'40 yrs',cat:'Age',cells:['Fibroblasts'],conf:0.93,icon:'🕐'},
+  age_60:{label:'60 yrs',cat:'Age',cells:['Fibroblasts'],conf:0.90,icon:'🕐'},
+  eth_african:{label:'African Ancestry',cat:'Ethnicity',cells:['Fibroblasts'],conf:0.86,icon:'🌍'},
+  eth_asian:{label:'Asian Ancestry',cat:'Ethnicity',cells:['Fibroblasts'],conf:0.88,icon:'🌏'},
+  eth_hispanic:{label:'Hispanic Ancestry',cat:'Ethnicity',cells:['Fibroblasts'],conf:0.87,icon:'🌎'},
+  eth_caucasian:{label:'Caucasian Ancestry',cat:'Ethnicity',cells:['Fibroblasts'],conf:0.91,icon:'🌍'},
+  sex_female:{label:'Woman',cat:'Sex',cells:['Fibroblasts'],conf:0.91,icon:'♀️'},
+  sex_male:{label:'Man',cat:'Sex',cells:['Fibroblasts'],conf:0.90,icon:'♂️'},
+  se_skin:{label:'Skin (Off-target)',cat:'Side Effects',cells:['Keratinocytes','Fibroblasts'],conf:0.85,icon:'🩹'},
+  se_brain:{label:'Cerebral Cortex (Off-target)',cat:'Side Effects',cells:['Neurons','Astrocytes','Microglia'],conf:0.80,icon:'🧠'},
+  se_thymus:{label:'Thymus (Off-target)',cat:'Side Effects',cells:['Thymocytes','Thymic Epithelial'],conf:0.82,icon:'🦠'},
+  se_hcc:{label:'Hepatocellular Carcinoma',cat:'Cancer Risk',cells:['Hepatic Stellate Cells','Hepatocytes','Tumor cells'],conf:0.78,icon:'🔬'},
+  se_breast:{label:'Breast Cancer',cat:'Cancer Risk',cells:['Mammary Epithelial','Tumor cells'],conf:0.76,icon:'🔬'},
+  se_crc:{label:'Colorectal Cancer',cat:'Cancer Risk',cells:['Colonic Epithelial','Tumor cells'],conf:0.77,icon:'🔬'}
 };
 
 // ═══════════════════ UMAP DATA ═══════════════════
-const CELL_COLORS={'Fibroblasts':'#4a9be8','Keratinocytes':'#1faa7e','Melanocytes':'#e0622f','HFDPCs':'#c98318'};
+const CELL_COLORS={'Fibroblasts':'#1faa7e','Hepatic Stellate Cells':'#4a9be8','Immune Cells (PBMCs)':'#e0622f'};
 const TREAT_COLORS={'Ctrl':'#5e5d58','M1 0.1µM':'#9d98e0','M1 1µM':'#7b72e8','M2 0.1µM':'#7dd4b8','M2 1µM':'#1faa7e','M3 0.1µM':'#f0b89a','M3 1µM':'#e0622f'};
 const DONOR_COLORS={'D1':'#4a9be8','D2':'#c98318','D3':'#c96fa0'};
 const TREATS=Object.keys(TREAT_COLORS),DONORS=Object.keys(DONOR_COLORS);
 function genCluster(rng,n,cx,cy,rx,ry){const p=[];for(let i=0;i<n;i++){const a=rng()*2*Math.PI,r=Math.sqrt(rng());p.push([cx+r*rx*(Math.cos(a)+(rng()-.5)*.4),cy+r*ry*(Math.sin(a)+(rng()-.5)*.4)]);}return p;}
 const r0=makeRng(42);
-const CLUSTERS={'Fibroblasts':genCluster(r0,340,.22,.32,.12,.14),'Keratinocytes':genCluster(r0,360,.66,.26,.13,.12),'Melanocytes':genCluster(r0,280,.56,.70,.10,.11),'HFDPCs':genCluster(r0,300,.28,.66,.11,.13)};
+const CLUSTERS={'Fibroblasts':genCluster(r0,340,.22,.32,.12,.14),'Hepatic Stellate Cells':genCluster(r0,360,.66,.26,.13,.12),'Immune Cells (PBMCs)':genCluster(r0,280,.56,.70,.10,.11)};
 const rLbl=makeRng(99);
 const allPts=[];
 Object.entries(CLUSTERS).forEach(([ct,pts])=>pts.forEach(p=>allPts.push({ct,x:p[0],y:p[1],t:TREATS[Math.floor(rLbl()*TREATS.length)],d:DONORS[Math.floor(rLbl()*DONORS.length)]})));
 
 // ═══════════════════ EXP DATA GENERATORS ═══════════════════
-const BASE_DEGS={Fibroblasts:[['COL1A1',1.82,1.2e-48],['COL3A1',1.54,3.4e-41],['MMP1',-1.71,2.1e-39],['TGFB1',1.23,4.5e-35],['ACTA2',-1.43,8.2e-31],['FN1',1.18,1.4e-28],['CDKN2A',-1.56,2.3e-27],['SIRT1',0.89,5.6e-22],['LMNA',-0.72,3.1e-19],['ELN',0.94,7.8e-17]],Keratinocytes:[['KRT14',1.94,4.2e-52],['KRT5',1.67,1.1e-46],['ITGA6',1.38,2.8e-40],['CASP14',-1.55,5.0e-37],['FLG',-1.30,8.3e-32],['PCNA',0.97,1.7e-28],['TP63',1.12,3.4e-25],['MKI67',0.83,6.8e-22],['CDKN1B',-0.74,2.0e-18],['FOXM1',0.61,5.5e-15]],Melanocytes:[['MITF',1.75,3.1e-45],['TYR',1.58,7.4e-41],['DCT',1.40,1.6e-37],['TYRP1',1.22,3.8e-33],['MC1R',1.05,8.5e-29],['SOX10',0.88,2.0e-25],['EDN3',-1.15,5.2e-23],['CDKN2A',-1.31,1.1e-21],['PMEL',0.70,3.4e-18],['MLPH',0.60,8.1e-15]],HFDPCs:[['VEGFA',1.88,5.5e-50],['FGF7',1.62,1.3e-44],['IGF1',1.44,3.0e-40],['WNT5A',1.25,7.2e-36],['BMP4',-1.38,1.6e-33],['CTNNB1',1.07,3.8e-29],['APC',-0.94,8.5e-26],['LEF1',0.80,2.0e-22],['DKK1',-1.10,4.9e-20],['AXIN2',0.66,1.2e-17]]};
+const BASE_DEGS={'Fibroblasts':[['COL1A1',-1.74,1.2e-48],['COL3A1',-1.58,3.4e-41],['ACTA2',-1.50,2.1e-39],['FN1',-1.32,4.5e-35],['LOXL2',-1.15,8.2e-31],['TGFB1',-1.10,1.4e-28],['TIMP1',-1.00,2.3e-27],['CDKN2A',-0.85,5.6e-22],['SIRT1',0.80,3.1e-19],['MMP9',0.65,7.8e-17]],'Hepatic Stellate Cells':[['COL1A1',-1.78,1.2e-48],['ACTA2',-1.62,3.4e-41],['TIMP1',-1.45,2.1e-39],['PDGFRB',-1.30,4.5e-35],['LOXL2',-1.20,8.2e-31],['TGFB1',-1.05,1.4e-28],['SPARC',-0.70,2.3e-27],['LRAT',0.95,5.6e-22],['PPARG',0.85,3.1e-19],['MMP2',0.65,7.8e-17]],'Immune Cells (PBMCs)':[['TNF',-1.60,4.2e-52],['IL6',-1.50,1.1e-46],['IL1B',-1.40,2.8e-40],['NLRP3',-1.30,5.0e-37],['CCL2',-1.20,8.3e-32],['TGFB1',-1.00,1.7e-28],['CD14',-0.90,3.4e-25],['STAT3',-0.60,6.8e-22],['IL10',0.70,2.0e-18],['FOXP3',0.80,5.5e-15]]};
 function getDEGs(mol,cell,conc){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'deg');return BASE_DEGS[cell].map(([g,lfc,p])=>[g,+(lfc*m*(0.85+rng()*0.3)).toFixed(2),p]);}
 
-const BASE_PW={Fibroblasts:[['ECM organization','up',2.41,'< 0.001'],['Collagen biosynthesis','up',2.28,'< 0.001'],['TGF-beta signaling','up',2.14,'< 0.001'],['Cellular Senescence','dn',-2.32,'< 0.001'],['MMP ECM remodeling','dn',-2.10,'< 0.001'],['PI3K-AKT signaling','up',1.95,'0.002'],['FOXO longevity','up',1.88,'0.003'],['Autophagy','up',1.76,'0.005'],['NF-kB signaling','dn',-1.83,'0.004'],['p53 pathway','dn',-1.70,'0.007'],['ROS detoxification','up',1.65,'0.009'],['Insulin signaling','up',1.58,'0.012'],['Telomere maintenance','up',1.52,'0.015'],['mTOR signaling','dn',-1.44,'0.021'],['DNA repair','up',1.40,'0.025'],['Hypoxia response','dn',-1.35,'0.031'],['Ubiquitin-proteasome','up',1.32,'0.035'],['Epigenetic regulation','up',1.28,'0.040'],['Inflammatory response','dn',-1.22,'0.044'],['Genomic instability','dn',-1.18,'0.048']],Keratinocytes:[['Keratinocyte differentiation','up',2.55,'< 0.001'],['Cornification','dn',-2.20,'< 0.001'],['Cell proliferation','up',2.05,'< 0.001'],['Notch signaling','up',1.92,'0.002'],['Basement membrane','up',1.81,'0.004'],['Inflammatory cytokines','dn',-1.78,'0.005'],['Cellular Senescence','dn',-1.74,'0.006'],['DNA repair','up',1.68,'0.008'],['Autophagy','up',1.62,'0.010'],['ROS metabolism','up',1.55,'0.014'],['mTOR signaling','dn',-1.48,'0.019'],['Insulin-IGF1','up',1.44,'0.023'],['EGFR signaling','up',1.38,'0.028'],['Hypoxia response','up',1.31,'0.035'],['Telomere maintenance','up',1.27,'0.041'],['Ubiquitin proteolysis','up',1.22,'0.046'],['NF-kB pathway','dn',-1.19,'0.049'],['Epigenetic remodeling','up',1.14,'0.052'],['Apoptosis regulation','dn',-1.10,'0.058'],['Oxid. phosphorylation','up',1.06,'0.063']],Melanocytes:[['Melanogenesis','up',2.62,'< 0.001'],['MITF transcription','up',2.44,'< 0.001'],['Pigmentation','up',2.18,'< 0.001'],['Cellular Senescence','dn',-2.05,'< 0.001'],['Apoptosis resistance','up',1.94,'0.002'],['MAPK/ERK pathway','up',1.85,'0.003'],['DNA damage response','up',1.74,'0.006'],['Oxidative stress ROS','dn',-1.68,'0.008'],['Telomere maintenance','up',1.60,'0.012'],['Autophagy','up',1.54,'0.016'],['Inflammatory response','dn',-1.47,'0.021'],['PI3K-AKT-mTOR','dn',-1.41,'0.026'],['Insulin signaling','up',1.36,'0.031'],['Epigenetic regulation','up',1.30,'0.037'],['Ubiquitin proteolysis','up',1.24,'0.043'],['Hypoxia','dn',-1.19,'0.049'],['Genomic instability','dn',-1.14,'0.055'],['Wnt signaling','up',1.08,'0.062'],['Cytokine signaling','dn',-1.04,'0.068'],['Cell cycle G1-S','up',0.99,'0.075']],HFDPCs:[['Anagen induction','up',2.70,'< 0.001'],['Wnt/beta-catenin','up',2.52,'< 0.001'],['Stem cell self-renewal','up',2.35,'< 0.001'],['FGF/KGF signaling','up',2.18,'< 0.001'],['VEGF angiogenesis','up',2.02,'0.001'],['Cellular Senescence','dn',-1.96,'0.002'],['IGF1/mTOR pathway','up',1.88,'0.003'],['DNA repair','up',1.78,'0.005'],['Autophagy','up',1.70,'0.007'],['Catagen suppression','dn',-1.62,'0.011'],['ROS homeostasis','up',1.56,'0.014'],['Telomere maintenance','up',1.48,'0.019'],['Epigenetic remodeling','up',1.42,'0.024'],['NF-kB inflammatory','dn',-1.36,'0.030'],['Ubiquitin proteolysis','up',1.30,'0.037'],['Insulin signaling','up',1.24,'0.043'],['Hypoxia response','dn',-1.18,'0.050'],['Androgen signaling','dn',-1.12,'0.058'],['Notch pathway','up',1.06,'0.065'],['Genomic instability','dn',-1.00,'0.073']]};
+const BASE_PW={'Fibroblasts':[['TGF-beta/SMAD signaling','dn',-2.45,'< 0.001'],['Collagen I/III biosynthesis','dn',-2.30,'< 0.001'],['Myofibroblast activation (a-SMA)','dn',-2.18,'< 0.001'],['ECM crosslinking (LOX/LOXL2)','dn',-2.05,'< 0.001'],['Cellular Senescence','dn',-1.95,'< 0.001'],['PI3K-AKT signaling','up',1.95,'0.002'],['FOXO longevity','up',1.88,'0.003'],['Autophagy','up',1.76,'0.005'],['NF-kB signaling','dn',-1.83,'0.004'],['p53 pathway','dn',-1.70,'0.007'],['ROS detoxification','up',1.65,'0.009'],['Insulin signaling','up',1.58,'0.012'],['Telomere maintenance','up',1.52,'0.015'],['mTOR signaling','dn',-1.44,'0.021'],['DNA repair','up',1.40,'0.025'],['Hypoxia response','dn',-1.35,'0.031'],['Ubiquitin-proteasome','up',1.32,'0.035'],['Epigenetic regulation','up',1.28,'0.040'],['Inflammatory response','dn',-1.22,'0.044'],['Genomic instability','dn',-1.18,'0.048']],'Hepatic Stellate Cells':[['TGF-beta/SMAD signaling','dn',-2.45,'< 0.001'],['Collagen I/III biosynthesis','dn',-2.30,'< 0.001'],['Myofibroblast activation (a-SMA)','dn',-2.20,'< 0.001'],['Hepatic stellate cell quiescence','up',2.10,'< 0.001'],['Cellular Senescence','dn',-1.95,'< 0.001'],['PI3K-AKT signaling','up',1.95,'0.002'],['FOXO longevity','up',1.88,'0.003'],['Autophagy','up',1.76,'0.005'],['NF-kB signaling','dn',-1.83,'0.004'],['p53 pathway','dn',-1.70,'0.007'],['ROS detoxification','up',1.65,'0.009'],['Insulin signaling','up',1.58,'0.012'],['Telomere maintenance','up',1.52,'0.015'],['mTOR signaling','dn',-1.44,'0.021'],['DNA repair','up',1.40,'0.025'],['Hypoxia response','dn',-1.35,'0.031'],['Ubiquitin-proteasome','up',1.32,'0.035'],['Epigenetic regulation','up',1.28,'0.040'],['Inflammatory response','dn',-1.22,'0.044'],['Genomic instability','dn',-1.18,'0.048']],'Immune Cells (PBMCs)':[['NF-kB inflammatory signaling','dn',-2.50,'< 0.001'],['NLRP3 inflammasome activation','dn',-2.30,'< 0.001'],['Monocyte/macrophage profibrotic polarization','dn',-2.15,'< 0.001'],['TNF-alpha signaling','dn',-2.05,'< 0.001'],['Regulatory T cell (Treg) function','up',1.90,'0.001'],['PI3K-AKT signaling','up',1.95,'0.002'],['FOXO longevity','up',1.88,'0.003'],['Autophagy','up',1.76,'0.005'],['Cellular Senescence','dn',-1.83,'0.004'],['p53 pathway','dn',-1.70,'0.007'],['ROS detoxification','up',1.65,'0.009'],['Insulin signaling','up',1.58,'0.012'],['Telomere maintenance','up',1.52,'0.015'],['mTOR signaling','dn',-1.44,'0.021'],['DNA repair','up',1.40,'0.025'],['Hypoxia response','dn',-1.35,'0.031'],['Ubiquitin-proteasome','up',1.32,'0.035'],['Epigenetic regulation','up',1.28,'0.040'],['Inflammatory response','dn',-1.22,'0.044'],['Genomic instability','dn',-1.18,'0.048']]};
 function getPW(mol,cell,conc,dir){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'pw');let d=BASE_PW[cell].map(([n,di,nes,fdr])=>[n,di,+(nes*m*(0.88+rng()*0.24)).toFixed(2),fdr]);if(dir==='up')d=d.filter(x=>x[1]==='up');if(dir==='dn')d=d.filter(x=>x[1]==='dn');return d;}
 
-const BASE_HM=[{id:'dna',name:"DNA Repair",base:{Fibroblasts:72,Keratinocytes:65,Melanocytes:80,HFDPCs:78},dir:'up'},{id:'gen',name:'Genomic Instability',base:{Fibroblasts:55,Keratinocytes:48,Melanocytes:62,HFDPCs:58},dir:'dn'},{id:'tel',name:'Telomere Maintenance',base:{Fibroblasts:68,Keratinocytes:61,Melanocytes:74,HFDPCs:82},dir:'up'},{id:'epi',name:'Epigenetic Regulation',base:{Fibroblasts:75,Keratinocytes:70,Melanocytes:77,HFDPCs:85},dir:'up'},{id:'ros',name:'ROS / Oxidative Stress',base:{Fibroblasts:60,Keratinocytes:52,Melanocytes:68,HFDPCs:65},dir:'dn'},{id:'ubq',name:'Proteolysis (ubiquitin)',base:{Fibroblasts:63,Keratinocytes:58,Melanocytes:70,HFDPCs:72},dir:'up'},{id:'hyp',name:"Hypoxia Response",base:{Fibroblasts:45,Keratinocytes:40,Melanocytes:50,HFDPCs:48},dir:'dn'},{id:'inf',name:'Inflammatory Response',base:{Fibroblasts:70,Keratinocytes:65,Melanocytes:72,HFDPCs:75},dir:'dn'},{id:'aut',name:'Autophagy',base:{Fibroblasts:66,Keratinocytes:60,Melanocytes:69,HFDPCs:76},dir:'up'},{id:'ins',name:'Insulin Signaling',base:{Fibroblasts:58,Keratinocytes:54,Melanocytes:62,HFDPCs:68},dir:'up'},{id:'sen',name:'Cellular Senescence',base:{Fibroblasts:78,Keratinocytes:72,Melanocytes:80,HFDPCs:82},dir:'dn'},{id:'mto',name:'mTOR Pathway',base:{Fibroblasts:50,Keratinocytes:45,Melanocytes:55,HFDPCs:58},dir:'dn'}];
+const BASE_HM=[{id:'dna',name:"DNA Repair",base:{'Fibroblasts':70,'Hepatic Stellate Cells':72,'Immune Cells (PBMCs)':75},dir:'up'},{id:'gen',name:'Genomic Instability',base:{'Fibroblasts':52,'Hepatic Stellate Cells':55,'Immune Cells (PBMCs)':50},dir:'dn'},{id:'tel',name:'Telomere Maintenance',base:{'Fibroblasts':65,'Hepatic Stellate Cells':68,'Immune Cells (PBMCs)':60},dir:'up'},{id:'epi',name:'Epigenetic Regulation',base:{'Fibroblasts':73,'Hepatic Stellate Cells':75,'Immune Cells (PBMCs)':68},dir:'up'},{id:'ros',name:'ROS / Oxidative Stress',base:{'Fibroblasts':58,'Hepatic Stellate Cells':60,'Immune Cells (PBMCs)':62},dir:'dn'},{id:'ubq',name:'Proteolysis (ubiquitin)',base:{'Fibroblasts':61,'Hepatic Stellate Cells':63,'Immune Cells (PBMCs)':57},dir:'up'},{id:'hyp',name:"Hypoxia Response",base:{'Fibroblasts':43,'Hepatic Stellate Cells':45,'Immune Cells (PBMCs)':40},dir:'dn'},{id:'inf',name:'Inflammatory Response',base:{'Fibroblasts':68,'Hepatic Stellate Cells':70,'Immune Cells (PBMCs)':85},dir:'dn'},{id:'aut',name:'Autophagy',base:{'Fibroblasts':64,'Hepatic Stellate Cells':66,'Immune Cells (PBMCs)':60},dir:'up'},{id:'ins',name:'Insulin Signaling',base:{'Fibroblasts':56,'Hepatic Stellate Cells':58,'Immune Cells (PBMCs)':50},dir:'up'},{id:'sen',name:'Cellular Senescence',base:{'Fibroblasts':76,'Hepatic Stellate Cells':78,'Immune Cells (PBMCs)':68},dir:'dn'},{id:'mto',name:'mTOR Pathway',base:{'Fibroblasts':48,'Hepatic Stellate Cells':50,'Immune Cells (PBMCs)':52},dir:'dn'}];
 function getHM(mol,cell,conc){const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const rng=makeRng(mol+cell+conc+'hm');return BASE_HM.map(h=>({...h,score:Math.round(h.base[cell]*m*(0.85+rng()*0.3))}));}
 
-const BASE_CLOCK={Fibroblasts:{M1:-3.8,M2:-2.6,M3:-4.5},Keratinocytes:{M1:-4.1,M2:-3.0,M3:-5.0},Melanocytes:{M1:-5.2,M2:-3.9,M3:-6.1},HFDPCs:{M1:-6.4,M2:-4.8,M3:-7.2}};
+const BASE_CLOCK={'Fibroblasts':{M1:-3.8,M2:-2.6,M3:-4.5},'Hepatic Stellate Cells':{M1:-4.1,M2:-3.0,M3:-5.0},'Immune Cells (PBMCs)':{M1:-3.2,M2:-2.2,M3:-3.8}};
 function getClockDelta(mol,cell,conc){return +(BASE_CLOCK[cell][mol]*CONC_MULT[conc]).toFixed(1);}
 
-function getKPIs(mol,cell,conc){const rng=makeRng(mol+cell+conc+'kpi');const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const base={Fibroblasts:[7842,580],Keratinocytes:[8203,640],Melanocytes:[5917,420],HFDPCs:[6454,490]};const[bc,bd]=base[cell];return{cells:Math.round(bc*(0.92+rng()*0.12)),genes:Math.round(21500+rng()*2000),paths:Math.round((280+rng()*80)*m),degs:Math.round(bd*m*(0.85+rng()*0.3))};}
+// ═══════════════════ INTRINSIC CAPACITY (WHO 5-domain functional score) ═══════════════════
+// Predicted positive impact (0-100) of the molecule on each of the 5 WHO intrinsic capacity
+// domains, plus a Global IC score (mean of the 5). Higher = stronger predicted functional benefit.
+const IC_COMPONENTS=[
+  {id:'loco',name:'Locomotor'},
+  {id:'vital',name:'Vitality'},
+  {id:'cog',name:'Cognitive'},
+  {id:'psych',name:'Psychological'},
+  {id:'sens',name:'Sensory'}
+];
+const BASE_IC_EXP={
+  'Fibroblasts':{loco:52,vital:48,cog:28,psych:33,sens:22},
+  'Hepatic Stellate Cells':{loco:38,vital:68,cog:34,psych:38,sens:18},
+  'Immune Cells (PBMCs)':{loco:42,vital:58,cog:38,psych:43,sens:20}
+};
+function getIC(mol,cell,conc){
+  // Global IC magnitude is derived directly from the epigenetic clock's age-reversal magnitude,
+  // so that a drug predicted to reduce biological age by more also predicts a larger IC gain
+  // (younger biological age == higher intrinsic capacity). BASE_IC_EXP supplies only the
+  // *relative* emphasis across the 5 domains for that cell type, not an independent magnitude.
+  const ageMag=Math.abs(getClockDelta(mol,cell,conc));
+  const global=Math.round(Math.min(100,(ageMag/6)*100));
+  const rng=makeRng(mol+cell+conc+'ic');
+  const base=BASE_IC_EXP[cell]||BASE_IC_EXP['Fibroblasts'];
+  const meanBase=Object.values(base).reduce((a,b)=>a+b,0)/IC_COMPONENTS.length;
+  const comps=IC_COMPONENTS.map(c=>{
+    const weight=base[c.id]/meanBase;
+    return {...c,score:Math.round(Math.min(100,Math.max(0,global*weight*(0.92+rng()*0.16))))};
+  });
+  return {global,comps};
+}
+
+function getKPIs(mol,cell,conc){const rng=makeRng(mol+cell+conc+'kpi');const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;const base={'Fibroblasts':[7842,580],'Hepatic Stellate Cells':[7420,550],'Immune Cells (PBMCs)':[9120,610]};const[bc,bd]=base[cell];return{cells:Math.round(bc*(0.92+rng()*0.12)),genes:Math.round(21500+rng()*2000),paths:Math.round((280+rng()*80)*m),degs:Math.round(bd*m*(0.85+rng()*0.3))};}
 function getQC(mol,cell,conc){const rng=makeRng(mol+cell+conc+'qc');const mp=MOL_PROFILE[mol],cm=CONC_MULT[conc];return{medUMI:Math.round((3200+rng()*1400)*cm),medGenes:Math.round(1800+rng()*600),pctMito:(mp.mito+rng()*1.5).toFixed(1),doubletRate:(1.2+rng()*0.8).toFixed(1),pctPassing:(94+rng()*4).toFixed(1),nCellsRaw:Math.round(9000+rng()*3000)};}
 
 // ═══════════════════ VC DATA GENERATORS ═══════════════════
 // Pheno-specific gene sets
 const VC_GENE_SETS={
-  skin_normal:[['COL1A1',1.5],['KRT14',1.2],['MMP1',-1.4],['SIRT1',0.9],['CDKN2A',-1.1],['ELN',0.8],['TGFB1',1.1],['FOXO3',0.7],['LMNA',-0.6],['TET2',0.5]],
-  skin_eczema:[['IL4',-1.8],['IL13',-1.6],['FLG',-2.1],['TSLP',-1.5],['CCL26',-1.3],['CXCL10',-1.2],['KRT1',-1.0],['STAT6',-0.9],['TH2',1.4],['IL33',-1.1]],
-  skin_psoriasis:[['IL17A',-2.2],['IL6',-1.8],['TNF',-1.6],['KRT16',2.0],['KRT17',1.8],['DEFB4',1.5],['S100A8',1.4],['CXCL8',-1.3],['IL1B',-1.2],['MMP9',-1.0]],
-  skin_acne:[['PPARG',-1.4],['FASN',1.6],['DGAT1',1.3],['TLR2',-1.1],['IL1B',-1.5],['CXCL1',-1.2],['MMP1',-0.9],['FOXO1',0.8],['SCD',1.4],['PLIN2',1.1]],
-  age_20:[['COL1A1',2.1],['ELN',1.8],['KRT14',1.5],['TERT',1.2],['SIRT1',1.4],['FOXO3',1.1],['CDKN2A',-2.0],['CDKN1A',-1.5],['TP53',-0.9],['LMNA',-0.7]],
-  age_40:[['COL1A1',1.2],['ELN',0.9],['KRT14',0.8],['TERT',0.5],['SIRT1',0.6],['FOXO3',0.4],['CDKN2A',-0.8],['CDKN1A',-0.6],['MMP1',0.8],['LMNA',0.5]],
-  age_60:[['MMP1',2.0],['MMP3',1.8],['IL6',1.5],['CDKN2A',1.9],['TP53',1.1],['LMNA',1.4],['COL1A1',-1.8],['TERT',-1.5],['SIRT1',-1.2],['ELN',-1.6]],
-  eth_african:[['MC1R',-0.5],['TYR',2.1],['DCT',1.9],['TYRP1',1.8],['MITF',1.6],['PMEL',1.4],['OCA2',-0.8],['SLC45A2',-1.0],['ASIP',-1.2],['KIT',0.6]],
-  eth_asian:[['MC1R',-0.4],['TYR',1.4],['MITF',1.2],['OCA2',0.8],['SLC45A2',-0.6],['TYRP1',1.1],['DCT',1.0],['ASIP',-0.7],['PMEL',0.9],['KIT',0.5]],
-  eth_hispanic:[['TYR',1.6],['MITF',1.3],['MC1R',-0.3],['TYRP1',1.2],['SLC45A2',-0.5],['DCT',1.1],['OCA2',0.6],['ASIP',-0.8],['PMEL',0.8],['GP100',0.7]],
-  eth_caucasian:[['MC1R',0.2],['TYR',0.8],['OCA2',1.0],['SLC45A2',0.9],['TYRP1',0.6],['MITF',0.7],['ASIP',0.4],['DCT',0.5],['PMEL',0.4],['KIT',0.3]],
-  scalp_healthy:[['VEGFA',1.8],['FGF7',1.6],['WNT5A',1.5],['CTNNB1',1.3],['IGF1',1.2],['DKK1',-1.4],['BMP4',-1.2],['AXIN2',0.9],['LEF1',0.8],['KGF',1.1]],
-  sex_female:[['ESR1',1.6],['COL1A1',1.8],['COL3A1',1.5],['HAS2',1.4],['CDKN2A',-1.3],['MMP1',-1.2],['FOXO3',1.1],['SIRT1',1.0],['ELN',1.2],['TGM2',0.9]],
-  sex_male:[['AR',1.5],['SRD5A1',1.4],['FASN',1.3],['MMP1',1.2],['MMP3',1.0],['CDKN2A',1.1],['COL1A1',-0.9],['HAS2',-0.8],['PPARG',1.2],['SCD',1.3]],
-  scalp_alopecia:[['CXCL10',1.8],['IFNg',1.6],['CD8A',1.4],['NKG2D',1.2],['IL15',1.0],['VEGFA',-1.3],['FGF7',-1.5],['IGF1',-1.1],['WNT5A',-1.2],['CTNNB1',-0.8]],
-  cancer_bcc:[['SMO',2.2],['GLI1',2.0],['PTCH1',-1.8],['BCL2',1.5],['CCND1',1.4],['TP53',-1.6],['CDKN2A',-1.4],['MKI67',1.8],['CDK4',1.3],['FOXM1',1.2]],
-  cancer_scc:[['TP63',2.0],['KRT14',1.8],['EGFR',1.6],['MMP9',1.4],['VEGFA',1.3],['TP53',-1.8],['CDKN2A',-1.6],['RB1',-1.2],['CDH1',-1.4],['SNAI1',1.1]],
-  cancer_scc_insitu:[['TP63',1.6],['KRT5',1.4],['PCNA',1.3],['MKI67',1.2],['EGFR',1.0],['TP53',-1.2],['CDKN2A',-1.0],['CDH1',-0.9],['MMP2',0.8],['CCND1',1.1]],
-  cancer_scc_ak:[['KRT16',1.5],['KRT17',1.3],['TP63',1.1],['EGFR',0.9],['MMP1',1.0],['TP53',-0.9],['CDKN2A',-0.8],['FLG',-1.2],['LOR',-1.0],['IVL',-0.8]],
-  cancer_melanoma:[['MITF',2.1],['TYR',1.8],['BRAF',1.6],['MEK1',1.4],['CDK4',1.2],['CDKN2A',-2.0],['PTEN',-1.5],['TP53',-1.2],['RB1',-1.0],['BCL2',1.5]],
-  tox_liver:[['CYP1A2',1.8],['CYP3A4',1.6],['ALB',-1.4],['ASAT',1.5],['ASGR1',-1.2],['HNF4A',-1.1],['PPARA',0.9],['NRF2',1.3],['KEAP1',-0.8],['HMOX1',1.4]],
-  tox_kidney:[['KIM1',2.0],['NGAL',1.8],['AQP1',-1.4],['SLC22A6',-1.2],['CUBN',-1.0],['LCN2',1.6],['HAVCR1',1.4],['UMOD',-1.1],['SPP1',1.2],['CLU',1.0]],
-  endo_thymus:[['FOXN1',1.5],['AIRE',1.3],['CD3E',1.2],['RAG1',1.0],['IL7',-1.1],['PTPRC',0.9],['CCR7',0.8],['BCL11B',1.1],['TCF7',0.9],['CD4',1.0]],
-  brain_cortex:[['BDNF',1.6],['SYPA',1.4],['MAP2',1.2],['GFAP',-0.9],['NRGN',1.1],['SYN1',1.0],['DLG4',0.9],['CAMK2A',0.8],['NeuN',1.3],['REST',-0.7]],
-  resp_lung:[['SFTPC',-1.4],['SFTPB',-1.2],['ACE2',0.8],['MUC5AC',1.5],['CXCL8',1.3],['IL6',1.1],['TNF',0.9],['FOXJ1',-1.0],['CFTR',0.7],['HIF1A',1.2]]
+  liver_normal:[['COL1A1',-1.5],['ACTA2',-1.2],['TIMP1',-1.1],['LRAT',1.0],['PPARG',0.8],['TGFB1',-1.0],['SIRT1',0.9],['CDKN2A',-0.8],['LOXL2',-0.7],['MMP2',0.6]],
+  liver_mash:[['COL1A1',-2.0],['ACTA2',-1.8],['PNPLA3',-1.4],['TIMP1',-1.6],['TGFB1',-1.5],['CCL2',-1.3],['TNF',-1.2],['SREBF1',-1.0],['LRAT',1.1],['NLRP3',-1.1]],
+  liver_cirrhosis:[['COL1A1',-2.3],['ACTA2',-2.0],['TIMP1',-1.9],['LOXL2',-1.7],['TGFB1',-1.8],['PDGFRB',-1.5],['CTGF',-1.4],['SPP1',-1.3],['ALB',0.9],['LRAT',1.2]],
+  kidney_normal:[['COL1A1',-1.4],['FN1',-1.1],['ACTA2',-1.0],['CDH1',0.9],['TGFB1',-0.9],['SIRT1',0.8],['SNAI1',-0.7],['CTGF',-0.7],['HAVCR1',-0.6],['UMOD',0.6]],
+  kidney_dn:[['COL4A1',-1.8],['FN1',-1.6],['TGFB1',-1.5],['VEGFA',-1.2],['NOX4',-1.3],['SNAI1',-1.3],['HAVCR1',-1.4],['CDH1',1.0],['CTGF',-1.2],['NLRP3',-1.0]],
+  kidney_ckd:[['COL1A1',-2.1],['FN1',-1.9],['ACTA2',-1.8],['SNAI1',-1.7],['TGFB1',-1.9],['CTGF',-1.6],['HAVCR1',-1.5],['LCN2',-1.4],['CDH1',1.1],['VIM',-1.2]],
+  lung_normal:[['COL1A1',-1.3],['ACTA2',-1.1],['FN1',-1.0],['THY1',0.8],['TGFB1',-0.9],['SFTPC',0.7],['ITGB6',-0.6],['MMP7',-0.6],['SIRT1',0.7],['CTHRC1',-0.7]],
+  lung_ipf:[['COL1A1',-2.2],['COL3A1',-2.0],['ACTA2',-1.9],['CTHRC1',-1.8],['ITGB6',-1.6],['MMP7',-1.5],['TGFB1',-1.9],['FN1',-1.7],['THY1',1.0],['SFTPC',0.9]],
+  cardiac_normal:[['COL1A1',-1.4],['ACTA2',-1.2],['POSTN',-1.0],['TGFB1',-1.0],['DDR2',0.7],['LGALS3',-0.8],['CTGF',-0.7],['TIMP1',-0.7],['SIRT1',0.8],['NPPB',-0.6]],
+  cardiac_postmi:[['COL1A1',-2.0],['COL3A1',-1.8],['POSTN',-1.9],['ACTA2',-1.7],['LGALS3',-1.6],['TGFB1',-1.8],['CTGF',-1.5],['NPPB',-1.3],['DDR2',0.9],['TIMP1',-1.2]],
+  age_20:[['COL1A1',-2.1],['ACTA2',-1.8],['TGFB1',-1.5],['SIRT1',1.2],['FOXO3',1.1],['CDKN2A',-2.0],['TERT',1.0],['TIMP1',-1.4],['NLRP3',-1.0],['LMNA',-0.7]],
+  age_40:[['COL1A1',-1.2],['ACTA2',-0.9],['TGFB1',-0.8],['SIRT1',0.6],['CDKN2A',-0.8],['TIMP1',-0.7],['TERT',0.5],['NLRP3',-0.6],['FOXO3',0.4],['LMNA',0.4]],
+  age_60:[['COL1A1',-0.7],['ACTA2',-0.6],['CDKN2A',1.6],['TGFB1',-0.4],['IL6',-1.3],['NLRP3',-1.4],['TIMP1',-0.4],['TERT',-1.2],['SIRT1',-1.0],['LMNA',1.1]],
+  eth_african:[['APOL1',-1.6],['COL1A1',-1.3],['TGFB1',-1.1],['ACTA2',-1.0],['CDH1',0.7],['SIRT1',0.6],['TIMP1',-0.9],['NLRP3',-0.8],['CTGF',-0.7],['HAVCR1',-0.6]],
+  eth_asian:[['PNPLA3',-0.7],['COL1A1',-1.0],['TGFB1',-0.8],['ACTA2',-0.7],['SIRT1',0.7],['TIMP1',-0.6],['NLRP3',-0.5],['CDH1',0.5],['CTGF',-0.5],['HAVCR1',-0.4]],
+  eth_hispanic:[['PNPLA3',-1.7],['COL1A1',-1.4],['TGFB1',-1.2],['ACTA2',-1.1],['SREBF1',-1.0],['SIRT1',0.6],['TIMP1',-0.9],['NLRP3',-0.9],['CDH1',0.5],['CTGF',-0.6]],
+  eth_caucasian:[['HSD17B13',0.6],['COL1A1',-1.0],['TGFB1',-0.8],['ACTA2',-0.7],['SIRT1',0.7],['TIMP1',-0.6],['NLRP3',-0.5],['PNPLA3',-0.4],['CDH1',0.5],['CTGF',-0.5]],
+  sex_female:[['ESR1',1.2],['COL1A1',-1.5],['TGFB1',-1.3],['ACTA2',-1.2],['SIRT1',1.0],['FOXO3',0.9],['TIMP1',-1.1],['NLRP3',-1.0],['CDKN2A',-0.9],['CTGF',-0.8]],
+  sex_male:[['AR',1.1],['COL1A1',-1.2],['TGFB1',-1.0],['ACTA2',-1.0],['NLRP3',-1.1],['CDKN2A',-0.7],['TIMP1',-0.8],['SIRT1',0.7],['CTGF',-0.7],['LGALS3',-0.6]],
+  se_skin:[['COL1A1',-0.4],['FLG',-0.2],['KRT14',-0.3],['IL1B',-0.5],['CXCL8',-0.4],['MMP1',-0.3],['TSLP',-0.3],['TNF',-0.4],['IL6',-0.3],['HSP70',0.4]],
+  se_brain:[['BDNF',0.3],['SYN1',0.2],['GFAP',-0.4],['IL6',-0.5],['TNF',-0.4],['NLRP3',-0.5],['MAP2',0.2],['CASP3',-0.3],['BAX',-0.3],['HMOX1',0.4]],
+  se_thymus:[['FOXN1',0.2],['AIRE',0.1],['CD3E',0.1],['CASP3',-0.3],['IL7',-0.2],['BAX',-0.3],['TNF',-0.4],['IL6',-0.3],['HSP70',0.3],['PTPRC',0.1]],
+  se_hcc:[['AFP',-0.5],['MKI67',-0.6],['CCND1',-0.5],['TP53',0.4],['CDKN2A',0.3],['MYC',-0.4],['CASP3',0.5],['BAX',0.4],['VEGFA',-0.3],['BCL2',-0.4]],
+  se_breast:[['ESR1',-0.3],['MKI67',-0.5],['CCND1',-0.4],['ERBB2',-0.3],['TP53',0.3],['CASP3',0.4],['BAX',0.4],['BCL2',-0.3],['MYC',-0.4],['VEGFA',-0.3]],
+  se_crc:[['APC',0.3],['MKI67',-0.5],['CCND1',-0.4],['MYC',-0.4],['TP53',0.3],['CASP3',0.4],['BAX',0.4],['BCL2',-0.3],['CTNNB1',-0.3],['VEGFA',-0.3]]
 };
 
 function getVCDEGs(mol,pheno,conc){
   const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
   const rng=makeRng(mol+pheno+conc+'vcdeg');
-  const base=VC_GENE_SETS[pheno]||VC_GENE_SETS['skin_normal'];
+  const base=VC_GENE_SETS[pheno]||VC_GENE_SETS['liver_normal'];
   return base.map(([g,lfc])=>[g,+(lfc*m*(0.9+rng()*0.2)).toFixed(2),+(0.85+rng()*0.12).toFixed(2)]);
 }
 
 // VC pathway sets (pheno-specific flavour on top of base)
 const VC_PW_FLAVOR={
-  skin_eczema:[['IL-4/IL-13 signaling','dn',-2.8,'< 0.001'],['Th2 immune response','dn',-2.5,'< 0.001'],['Skin barrier function','dn',-2.2,'< 0.001'],['JAK-STAT signaling','dn',-2.0,'< 0.001'],['IgE-mediated allergy','dn',-1.8,'0.002']],
-  skin_psoriasis:[['IL-17 signaling','dn',-2.9,'< 0.001'],['TNF-alpha pathway','dn',-2.6,'< 0.001'],['Keratinocyte hyperproliferation','dn',-2.3,'< 0.001'],['Innate immunity','dn',-2.0,'0.001'],['NF-kB (psoriasis)','dn',-1.8,'0.002']],
-  skin_acne:[['Sebaceous lipogenesis','dn',-2.1,'< 0.001'],['TLR2 innate signaling','dn',-1.9,'0.001'],['IL-1 pathway','dn',-1.7,'0.002'],['PPAR-gamma sebocyte','up',1.5,'0.004'],['Androgen signaling','dn',-1.3,'0.009']],
-  cancer_melanoma:[['MAPK/BRAF pathway','dn',-2.8,'< 0.001'],['Melanoma proliferation','dn',-2.5,'< 0.001'],['Apoptosis resistance','dn',-2.2,'< 0.001'],['Immune evasion','dn',-1.9,'0.001'],['CDK4/6 cycle','dn',-1.7,'0.002']],
-  tox_liver:[['CYP450 induction','up',2.2,'< 0.001'],['Hepatotoxicity markers','dn',-2.0,'< 0.001'],['Lipid metabolism','up',1.8,'0.001'],['Oxidative stress liver','dn',-1.6,'0.003'],['NRF2 pathway','up',1.5,'0.005']],
-  tox_kidney:[['Tubular injury markers','dn',-2.3,'< 0.001'],['Renal fibrosis','dn',-2.0,'< 0.001'],['Tubular transport','dn',-1.8,'0.001'],['Inflammatory infiltrate','dn',-1.5,'0.004'],['Oxidative stress kidney','dn',-1.3,'0.008']],
-  brain_cortex:[['Synaptic plasticity','up',2.0,'< 0.001'],['Neuroinflammation','dn',-1.8,'0.001'],['Neurodegeneration','dn',-1.6,'0.002'],['BDNF signaling','up',1.5,'0.004'],['Glial activation','dn',-1.2,'0.010']],
-  resp_lung:[['Surfactant metabolism','up',1.8,'0.001'],['Pulmonary inflammation','dn',-2.0,'< 0.001'],['Mucociliary clearance','up',1.6,'0.002'],['Alveolar repair','up',1.4,'0.005'],['Hypoxia signaling','dn',-1.2,'0.010']],
-  sex_female:[['Estrogen receptor signaling','up',2.2,'< 0.001'],['Collagen biosynthesis','up',2.0,'< 0.001'],['Hyaluronic acid synthesis','up',1.8,'< 0.001'],['Cellular Senescence','dn',-2.1,'< 0.001'],['FOXO longevity','up',1.6,'0.002']],
-  sex_male:[['Androgen receptor signaling','up',2.3,'< 0.001'],['Sebaceous lipogenesis','up',1.9,'< 0.001'],['MMP ECM remodeling','up',1.7,'0.001'],['NF-kB inflammatory','dn',-1.8,'0.001'],['Cellular Senescence','dn',-1.5,'0.003']]
+  liver_mash:[['Hepatic lipogenesis (SREBF1)','dn',-2.6,'< 0.001'],['NLRP3 inflammasome','dn',-2.4,'< 0.001'],['Hepatic stellate cell activation','dn',-2.7,'< 0.001'],['Insulin resistance signaling','dn',-2.0,'0.001'],['Kupffer cell inflammation','dn',-1.8,'0.002']],
+  liver_cirrhosis:[['Hepatic stellate cell activation','dn',-2.9,'< 0.001'],['ECM crosslinking (LOX/LOXL2)','dn',-2.6,'< 0.001'],['Portal hypertension markers','dn',-2.2,'< 0.001'],['Ductular reaction','dn',-1.9,'0.001'],['Hepatocyte regeneration','up',1.8,'0.002']],
+  kidney_dn:[['RAAS / Angiotensin signaling','dn',-2.6,'< 0.001'],['Podocyte injury','dn',-2.3,'< 0.001'],['Tubular hypertrophy','dn',-2.0,'< 0.001'],['Advanced glycation end-product signaling','dn',-1.9,'0.001'],['Oxidative stress kidney','dn',-1.6,'0.003']],
+  kidney_ckd:[['Renal fibrosis progression','dn',-2.8,'< 0.001'],['Tubular injury markers','dn',-2.5,'< 0.001'],['Wnt/beta-catenin (profibrotic)','dn',-2.2,'< 0.001'],['Inflammatory infiltrate','dn',-1.9,'0.001'],['Tubular transport function','up',1.6,'0.003']],
+  lung_ipf:[['Alveolar epithelial injury (AT2)','dn',-2.7,'< 0.001'],['Fibroblastic foci formation','dn',-2.5,'< 0.001'],['Surfactant metabolism','up',1.9,'0.001'],['Mucin hypersecretion','dn',-1.8,'0.002'],['Hypoxia signaling','dn',-1.5,'0.005']],
+  cardiac_postmi:[['Cardiac fibroblast activation','dn',-2.7,'< 0.001'],['Galectin-3 signaling','dn',-2.4,'< 0.001'],['Cardiomyocyte hypertrophy markers','dn',-2.0,'< 0.001'],['Angiotensin II signaling','dn',-1.8,'0.001'],['Natriuretic peptide stress response','dn',-1.5,'0.004']],
+  se_skin:[['Skin barrier function','up',1.4,'0.005'],['Cutaneous inflammatory cytokines','dn',-1.3,'0.008'],['Keratinocyte stress response','dn',-1.1,'0.012'],['Irritant contact signaling','dn',-1.0,'0.018'],['TSLP/IL-33 alarmin signaling','dn',-0.9,'0.024']],
+  se_brain:[['Neuroinflammation','dn',-1.3,'0.010'],['Synaptic plasticity','up',1.2,'0.014'],['Glial activation','dn',-1.0,'0.020'],['BBB integrity','up',0.9,'0.027'],['Oxidative stress (CNS)','dn',-0.8,'0.034']],
+  se_thymus:[['Thymocyte apoptosis','dn',-1.2,'0.012'],['Thymic involution markers','dn',-1.0,'0.018'],['Immune cell maturation','up',0.9,'0.025'],['Inflammatory cytokine release','dn',-0.8,'0.030'],['Oxidative stress (thymus)','dn',-0.7,'0.038']],
+  se_hcc:[['Hepatocyte proliferation (off-target)','dn',-0.9,'0.020'],['p53 tumor suppressor activity','up',0.8,'0.024'],['Apoptosis induction','up',0.7,'0.030'],['Angiogenesis (VEGF)','dn',-0.6,'0.038'],['Cell cycle progression','dn',-0.6,'0.040']],
+  se_breast:[['Mammary epithelial proliferation (off-target)','dn',-0.8,'0.022'],['Estrogen receptor signaling','dn',-0.6,'0.032'],['Apoptosis induction','up',0.6,'0.035'],['HER2 signaling','dn',-0.5,'0.042'],['Cell cycle progression','dn',-0.5,'0.045']],
+  se_crc:[['Colonic epithelial proliferation (off-target)','dn',-0.8,'0.022'],['Wnt/beta-catenin (oncogenic)','dn',-0.6,'0.032'],['Apoptosis induction','up',0.6,'0.035'],['MYC transcriptional activity','dn',-0.5,'0.040'],['Cell cycle progression','dn',-0.5,'0.045']],
+  sex_female:[['Estrogen receptor signaling','up',2.0,'< 0.001'],['TGF-beta/SMAD signaling','dn',-2.1,'< 0.001'],['Cellular Senescence','dn',-1.9,'< 0.001'],['Collagen biosynthesis','dn',-1.7,'0.001'],['FOXO longevity','up',1.5,'0.003']],
+  sex_male:[['Androgen receptor signaling','up',1.9,'< 0.001'],['TGF-beta/SMAD signaling','dn',-1.8,'< 0.001'],['NF-kB inflammatory','dn',-1.7,'0.001'],['Collagen biosynthesis','dn',-1.5,'0.002'],['Cellular Senescence','dn',-1.4,'0.004']]
 };
 
 function getVCPW(mol,pheno,conc,dir){
   const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
   const rng=makeRng(mol+pheno+conc+'vcpw');
   // base from Fibroblasts adapted
-  let base=BASE_PW['Fibroblasts'].map(([n,d,nes,fdr])=>[n,d,+(nes*m*(0.88+rng()*0.24)).toFixed(2),fdr]);
+  let base=BASE_PW['Hepatic Stellate Cells'].map(([n,d,nes,fdr])=>[n,d,+(nes*m*(0.88+rng()*0.24)).toFixed(2),fdr]);
   if(VC_PW_FLAVOR[pheno]) base=[...VC_PW_FLAVOR[pheno].map(([n,d,nes,fdr])=>[n,d,+(nes*m).toFixed(2),fdr]),...base.slice(0,15)];
   if(dir==='up') base=base.filter(x=>x[1]==='up');
   if(dir==='dn') base=base.filter(x=>x[1]==='dn');
@@ -748,9 +803,9 @@ function getVCHM(mol,pheno,conc){
   const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
   const rng=makeRng(mol+pheno+conc+'vchm');
   // pheno modifiers on hallmarks
-  const phenoMod={skin_eczema:{inf:-1.4,ros:-0.8},skin_psoriasis:{inf:-1.6,sen:0.8},age_60:{sen:1.3,tel:-0.7,ros:0.6},cancer_melanoma:{sen:-1.5,tel:1.2},tox_liver:{ros:0.9,aut:0.7},brain_cortex:{aut:0.8,dna:0.6},sex_female:{epi:1.2,tel:1.1,sen:-0.9,inf:-1.1},sex_male:{ros:0.8,sen:0.7,inf:0.6,ins:-0.8}};
+  const phenoMod={liver_mash:{inf:-1.4,ros:-0.8},liver_cirrhosis:{sen:0.8,inf:-1.5},kidney_dn:{inf:-1.2,ros:-0.9},kidney_ckd:{sen:0.8,inf:-1.5},lung_ipf:{sen:0.9,inf:-1.4},cardiac_postmi:{sen:0.7,inf:-1.3},age_60:{sen:1.3,tel:-0.7,ros:0.6},se_brain:{aut:0.8,dna:0.6},sex_female:{epi:1.2,tel:1.1,sen:-0.9,inf:-1.1},sex_male:{ros:0.8,sen:0.7,inf:0.6,ins:-0.8}};
   const mods=phenoMod[pheno]||{};
-  const cellRef='Fibroblasts';
+  const cellRef='Hepatic Stellate Cells';
   return BASE_HM.map(h=>{
     const mod=mods[h.id]||1.0;
     const base=h.base[cellRef];
@@ -760,20 +815,124 @@ function getVCHM(mol,pheno,conc){
 
 // VC clock - pheno-specific baselines
 const VC_CLOCK_BASE={
-  skin_normal:{M1:-3.5,M2:-2.4,M3:-4.2},skin_eczema:{M1:-2.2,M2:-1.5,M3:-2.8},skin_psoriasis:{M1:-1.8,M2:-1.2,M3:-2.3},skin_acne:{M1:-2.5,M2:-1.8,M3:-3.0},
+  liver_normal:{M1:-3.5,M2:-2.4,M3:-4.2},liver_mash:{M1:-2.5,M2:-1.7,M3:-3.0},liver_cirrhosis:{M1:-1.6,M2:-1.1,M3:-2.0},
+  kidney_normal:{M1:-3.6,M2:-2.5,M3:-4.3},kidney_dn:{M1:-2.4,M2:-1.6,M3:-2.9},kidney_ckd:{M1:-1.5,M2:-1.0,M3:-1.9},
+  lung_normal:{M1:-3.4,M2:-2.3,M3:-4.1},lung_ipf:{M1:-2.0,M2:-1.4,M3:-2.5},
+  cardiac_normal:{M1:-3.3,M2:-2.2,M3:-4.0},cardiac_postmi:{M1:-1.9,M2:-1.3,M3:-2.3},
   age_20:{M1:-5.2,M2:-3.8,M3:-6.1},age_40:{M1:-3.8,M2:-2.7,M3:-4.5},age_60:{M1:-2.1,M2:-1.5,M3:-2.6},
-  eth_african:{M1:-3.8,M2:-2.7,M3:-4.5},eth_asian:{M1:-4.1,M2:-3.0,M3:-4.9},eth_hispanic:{M1:-3.5,M2:-2.5,M3:-4.2},eth_caucasian:{M1:-3.3,M2:-2.3,M3:-4.0},
-  scalp_healthy:{M1:-5.5,M2:-4.0,M3:-6.5},scalp_alopecia:{M1:-1.5,M2:-1.0,M3:-1.9},
-  sex_female:{M1:-4.6,M2:-3.4,M3:-5.5},sex_male:{M1:-3.1,M2:-2.2,M3:-3.8},
-  cancer_bcc:{M1:-0.8,M2:-0.5,M3:-1.0},cancer_scc:{M1:-0.6,M2:-0.4,M3:-0.8},cancer_scc_insitu:{M1:-1.0,M2:-0.7,M3:-1.3},cancer_scc_ak:{M1:-1.2,M2:-0.9,M3:-1.5},cancer_melanoma:{M1:-0.5,M2:-0.3,M3:-0.7},
-  tox_liver:{M1:-2.8,M2:-2.0,M3:-3.4},tox_kidney:{M1:-2.4,M2:-1.7,M3:-2.9},endo_thymus:{M1:-3.2,M2:-2.3,M3:-3.8},brain_cortex:{M1:-1.8,M2:-1.3,M3:-2.2},resp_lung:{M1:-2.6,M2:-1.9,M3:-3.1}
+  eth_african:{M1:-3.2,M2:-2.2,M3:-3.8},eth_asian:{M1:-3.6,M2:-2.5,M3:-4.3},eth_hispanic:{M1:-2.9,M2:-2.0,M3:-3.5},eth_caucasian:{M1:-3.4,M2:-2.3,M3:-4.0},
+  sex_female:{M1:-4.0,M2:-2.9,M3:-4.8},sex_male:{M1:-3.0,M2:-2.1,M3:-3.6},
+  se_skin:{M1:-1.2,M2:-0.8,M3:-1.5},se_brain:{M1:-0.9,M2:-0.6,M3:-1.1},se_thymus:{M1:-1.0,M2:-0.7,M3:-1.2},
+  se_hcc:{M1:-0.6,M2:-0.4,M3:-0.7},se_breast:{M1:-0.5,M2:-0.3,M3:-0.6},se_crc:{M1:-0.5,M2:-0.3,M3:-0.6}
 };
-function getVCClock(mol,pheno,conc){const base=VC_CLOCK_BASE[pheno]||VC_CLOCK_BASE['skin_normal'];return +(base[mol]*CONC_MULT[conc]).toFixed(1);}
+function getVCClock(mol,pheno,conc){const base=VC_CLOCK_BASE[pheno]||VC_CLOCK_BASE['liver_normal'];return +(base[mol]*CONC_MULT[conc]).toFixed(1);}
+
+// VC Intrinsic Capacity baselines — higher = larger predicted functional benefit for that domain.
+// Disease phenotypes carry larger baselines (more room for functional improvement); Normal/Age/
+// Ethnicity/Sex/Side-Effect phenotypes carry smaller, more modest baselines.
+const BASE_IC_VC={
+  liver_normal:{loco:30,vital:35,cog:20,psych:22,sens:15},
+  liver_mash:{loco:42,vital:58,cog:30,psych:32,sens:18},
+  liver_cirrhosis:{loco:55,vital:72,cog:48,psych:42,sens:20},
+  kidney_normal:{loco:28,vital:32,cog:18,psych:20,sens:14},
+  kidney_dn:{loco:40,vital:55,cog:25,psych:30,sens:16},
+  kidney_ckd:{loco:52,vital:70,cog:32,psych:40,sens:18},
+  lung_normal:{loco:30,vital:34,cog:18,psych:20,sens:14},
+  lung_ipf:{loco:62,vital:75,cog:30,psych:48,sens:16},
+  cardiac_normal:{loco:30,vital:34,cog:18,psych:20,sens:14},
+  cardiac_postmi:{loco:60,vital:70,cog:32,psych:45,sens:16},
+  age_20:{loco:20,vital:22,cog:15,psych:15,sens:12},
+  age_40:{loco:35,vital:38,cog:22,psych:25,sens:18},
+  age_60:{loco:55,vital:58,cog:35,psych:38,sens:30},
+  eth_african:{loco:35,vital:38,cog:22,psych:25,sens:18},
+  eth_asian:{loco:33,vital:36,cog:20,psych:24,sens:17},
+  eth_hispanic:{loco:34,vital:37,cog:21,psych:24,sens:17},
+  eth_caucasian:{loco:33,vital:36,cog:20,psych:24,sens:17},
+  sex_female:{loco:32,vital:36,cog:21,psych:26,sens:18},
+  sex_male:{loco:34,vital:35,cog:20,psych:22,sens:17},
+  se_skin:{loco:10,vital:12,cog:8,psych:14,sens:10},
+  se_brain:{loco:12,vital:14,cog:28,psych:20,sens:12},
+  se_thymus:{loco:10,vital:18,cog:10,psych:12,sens:8},
+  se_hcc:{loco:15,vital:20,cog:12,psych:18,sens:10},
+  se_breast:{loco:14,vital:19,cog:11,psych:20,sens:9},
+  se_crc:{loco:15,vital:20,cog:11,psych:17,sens:9}
+};
+function getVCIC(mol,pheno,conc){
+  // Same coupling as the Experimental side: global IC magnitude tracks the predicted age-reversal
+  // magnitude from the Virtual Cell epigenetic clock; BASE_IC_VC only sets the relative emphasis
+  // across the 5 domains for that phenotype.
+  const ageMag=Math.abs(getVCClock(mol,pheno,conc));
+  const global=Math.round(Math.min(100,(ageMag/7)*100));
+  const rng=makeRng(mol+pheno+conc+'vcic');
+  const base=BASE_IC_VC[pheno]||BASE_IC_VC['liver_normal'];
+  const meanBase=Object.values(base).reduce((a,b)=>a+b,0)/IC_COMPONENTS.length;
+  const comps=IC_COMPONENTS.map(c=>{
+    const weight=base[c.id]/meanBase;
+    return {...c,score:Math.round(Math.min(100,Math.max(0,global*weight*(0.92+rng()*0.16))))};
+  });
+  return {global,comps};
+}
+
+// ═══════════════════ DISEASE REVERSAL SCORE (connectivity vs Normal) ═══════════════════
+// Score ranges from -100 (full reversal of the disease signature toward Normal) to +100
+// (drug signature mimics/reinforces the disease signature). 0 = no connectivity / no effect.
+// Maps each disease phenotype to its organ's Normal reference phenotype + display label
+const DISEASE_TO_NORMAL={
+  liver_mash:{normal:'liver_normal',organ:'Liver',label:'NASH / MASH Fibrosis'},
+  liver_cirrhosis:{normal:'liver_normal',organ:'Liver',label:'Cirrhosis'},
+  kidney_dn:{normal:'kidney_normal',organ:'Kidney',label:'Diabetic Nephropathy'},
+  kidney_ckd:{normal:'kidney_normal',organ:'Kidney',label:'CKD / Advanced Fibrosis'},
+  lung_ipf:{normal:'lung_normal',organ:'Lung',label:'IPF'},
+  cardiac_postmi:{normal:'cardiac_normal',organ:'Heart',label:'Post-MI Fibrosis'}
+};
+// Baseline connectivity score per molecule (negative = reverses disease toward Normal).
+const BASE_REVERSAL={
+  liver_mash:{M1:-62,M2:-45,M3:-75},
+  liver_cirrhosis:{M1:-38,M2:-25,M3:-52},
+  kidney_dn:{M1:-58,M2:-40,M3:-70},
+  kidney_ckd:{M1:-35,M2:-22,M3:-48},
+  lung_ipf:{M1:-50,M2:-33,M3:-63},
+  cardiac_postmi:{M1:-45,M2:-30,M3:-58}
+};
+function getReversalScore(mol,pheno,conc){
+  const base=BASE_REVERSAL[pheno];
+  if(!base) return null;
+  const rng=makeRng(mol+pheno+conc+'reversal');
+  const m=CONC_MULT[conc];
+  return Math.round(Math.min(100,Math.max(-100,base[mol]*m*(0.9+rng()*0.2))));
+}
+function reversalVerdict(score){
+  if(score<=-70) return 'Strong reversal of disease state';
+  if(score<=-40) return 'Partial reversal of disease state';
+  if(score<=-10) return 'Weak reversal of disease state';
+  if(score<10) return 'No significant connectivity';
+  if(score<40) return 'Weak disease-mimicking effect';
+  return 'Strong disease-mimicking effect';
+}
+function reversalColor(score){
+  // green (full reversal, -100) -> grey (neutral, 0) -> red (mimicking, +100)
+  if(score<=0){const pct=Math.min(-score/100,1);const r=Math.round(94+(31-94)*pct),g=Math.round(93+(170-93)*pct),b=Math.round(88+(126-88)*pct);return `rgb(${r},${g},${b})`;}
+  const pct=Math.min(score/100,1);const r=Math.round(94+(224-94)*pct),g=Math.round(93+(98-93)*pct),b=Math.round(88+(47-88)*pct);return `rgb(${r},${g},${b})`;
+}
+
+// Experimental mode: reversal of the activated/fibrotic cell state toward the quiescent/normal state
+const BASE_REVERSAL_EXP={
+  'Fibroblasts':{M1:-58,M2:-40,M3:-72},
+  'Hepatic Stellate Cells':{M1:-62,M2:-45,M3:-75},
+  'Immune Cells (PBMCs)':{M1:-50,M2:-33,M3:-63}
+};
+function getExpReversalScore(mol,cell,conc){
+  const base=BASE_REVERSAL_EXP[cell];
+  if(!base) return null;
+  const rng=makeRng(mol+cell+conc+'reversalExp');
+  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
+  return Math.round(Math.min(100,Math.max(-100,base[mol]*m*(0.9+rng()*0.2))));
+}
 
 function getVCKPIs(mol,pheno,conc){
   const rng=makeRng(mol+pheno+conc+'vckpi');
   const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
-  const meta=PHENO_META[pheno]||PHENO_META['skin_normal'];
+  const meta=PHENO_META[pheno]||PHENO_META['liver_normal'];
   return{cells:Math.round((8000+rng()*6000)*m),genes:Math.round(18000+rng()*4000),paths:Math.round((200+rng()*150)*m),conf:Math.round(meta.conf*100)};
 }
 
@@ -850,6 +1009,55 @@ function renderClock(){
   charts['clockR']=new Chart(document.getElementById('clockRadar'),{type:'radar',data:{labels:cells,datasets:['M1','M2','M3'].map((m,i)=>({label:MOL_LABELS[m],data:cells.map(ct=>Math.abs(getClockDelta(m,ct,conc))),borderColor:['#7b72e8','#1faa7e','#e0622f'][i],backgroundColor:['rgba(123,114,232,0.1)','rgba(31,170,126,0.08)','rgba(224,98,47,0.07)'][i],pointBackgroundColor:['#7b72e8','#1faa7e','#e0622f'][i],borderWidth:1.5,borderDash:i===0?[]:(i===1?[4,2]:[2,4])}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:12}}},scales:{r:{min:0,max:8,ticks:{stepSize:2,color:'#5e5d58',font:{size:10},backdropColor:'transparent'},pointLabels:{color:'#9a9890',font:{size:13}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
 }
 
+function renderIC(){
+  const{mol,cell,conc}=ES;
+  const ic=getIC(mol,cell,conc);
+  document.getElementById('ic-sub').textContent=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]}`;
+
+  document.getElementById('ic-global').innerHTML=`
+    <div class="card-title"><span class="card-dot"></span>Global Intrinsic Capacity Score</div>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:#1faa7e;">+${ic.global}<span style="font-size:18px;color:var(--text3);font-weight:600;">/100</span></div>
+      <div style="flex:1;min-width:240px;">
+        <div class="hm-bar-wrap" style="margin-bottom:8px;"><div class="hm-bar" style="width:${ic.global}%;background:#1faa7e"></div></div>
+        <div style="font-size:13px;color:var(--text2);">Predicted impact of ${MOL_LABELS[mol]} on overall intrinsic capacity in ${cell}, averaged across the 5 WHO functional domains (locomotor, vitality, cognitive, psychological, sensory).</div>
+      </div>
+    </div>`;
+
+  document.getElementById('ic-grid').innerHTML=ic.comps.map(c=>`<div class="hm-card"><div class="hm-name">${c.name}</div><div class="hm-bar-wrap"><div class="hm-bar" style="width:${Math.min(c.score,100)}%;background:#1faa7e"></div></div><div class="hm-footer"><span class="hm-score score-up">+${c.score}</span><span class="hm-dir">predicted gain ↑</span></div></div>`).join('');
+
+  destroyChart('icRadar');
+  const labels=ic.comps.map(c=>c.name);
+  const mk=(m,col,dash)=>{const d=getIC(m,cell,conc);return{label:MOL_LABELS[m],data:d.comps.map(c=>c.score),borderColor:col,backgroundColor:col+'18',pointBackgroundColor:col,borderWidth:1.5,borderDash:dash||[]};};
+  charts['icRadar']=new Chart(document.getElementById('icRadar'),{type:'radar',data:{labels,datasets:[mk('M1','#7b72e8'),mk('M2','#1faa7e',[4,2]),mk('M3','#e0622f',[2,4])]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:12}}},scales:{r:{min:0,max:100,ticks:{stepSize:25,color:'#5e5d58',font:{size:9},backdropColor:'transparent'},pointLabels:{color:'#9a9890',font:{size:12}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
+}
+
+function renderExpReversal(){
+  const{mol,cell,conc}=ES;
+  const cells=Object.keys(BASE_REVERSAL_EXP);
+  const score=getExpReversalScore(mol,cell,conc);
+  const verdict=reversalVerdict(score);
+  const col=reversalColor(score);
+  const barPct=Math.abs(score)/2;
+  const barLeft=score<0?(50-barPct):50;
+
+  document.getElementById('rev-sub').textContent=`${MOL_LABELS[mol]} · ${cell} · ${CONC_LABELS[conc]} · connectivity vs quiescent/normal cell state · −100 = full reversal · +100 = disease-mimicking`;
+
+  document.getElementById('rev-headline').innerHTML=`
+    <div class="card-title"><span class="card-dot"></span>Disease Reversal Score — ${cell}</div>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:${col};">${score>0?'+':''}${score}<span style="font-size:18px;color:var(--text3);font-weight:600;"> / ±100</span></div>
+      <div style="flex:1;min-width:240px;">
+        <div class="lfc-bar-wrap" style="margin-bottom:8px;height:10px;width:100%;"><div class="lfc-center"></div><div class="lfc-fill" style="left:${barLeft}%;width:${barPct}%;background:${col}"></div></div>
+        <div style="font-size:13px;color:var(--text2);">${verdict} — connectivity between the ${MOL_LABELS[mol]}-treated transcriptional signature in ${cell} and the activated/fibrotic reference state, relative to the quiescent/normal cell state.</div>
+      </div>
+    </div>`;
+
+  destroyChart('reversal');
+  const barData=cells.map(ct=>({label:ct,val:getExpReversalScore(mol,ct,conc)}));
+  charts['reversal']=new Chart(document.getElementById('reversalChart'),{type:'bar',data:{labels:barData.map(d=>d.label),datasets:[{label:`Reversal Score (${MOL_LABELS[mol]} · ${CONC_LABELS[conc]})`,data:barData.map(d=>d.val),backgroundColor:barData.map(d=>reversalColor(d.val)),borderRadius:5,barThickness:32}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:10}}},scales:{x:{title:{display:true,text:'Disease Reversal Score (−100 reversal · +100 mimicking)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'},min:-100,max:100},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+}
+
 // ═══════════════════ VC RENDERERS ═══════════════════
 function updateVCContext(){
   const{mol,pheno,conc}=VC;
@@ -885,6 +1093,49 @@ function renderVCPW(){
   charts['vc-pw']=new Chart(document.getElementById('vc-pwChart'),{type:'bar',data:{labels:t10.map(d=>d[0].length>22?d[0].slice(0,22)+'…':d[0]),datasets:[{data:t10.map(d=>d[2]),backgroundColor:t10.map(d=>d[1]==='up'?'rgba(74,155,232,0.7)':'rgba(224,98,47,0.7)'),borderRadius:4,barThickness:18}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'Predicted NES',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
 }
 
+function renderVCReversal(){
+  const{mol,conc,pheno}=VC;
+  const diseaseKeys=Object.keys(DISEASE_TO_NORMAL);
+  const mols=['M1','M2','M3'];
+  const currentIsDisease=DISEASE_TO_NORMAL[pheno];
+
+  document.getElementById('vc-rev-sub').textContent=`${MOL_LABELS[mol]} · ${CONC_LABELS[conc]} · connectivity vs Normal cell state · −100 = full reversal · +100 = disease-mimicking`;
+
+  // Headline card
+  let headline;
+  if(currentIsDisease){
+    const score=getReversalScore(mol,pheno,conc);
+    const verdict=reversalVerdict(score);
+    const col=reversalColor(score);
+    const barPct=Math.abs(score)/2; // half-width from center (scale -100..100 over 100% width, center=50%)
+    const barLeft=score<0?(50-barPct):50;
+    headline=`
+      <div class="card-title"><span class="card-dot-vc"></span>Disease Reversal Score — ${currentIsDisease.label}</div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:${col};">${score>0?'+':''}${score}<span style="font-size:18px;color:var(--text3);font-weight:600;"> / ±100</span></div>
+        <div style="flex:1;min-width:240px;">
+          <div class="lfc-bar-wrap" style="margin-bottom:8px;height:10px;width:100%;"><div class="lfc-center"></div><div class="lfc-fill" style="left:${barLeft}%;width:${barPct}%;background:${col}"></div></div>
+          <div style="font-size:13px;color:var(--text2);">${verdict} — connectivity between the ${MOL_LABELS[mol]} signature and the ${currentIsDisease.label} disease signature, relative to Normal ${currentIsDisease.organ}.</div>
+        </div>
+      </div>`;
+  } else {
+    headline=`
+      <div class="card-title"><span class="card-dot-vc"></span>Disease Reversal Score</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.6;">The current selection (<strong style="color:var(--text)">${PHENO_META[pheno]?PHENO_META[pheno].label:pheno}</strong>) is not a disease state, so no single reversal score applies. Select a disease phenotype (e.g. NASH/MASH, Cirrhosis, Diabetic Nephropathy, CKD, IPF, Post-MI Fibrosis) to see its connectivity score vs the matching Normal organ state. The chart and heatmap below compare all fibrosis disease states for reference. Scale: −100 = full reversal toward Normal, 0 = no connectivity, +100 = the drug signature mimics/reinforces the disease.</div>`;
+  }
+  document.getElementById('vc-rev-headline').innerHTML=headline;
+
+  // Bar chart — all disease states, current molecule
+  destroyChart('vc-reversal');
+  const barData=diseaseKeys.map(k=>({label:DISEASE_TO_NORMAL[k].label+' ('+DISEASE_TO_NORMAL[k].organ+')',val:getReversalScore(mol,k,conc)}));
+  charts['vc-reversal']=new Chart(document.getElementById('vc-reversalChart'),{type:'bar',data:{labels:barData.map(d=>d.label),datasets:[{label:`Reversal Score (${MOL_LABELS[mol]} · ${CONC_LABELS[conc]})`,data:barData.map(d=>d.val),backgroundColor:barData.map(d=>reversalColor(d.val)),borderRadius:5,barThickness:26}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:10}}},scales:{x:{title:{display:true,text:'Disease Reversal Score (−100 reversal · +100 mimicking)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'},min:-100,max:100},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+
+  // Heatmap — molecules x disease states
+  let html=`<div class="heatmap-col-labels">${mols.map(m=>`<div class="heatmap-col-label">${m}</div>`).join('')}</div>`;
+  diseaseKeys.forEach(k=>{const meta=DISEASE_TO_NORMAL[k];html+=`<div class="heatmap-row"><span class="heatmap-label" title="${meta.label}">${meta.label.length>18?meta.label.slice(0,18)+'…':meta.label}</span><div class="heatmap-cells">${mols.map(m=>{const score=getReversalScore(m,k,conc);const col=reversalColor(score);const textCol=Math.abs(score)>50?'#0e0f0e':'#e8e6df';return `<div class="heatmap-cell" style="background:${col};color:${textCol}" title="${meta.label} · ${m} · score ${score}">${score>0?'+':''}${score}</div>`;}).join('')}</div></div>`;});
+  document.getElementById('vc-reversal-heatmap').innerHTML=html;
+}
+
 function renderVCHallmarks(){
   const{mol,pheno,conc}=VC;const hm=getVCHM(mol,pheno,conc);
   document.getElementById('vc-lv-sub').textContent=`${PHENO_META[pheno].label} · ${MOL_LABELS[mol]} · ${CONC_LABELS[conc]}`;
@@ -897,7 +1148,7 @@ function renderVCHallmarks(){
 
 function renderVCClock(){
   const{mol,pheno,conc}=VC;
-  const phenoList=['skin_normal','skin_eczema','skin_psoriasis','age_20','age_40','age_60','scalp_healthy','scalp_alopecia'];
+  const phenoList=['liver_normal','liver_mash','liver_cirrhosis','kidney_normal','kidney_dn','kidney_ckd','lung_normal','lung_ipf','cardiac_normal','cardiac_postmi'];
   const mols=['M1','M2','M3'];
   document.getElementById('vc-clock-grid').innerHTML=mols.map(m=>{const delta=getVCClock(m,pheno,conc);const pct=Math.min(Math.abs(delta)/8*100,100);return `<div class="clock-card"><div class="clock-type">${MOL_LABELS[m]}</div><div class="clock-bar-wrap"><div class="clock-bar" style="width:${pct}%;background:var(--blue)"></div></div><div class="clock-delta" style="color:var(--blue)">${delta} yrs</div><div class="clock-p">confidence ${Math.round(PHENO_META[pheno].conf*100)}%</div></div>`;}).join('');
   // Bar chart comparing phenotypes for current mol
@@ -906,22 +1157,30 @@ function renderVCClock(){
   charts['vc-clockBar']=new Chart(document.getElementById('vc-clockBar'),{type:'bar',data:{labels:phenoDeltas.map(p=>p.label.length>20?p.label.slice(0,20)+'…':p.label),datasets:[{label:`Δ age (${MOL_LABELS[mol]} · ${CONC_LABELS[conc]})`,data:phenoDeltas.map(p=>p.val),backgroundColor:phenoDeltas.map((p,i)=>i%2===0?'rgba(74,155,232,0.7)':'rgba(123,114,232,0.6)'),borderRadius:5,barThickness:28}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:10}}},scales:{x:{ticks:{color:'#9a9890',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{title:{display:true,text:'|Δ biological age| (years)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
 }
 
-function renderVCCompare(){
-  const{mol,conc}=VC;
-  // Heatmap: phenotypes × molecules
-  const phenoKeys=Object.keys(VC_CLOCK_BASE);
-  const mols=['M1','M2','M3'];
-  const maxDelta=8;
-  function heatColor(val){const pct=Math.min(Math.abs(val)/maxDelta,1);const r=Math.round(74+(31-74)*pct),g=Math.round(155+(170-155)*pct),b=Math.round(232+(126-232)*pct);return `rgb(${r},${g},${b})`;}
-  let html=`<div class="heatmap-col-labels">${mols.map(m=>`<div class="heatmap-col-label">${m}</div>`).join('')}</div>`;
-  phenoKeys.forEach(pk=>{const meta=PHENO_META[pk];if(!meta)return;html+=`<div class="heatmap-row"><span class="heatmap-label" title="${meta.label}">${meta.label.length>18?meta.label.slice(0,18)+'…':meta.label}</span><div class="heatmap-cells">${mols.map(m=>{const delta=getVCClock(m,pk,conc);const col=heatColor(delta);const textCol=Math.abs(delta)>4?'#e8e6df':'#9a9890';return `<div class="heatmap-cell" style="background:${col};color:${textCol}" title="${meta.label} · ${m} · ${delta} yrs">${delta}</div>`;}).join('')}</div></div>`;});
-  document.getElementById('vc-heatmap').innerHTML=html;
-  document.getElementById('vc-cmp-sub').textContent=`Concentration: ${CONC_LABELS[conc]} · ${phenoKeys.length} phenotypes · 3 molecules`;
-  // Anti-inflammatory bar
-  destroyChart('vc-compare');
-  const antiInflam=phenoKeys.map(pk=>{const rng=makeRng(mol+pk+conc+'antiinf');return{label:(PHENO_META[pk]?.label||pk).slice(0,18),val:+(CONC_MULT[conc]*MOL_PROFILE[mol].strength*(30+rng()*55)).toFixed(1)};}).slice(0,14);
-  charts['vc-compare']=new Chart(document.getElementById('vc-compareChart'),{type:'bar',data:{labels:antiInflam.map(d=>d.label),datasets:[{label:'Predicted Anti-inflammatory Score',data:antiInflam.map(d=>d.val),backgroundColor:antiInflam.map((d,i)=>i%3===0?'rgba(74,155,232,0.7)':i%3===1?'rgba(123,114,232,0.6)':'rgba(31,170,126,0.6)'),borderRadius:5,barThickness:22}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:10}}},scales:{x:{title:{display:true,text:'AI Score (0–100)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'},min:0,max:100},y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}}}});
+function renderVCIC(){
+  const{mol,pheno,conc}=VC;
+  const ic=getVCIC(mol,pheno,conc);
+  const phenoLabel=PHENO_META[pheno]?PHENO_META[pheno].label:pheno;
+  document.getElementById('vc-ic-sub').textContent=`${MOL_LABELS[mol]} · ${phenoLabel} · ${CONC_LABELS[conc]}`;
+
+  document.getElementById('vc-ic-global').innerHTML=`
+    <div class="card-title"><span class="card-dot-vc"></span>Global Intrinsic Capacity Score</div>
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--blue);">+${ic.global}<span style="font-size:18px;color:var(--text3);font-weight:600;">/100</span></div>
+      <div style="flex:1;min-width:240px;">
+        <div class="hm-bar-wrap" style="margin-bottom:8px;"><div class="hm-bar" style="width:${ic.global}%;background:var(--blue)"></div></div>
+        <div style="font-size:13px;color:var(--text2);">Predicted impact of ${MOL_LABELS[mol]} on overall intrinsic capacity in the ${phenoLabel} context, averaged across the 5 WHO functional domains (locomotor, vitality, cognitive, psychological, sensory).</div>
+      </div>
+    </div>`;
+
+  document.getElementById('vc-ic-grid').innerHTML=ic.comps.map(c=>`<div class="hm-card"><div class="hm-name">${c.name}</div><div class="hm-bar-wrap"><div class="hm-bar" style="width:${Math.min(c.score,100)}%;background:var(--blue)"></div></div><div class="hm-footer"><span class="hm-score score-up">+${c.score}</span><span class="hm-dir">predicted gain ↑</span></div></div>`).join('');
+
+  destroyChart('vc-icRadar');
+  const labels=ic.comps.map(c=>c.name);
+  const mk=(m,col,dash)=>{const d=getVCIC(m,pheno,conc);return{label:MOL_LABELS[m],data:d.comps.map(c=>c.score),borderColor:col,backgroundColor:col+'18',pointBackgroundColor:col,borderWidth:1.5,borderDash:dash||[]};};
+  charts['vc-icRadar']=new Chart(document.getElementById('vc-icRadar'),{type:'radar',data:{labels,datasets:[mk('M1','#7b72e8'),mk('M2','#4a9be8',[4,2]),mk('M3','#1faa7e',[2,4])]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:11},boxWidth:12}}},scales:{r:{min:0,max:100,ticks:{stepSize:25,color:'#5e5d58',font:{size:9},backdropColor:'transparent'},pointLabels:{color:'#9a9890',font:{size:12}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
 }
+
 
 // ═══════════════════ STATE SETTERS ═══════════════════
 function switchMode(mode){
@@ -964,6 +1223,8 @@ function refreshExp(){
   else if(p==='pathway-panel')renderPW();
   else if(p==='longevity-panel')renderHallmarks();
   else if(p==='clock-panel')renderClock();
+  else if(p==='ic-panel')renderIC();
+  else if(p==='reversal-panel')renderExpReversal();
   else if(p==='synthese-panel')renderSynth('exp');
 }
 
@@ -974,36 +1235,37 @@ function refreshVC(){
   else if(p==='vc-pathway-panel')renderVCPW();
   else if(p==='vc-hallmarks-panel')renderVCHallmarks();
   else if(p==='vc-clock-panel')renderVCClock();
-  else if(p==='vc-compare-panel')renderVCCompare();
+  else if(p==='vc-ic-panel')renderVCIC();
+  else if(p==='vc-reversal-panel')renderVCReversal();
   else if(p==='vc-synthese-panel')renderSynth('vc');
 }
 
 // ═══════════════════ BIOMARQUEURS ═══════════════════
 const BIOMARQUEURS = [
-  { gene:'COL1A1', role:'Collagen I Synthesis', category:'Anti-aging', color:'#7b72e8',
-    desc:'Main component of the dermal extracellular matrix. Its expression determines skin firmness and elasticity. Sustained activation reduces wrinkles and improves skin tone.' },
-  { gene:'TYR',    role:'Skin Brightening',     category:'Pigmentation', color:'#c98318',
-    desc:'Key melanogenesis enzyme catalyzing the conversion of tyrosine to DOPA. Its inhibition reduces melanin production and attenuates pigment spots and hyperpigmentation.' },
-  { gene:'MITF',   role:'Pigmentation Regulation', category:'Pigmentation', color:'#c98318',
-    desc:'Master transcription factor of melanocytes, controlling the expression of TYR, DCT and TYRP1. Its modulation allows global and coordinated action on pigmentation.' },
-  { gene:'MMP1',   role:'Dermal Remodeling',    category:'Anti-aging', color:'#7b72e8',
-    desc:'Metalloprotease degrading interstitial collagen. Overexpressed during photoaging. Its repression preserves dermal integrity and prevents wrinkle formation.' },
-  { gene:'CDKN2A', role:'Cellular Senescence',  category:'Longevity', color:'#1faa7e',
-    desc:'Encoding p16INK4a, this CDK4/6 inhibitor is the main marker of replicative senescence. Its repression promotes fibroblast proliferation and delays intrinsic aging.' },
-  { gene:'SIRT1',  role:'Anti-aging Protection', category:'Longevity', color:'#1faa7e',
-    desc:'NAD+-dependent deacetylase involved in DNA repair, metabolic regulation and resistance to oxidative stress. Its activation mimics the effects of caloric restriction.' },
-  { gene:'VEGFA',  role:'Vascularization & Hair Growth', category:'Hair', color:'#4a9be8',
-    desc:'Essential vascular growth factor for perifollicular angiogenesis. In HFDPCs, its activation prolongs the anagen phase and stimulates hair growth.' },
-  { gene:'HIF1A',  role:'Hypoxic Response',     category:'Anti-aging', color:'#e0622f',
-    desc:'Transcription factor activated under hypoxic conditions. Regulates VEGF, erythropoiesis, and cell survival. Its modulation influences skin radiance and microcirculation.' },
-  { gene:'KRT14',  role:'Skin Barrier Integrity', category:'Barrier', color:'#1faa7e',
-    desc:'Basal keratin expressed in proliferating keratinocytes. Marker of the basal layer of the epidermis. Its expression supports epidermal renewal and skin regeneration.' },
-  { gene:'FLG',    role:'Hydration & Barrier',  category:'Barrier', color:'#1faa7e',
-    desc:'Filaggrin, a key structural protein of the skin barrier. Its degradation releases hygroscopic amino acids (NMF). Its activation improves hydration and reduces TEWL.' },
+  { gene:'COL1A1', role:'Collagen I Deposition', category:'Fibrogenesis', color:'#7b72e8',
+    desc:'Main fibrillar collagen deposited by activated fibroblasts/myofibroblasts in scarred tissue. Its repression is the central readout of anti-fibrotic activity across liver, kidney, lung and heart.' },
+  { gene:'ACTA2',  role:'Myofibroblast Activation', category:'Fibrogenesis', color:'#7b72e8',
+    desc:'Encodes alpha-smooth muscle actin (a-SMA), the defining marker of myofibroblast differentiation. Its repression indicates reversal of the contractile, matrix-producing fibroblast phenotype.' },
+  { gene:'TGFB1',  role:'Master Profibrotic Signal', category:'Fibrogenesis', color:'#7b72e8',
+    desc:'Central upstream cytokine driving fibroblast activation, EMT and ECM synthesis via SMAD signaling across all fibrotic organs. Its inhibition is a primary mechanism for most anti-fibrotic candidates.' },
+  { gene:'TIMP1',  role:'ECM Turnover Block',     category:'ECM Remodeling', color:'#4a9be8',
+    desc:'Inhibits matrix metalloproteinases, preventing collagen degradation and locking in fibrotic scar. Its repression restores the balance toward ECM clearance.' },
+  { gene:'MMP9',   role:'ECM Degradation',        category:'ECM Remodeling', color:'#4a9be8',
+    desc:'Matrix metalloproteinase capable of degrading deposited collagen and remodeling scar tissue. Its activation supports resolution of established fibrosis.' },
+  { gene:'CDKN2A', role:'Cellular Senescence',     category:'Senescence', color:'#1faa7e',
+    desc:'Encodes p16INK4a, the principal marker of replicative senescence. Senescent, SASP-secreting fibroblasts perpetuate fibrogenesis; its repression limits this self-amplifying loop.' },
+  { gene:'SIRT1',  role:'Anti-fibrotic Protection', category:'Senescence', color:'#1faa7e',
+    desc:'NAD+-dependent deacetylase that antagonizes TGF-beta/SMAD signaling and limits oxidative stress. Its activation supports a quiescent, non-fibrogenic cell state.' },
+  { gene:'SNAI1',  role:'EMT Transcription Factor', category:'EMT', color:'#e0622f',
+    desc:'Master transcription factor of epithelial-to-mesenchymal transition, converting epithelial cells into matrix-producing fibroblast-like cells in kidney and lung fibrosis. Its repression preserves epithelial identity.' },
+  { gene:'LOXL2',  role:'ECM Crosslinking',        category:'ECM Remodeling', color:'#4a9be8',
+    desc:'Lysyl oxidase-like 2 crosslinks collagen fibers, stiffening fibrotic tissue and making scar mechanically irreversible. Its inhibition keeps deposited matrix more degradable.' },
+  { gene:'NLRP3',  role:'Inflammasome Activation', category:'Inflammation', color:'#c98318',
+    desc:'Inflammasome sensor linking chronic tissue injury to IL-1beta release and downstream fibroblast activation. Its repression dampens the inflammatory trigger for fibrogenesis.' },
 ];
 
 // Category color mapping
-const CAT_COLORS={'Anti-aging':'#7b72e8','Pigmentation':'#c98318','Longevity':'#1faa7e','Hair':'#4a9be8','Barrier':'#3dba5c','Autre':'#5e5d58'};
+const CAT_COLORS={'Fibrogenesis':'#7b72e8','ECM Remodeling':'#4a9be8','Senescence':'#1faa7e','EMT':'#e0622f','Inflammation':'#c98318','Autre':'#5e5d58'};
 
 function renderBiomarkers(mode){
   const isExp = mode==='exp';
@@ -1028,8 +1290,8 @@ function renderBiomarkers(mode){
 
   const rows = BIOMARQUEURS.map(bm => {
     const rng = makeRng(mol+(cell||pheno)+conc+bm.gene+'bm');
-    const baseLfc = ({'COL1A1':1.5,'TYR':-0.8,'MITF':-0.6,'MMP1':-1.4,'CDKN2A':-1.2,
-                      'SIRT1':0.9,'VEGFA':1.6,'HIF1A':-0.5,'KRT14':1.1,'FLG':0.8}[bm.gene]||0.5);
+    const baseLfc = ({'COL1A1':-1.5,'ACTA2':-1.3,'TGFB1':-1.2,'TIMP1':-1.1,'MMP9':0.9,
+                      'CDKN2A':-1.0,'SIRT1':0.9,'SNAI1':-1.0,'LOXL2':-0.8,'NLRP3':-0.9}[bm.gene]||0.5);
     const lfc = +(baseLfc * m * (0.85 + rng()*0.3)).toFixed(2);
     const pct = lfc2pct(lfc);
     return {...bm, lfc, pct};
@@ -1038,7 +1300,7 @@ function renderBiomarkers(mode){
 
   document.getElementById(contentId).innerHTML = `
     <div class="card">
-      <div class="card-title"><span class="${dotClass}"></span>What This Means for the Skin</div>
+      <div class="card-title"><span class="${dotClass}"></span>What This Means for the Target Tissue</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         ${rows.map(bm=>{
           const up=bm.pct>0;
@@ -1095,20 +1357,29 @@ function renderSynth(mode){
   const epiScore  = hmData.find(h=>h.id==='epi')?.score||75;
   const autScore  = hmData.find(h=>h.id==='aut')?.score||66;
 
-  // Overall efficacy score (0-100)
-  const efficacy = Math.min(100, Math.round((Math.abs(clockDelta)/7*40) + (senScore/100*25) + (infScore/100*20) + (telScore/100*15)));
+  // Disease Reversal / connectivity score (-100 full reversal ... +100 disease-mimicking)
+  const reversalScore = isExp
+    ? getExpReversalScore(mol,cell,conc)
+    : getReversalScore(mol,pheno,conc);
+  const reversalApplicable = reversalScore!==null && reversalScore!==undefined;
+  const reversalStrength = reversalApplicable ? Math.max(0,Math.round(-reversalScore)) : null; // 0-100, higher = better reversal
+  const reversalVerdictStr = reversalApplicable ? reversalVerdict(reversalScore) : null;
+
+  // Intrinsic Capacity prediction (global + 5 WHO domains)
+  const icData = isExp ? getIC(mol,cell,conc) : getVCIC(mol,pheno,conc);
+  const icGlobal = icData.global;
+  const icTop = [...icData.comps].sort((a,b)=>b.score-a.score)[0];
 
   // Verdict text generation
-  function eff(v){return v>=75?'very high':v>=60?'high':v>=45?'moderate':'low';}
   function conj(v){return v>=70?'significantly':v>=50?'notably':'moderately';}
 
   const contextStr=isExp
     ? `${cell} cells, at ${concLabel}`
     : `In the ${phenoMeta.label} model at ${concLabel}`;
 
-  const clockStr=`${contextStr}, ${molLabel} induces an estimated epigenetic rejuvenation of ${Math.abs(clockDelta).toFixed(1)} yrs according to the Youngr Labs clock.`;
+  const clockStr=`${contextStr}, ${molLabel} induces an estimated fibrotic tissue-age reversal of ${Math.abs(clockDelta).toFixed(1)} yrs according to the Youngr Labs clock.`;
 
-  const antiAgeStr=`The extract ${conj(senScore)} reduces cellular senescence (score −${senScore}) and suppresses the inflammatory response (−${infScore}), two of the main drivers of skin aging.`;
+  const antiAgeStr=`The candidate ${conj(senScore)} reduces cellular senescence (score −${senScore}) and suppresses the inflammatory response (−${infScore}), two of the main drivers of fibrogenesis and SASP-mediated tissue scarring.`;
 
   const protectStr=`On the protective side, telomere maintenance is activated (+${telScore}) and DNA repair is enhanced (+${dnaScore}), suggesting an effect on long-term genomic stability.`;
 
@@ -1116,9 +1387,15 @@ function renderSynth(mode){
 
   const autophaStr=`Autophagy activation (+${autScore}) and oxidative stress reduction (−${rosScore}) complete this anti-aging profile.`;
 
+  const reversalStr = reversalApplicable
+    ? `Connectivity analysis returns a Disease Reversal Score of ${reversalScore>0?'+':''}${reversalScore} (scale −100 full reversal to +100 disease-mimicking): ${reversalVerdictStr.toLowerCase()}${isExp?`, moving the ${cell} transcriptional state away from its activated/fibrotic profile and toward the quiescent, normal reference.`:`, moving the ${phenoMeta.label} signature toward Normal ${DISEASE_TO_NORMAL[pheno]?DISEASE_TO_NORMAL[pheno].organ:''}.`}`
+    : (isExp?'':`Connectivity analysis does not apply to the ${phenoMeta.label} context, since it is not a disease phenotype.`);
+
+  const icStr=`On predicted functional outcomes, the Global Intrinsic Capacity Score is +${icGlobal}/100, with the strongest predicted benefit on the ${icTop.name} domain (+${icTop.score}), consistent with reduced fibrotic burden translating into improved physical and functional reserve.`;
+
   const concluStr=isExp
-    ? `In conclusion, ${molLabel} presents an anti-aging activity profile ${eff(efficacy)} on primary human ${cell}. Its estimated overall efficacy is ${efficacy}/100, with a preferential impact on senescence, inflammation and epigenetic reprogramming. These results support its evaluation in cosmetic or dermatological formulations targeting skin aging.`
-    : `In conclusion, ${molLabel} demonstrates an anti-aging potential ${eff(efficacy)} in the ${phenoMeta.label} context. The efficacy predicted by the Virtual Cell model is ${efficacy}/100. The impact is particularly pronounced on senescence and the epigenetic clock, with effects consistent with the biology of the targeted phenotype.`;
+    ? `In conclusion, ${molLabel} presents an anti-fibrotic activity profile on primary human ${cell}, with preferential impact on myofibroblast activation, senescence and inflammation${reversalApplicable?`, a Disease Reversal Score of ${reversalScore>0?'+':''}${reversalScore} indicating ${reversalVerdictStr.toLowerCase()}`:''}, and a predicted Global Intrinsic Capacity gain of +${icGlobal}/100. These results support its evaluation as a candidate for anti-fibrotic therapeutic development.`
+    : `In conclusion, ${molLabel} demonstrates an anti-fibrotic potential in the ${phenoMeta.label} context${reversalApplicable?`, supported by a Disease Reversal Score of ${reversalScore>0?'+':''}${reversalScore} (${reversalVerdictStr.toLowerCase()})`:''} and a predicted Global Intrinsic Capacity gain of +${icGlobal}/100. The impact is particularly pronounced on senescence and ECM remodeling, consistent with the biology of the targeted phenotype.`;
 
   // Score rows
   const scores=[
@@ -1131,6 +1408,8 @@ function renderSynth(mode){
     ['Oxidative Stress Reduction',rosScore,'#c98318'],
     ['Autophagy Activation',autScore,'#1faa7e'],
   ];
+  if(reversalApplicable) scores.unshift(['Disease Reversal Strength',reversalStrength,reversalColor(reversalScore)]);
+  scores.unshift(['Global Intrinsic Capacity',icGlobal,'#4a9be8']);
 
   // Key tags
   const posEffects=[];
@@ -1143,6 +1422,9 @@ function renderSynth(mode){
   if(epiScore>65) posEffects.push('Epigenetics ↑');
   if(autScore>60) posEffects.push('Autophagy ↑');
   if(Math.abs(clockDelta)>3) posEffects.push(`Clock −${Math.abs(clockDelta).toFixed(1)} yrs`);
+  if(reversalApplicable&&reversalScore<=-40) posEffects.push(`Disease Reversal ${reversalScore}`);
+  if(reversalApplicable&&reversalScore>=40) negSuppressed.push(`Disease-mimicking +${reversalScore}`);
+  if(icGlobal>=40) posEffects.push(`Intrinsic Capacity +${icGlobal}`);
 
   const subId=isExp?'synth-sub':'vc-synth-sub';
   const contentId=isExp?'synth-content':'vc-synth-content';
@@ -1154,19 +1436,8 @@ function renderSynth(mode){
     <div class="synth-verdict ${accentClass}">
       <div class="synth-verdict-icon">🔬</div>
       <div class="synth-verdict-body">
-        <div class="synth-verdict-title" style="color:${isExp?'var(--teal)':'var(--blue)'}">Overall Anti-aging Efficacy : ${efficacy}/100 — ${eff(efficacy).charAt(0).toUpperCase()+eff(efficacy).slice(1)}</div>
         <div class="synth-verdict-text">${clockStr}</div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="synth-section-title"><span class="${dotClass}" style="flex-shrink:0"></span>Scores by Biological Axis</div>
-      ${scores.map(([label,val,col])=>`
-        <div class="synth-score-row">
-          <span class="synth-score-label">${label}</span>
-          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${val}%;background:${col}"></div></div>
-          <span class="synth-score-val" style="color:${col}">${val}</span>
-        </div>`).join('')}
     </div>
 
     <div class="card">
@@ -1181,6 +1452,8 @@ function renderSynth(mode){
       </div>
       <p style="font-size:13px;color:var(--text2);line-height:1.7;">${antiAgeStr} ${protectStr}</p>
       <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${epigStr} ${autophaStr}</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${reversalStr}</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${icStr}</p>
     </div>
 
     <div class="${conclusionClass} synth-conclusion">
@@ -1204,7 +1477,7 @@ function applyAnalysisMode(section,mode){
   });
   // If current panel is now hidden, switch to first visible panel
   const prefix=section==='exp'?'':'vc-';
-  const briefPanels=section==='exp'?['biomarqueurs-panel','longevity-panel','clock-panel','synthese-panel']:['vc-biomarqueurs-panel','vc-hallmarks-panel','vc-clock-panel','vc-compare-panel','vc-synthese-panel'];
+  const briefPanels=section==='exp'?['biomarqueurs-panel','longevity-panel','clock-panel','ic-panel','reversal-panel','synthese-panel']:['vc-biomarqueurs-panel','vc-hallmarks-panel','vc-clock-panel','vc-ic-panel','vc-reversal-panel','vc-synthese-panel'];
   const currentPanel=section==='exp'?ES.panel:VC.panel;
   const isHidden=mode==='brief'&&!briefPanels.includes(currentPanel);
   if(isHidden){
