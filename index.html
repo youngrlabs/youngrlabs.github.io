@@ -191,6 +191,46 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px;}
 
+/* ── Disease Reversal ── */
+.disease-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:1.25rem;}
+.disease-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;position:relative;overflow:hidden;}
+.disease-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:var(--radius-lg) 0 0 var(--radius-lg);}
+.disease-card.high::before{background:var(--teal);}
+.disease-card.medium::before{background:var(--amber);}
+.disease-card.low::before{background:var(--coral);}
+.disease-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.disease-label{font-size:11px;color:var(--text3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;}
+.disease-score-big{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;line-height:1;margin-bottom:6px;}
+.disease-score-big.high{color:var(--teal);}
+.disease-score-big.medium{color:var(--amber);}
+.disease-score-big.low{color:var(--coral);}
+.disease-bar-wrap{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+.disease-bar{height:6px;border-radius:3px;}
+.disease-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.disease-genes{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.disease-gene-tag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 6px;border-radius:4px;background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
+.verdict-chip{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:10px;}
+.verdict-chip.high{background:rgba(31,170,126,.12);color:var(--teal);border:1px solid rgba(31,170,126,.25);}
+.verdict-chip.medium{background:rgba(201,131,24,.12);color:var(--amber);border:1px solid rgba(201,131,24,.25);}
+.verdict-chip.low{background:rgba(224,98,47,.12);color:var(--coral);border:1px solid rgba(224,98,47,.25);}
+/* ── Intrinsic Capacity ── */
+.ic-global-card{background:linear-gradient(135deg,rgba(31,170,126,.06),rgba(74,155,232,.06));border:1px solid rgba(31,170,126,.2);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:1.25rem;display:flex;align-items:center;gap:24px;}
+.ic-global-score{font-family:'Syne',sans-serif;font-size:56px;font-weight:800;line-height:1;color:var(--teal);flex-shrink:0;}
+.ic-global-body{flex:1;}
+.ic-global-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.ic-global-sub{font-size:12.5px;color:var(--text2);line-height:1.6;}
+.ic-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem;}
+.ic-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 12px;text-align:center;}
+.ic-icon{font-size:24px;margin-bottom:8px;}
+.ic-domain{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;line-height:1.3;}
+.ic-score{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px;}
+.ic-delta{font-size:12px;font-weight:600;margin-bottom:6px;}
+.ic-delta.pos{color:var(--teal);}
+.ic-delta.neg{color:var(--coral);}
+.ic-mini-bar-wrap{height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.ic-mini-bar{height:5px;border-radius:3px;}
+.ic-desc{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.4;}
+
 /* ── Analysis mode toggle ── */
 .analysis-toggle{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
 .toggle-btn{padding:7px 6px;border:1px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text3);font-size:11.5px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;text-align:center;line-height:1.2;}
@@ -253,9 +293,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   <div class="sb-section">
     <div class="sb-label">Molecule</div>
     <div class="btn-group" id="mol-btns">
-      <button class="btn active-exp" data-mol="M1" onclick="setMol(this)">Extract #1</button>
-      <button class="btn" data-mol="M2" onclick="setMol(this)">Extract #2</button>
-      <button class="btn" data-mol="M3" onclick="setMol(this)">Extract #3</button>
+      <button class="btn active-exp" data-mol="M1" onclick="setMol(this)">Molecule #1</button>
+      <button class="btn" data-mol="M2" onclick="setMol(this)">Molecule #2</button>
+      <button class="btn" data-mol="M3" onclick="setMol(this)">Molecule #3</button>
     </div>
   </div>
   <div class="sb-divider"></div>
@@ -291,7 +331,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn exp-full-only" data-panel="deg-panel" onclick="setPanel(this,'exp')">Diff. Expressed Genes</button>
       <button class="btn exp-full-only" data-panel="pathway-panel" onclick="setPanel(this,'exp')">Biological Pathways</button>
       <button class="btn active-exp" data-panel="longevity-panel" onclick="setPanel(this,'exp')">Aging Hallmarks</button>
-      <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Epigenetic Clocks</button>
+      <button class="btn" data-panel="clock-panel" onclick="setPanel(this,'exp')">Transcriptomic Clock</button>
+      <button class="btn" data-panel="disease-panel" onclick="setPanel(this,'exp')">Disease Reversal Score</button>
+      <button class="btn" data-panel="intrinsic-panel" onclick="setPanel(this,'exp')">Intrinsic Capacity</button>
       <button class="btn synth-btn-exp" data-panel="synthese-panel" onclick="setPanel(this,'exp')">Summary</button>
     </div>
   </div>
@@ -304,7 +346,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <main class="main" id="main-exp">
   <div class="ctx-bar">
     <span class="mode-badge mode-exp">EXP</span>
-    <span class="ctx-chip" id="ctx-mol">Extract #1</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="ctx-mol">Molecule #1</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="ctx-cell">Fibroblasts</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="ctx-conc">0.1 µM</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="ctx-panel">Quality Control</span>
@@ -371,9 +413,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
   </div>
   <!-- Clock panel -->
   <div class="panel" id="clock-panel">
-    <div class="section-header"><div class="eyebrow eyebrow-exp">Cellular Reprogramming</div><div class="stitle">Epigenetic Clocks</div><div class="ssub">Estimated Δ biological age · treated vs. control</div></div>
+    <div class="section-header"><div class="eyebrow eyebrow-exp">Cellular Reprogramming</div><div class="stitle">Transcriptomic Clock</div><div class="ssub">Estimated Δ biological age · treated vs. control</div></div>
     <div class="clock-grid" id="clock-grid"></div>
     <div class="card"><div class="card-title"><span class="card-dot"></span>Global Score — all cell types</div><div class="chart-wrap" style="height:320px;"><canvas id="clockRadar"></canvas></div></div>
+  </div>
+
+  <!-- Disease Reversal Score panel EXP -->
+  <div class="panel" id="disease-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-exp">Therapeutic Potential</div>
+      <div class="stitle">Disease Reversal Score</div>
+      <div class="ssub" id="disease-sub">—</div>
+    </div>
+    <div id="disease-content"></div>
+  </div>
+
+  <!-- Intrinsic Capacity panel EXP -->
+  <div class="panel" id="intrinsic-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-exp">Functional Aging</div>
+      <div class="stitle">Intrinsic Capacity</div>
+      <div class="ssub" id="intrinsic-sub">Higher scores = better functional capacity</div>
+    </div>
+    <div id="intrinsic-content"></div>
   </div>
 
   <!-- Summary panel EXP -->
@@ -397,11 +459,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <aside class="sidebar" id="sidebar-vc">
 
   <div class="sb-section">
-    <div class="sb-label">Extract Tested</div>
+    <div class="sb-label">Molecule Tested</div>
     <div class="btn-group" id="vc-mol-btns">
-      <button class="btn active-vc" data-vcmol="M1" onclick="setVCMol(this)">Extract #1</button>
-      <button class="btn" data-vcmol="M2" onclick="setVCMol(this)">Extract #2</button>
-      <button class="btn" data-vcmol="M3" onclick="setVCMol(this)">Extract #3</button>
+      <button class="btn active-vc" data-vcmol="M1" onclick="setVCMol(this)">Molecule #1</button>
+      <button class="btn" data-vcmol="M2" onclick="setVCMol(this)">Molecule #2</button>
+      <button class="btn" data-vcmol="M3" onclick="setVCMol(this)">Molecule #3</button>
     </div>
   </div>
 
@@ -448,10 +510,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
     </div>
 
     <div class="vc-cat">
-      <div class="vc-cat-label">Gender</div>
+      <div class="vc-cat-label">Sexe</div>
       <div class="btn-group">
-        <button class="btn vc-sub-btn" data-pheno="sex_female" onclick="setPheno(this)">Woman</button>
-        <button class="btn vc-sub-btn" data-pheno="sex_male" onclick="setPheno(this)">Man</button>
+        <button class="btn vc-sub-btn" data-pheno="sex_female" onclick="setPheno(this)">Femme</button>
+        <button class="btn vc-sub-btn" data-pheno="sex_male" onclick="setPheno(this)">Homme</button>
       </div>
     </div>
 
@@ -522,8 +584,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <button class="btn vc-full-only" data-vcpanel="vc-deg-panel" onclick="setPanel(this,'vc')">Diff. Expressed Genes</button>
       <button class="btn vc-full-only" data-vcpanel="vc-pathway-panel" onclick="setPanel(this,'vc')">Biological Pathways</button>
       <button class="btn active-vc" data-vcpanel="vc-hallmarks-panel" onclick="setPanel(this,'vc')">Aging Hallmarks</button>
-      <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Epigenetic Clocks</button>
+      <button class="btn" data-vcpanel="vc-clock-panel" onclick="setPanel(this,'vc')">Transcriptomic Clock</button>
       <button class="btn" data-vcpanel="vc-compare-panel" onclick="setPanel(this,'vc')">Phenotype Comparison</button>
+      <button class="btn" data-vcpanel="vc-disease-panel" onclick="setPanel(this,'vc')">Disease Reversal Score</button>
+      <button class="btn" data-vcpanel="vc-intrinsic-panel" onclick="setPanel(this,'vc')">Intrinsic Capacity</button>
       <button class="btn synth-btn-vc" data-vcpanel="vc-synthese-panel" onclick="setPanel(this,'vc')">Summary</button>
     </div>
   </div>
@@ -532,7 +596,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 <main class="main" id="main-vc">
   <div class="ctx-bar">
     <span class="mode-badge mode-vc">IA</span>
-    <span class="ctx-chip" id="vc-ctx-mol">Extract #1</span><span class="ctx-sep">·</span>
+    <span class="ctx-chip" id="vc-ctx-mol">Molecule #1</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="vc-ctx-pheno">Normal Skin</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="vc-ctx-conc">0.1 µM</span><span class="ctx-sep">·</span>
     <span class="ctx-chip" id="vc-ctx-panel">Diff. Expressed Genes</span>
@@ -580,7 +644,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
 
   <!-- VC Clock -->
   <div class="panel" id="vc-clock-panel">
-    <div class="section-header"><div class="eyebrow eyebrow-vc">AI Prediction</div><div class="stitle">Predicted Epigenetic Clocks</div><div class="ssub">Predicted Δ biological age · selected phenotype · all molecules</div></div>
+    <div class="section-header"><div class="eyebrow eyebrow-vc">AI Prediction</div><div class="stitle">Predicted Transcriptomic Clock</div><div class="ssub">Predicted Δ biological age · selected phenotype · all molecules</div></div>
     <div class="clock-grid" id="vc-clock-grid"></div>
     <div class="card"><div class="card-title"><span class="card-dot-vc"></span>Rejuvenation Profile — phenotype comparison</div><div class="chart-wrap" style="height:320px;"><canvas id="vc-clockBar"></canvas></div></div>
   </div>
@@ -596,6 +660,26 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;fon
       <div class="card-title"><span class="card-dot-vc"></span>Predicted Anti-inflammatory Score — all phenotypes</div>
       <div class="chart-wrap" style="height:320px;"><canvas id="vc-compareChart"></canvas></div>
     </div>
+  </div>
+
+  <!-- VC Disease Reversal Score -->
+  <div class="panel" id="vc-disease-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-vc">AI Prediction</div>
+      <div class="stitle">Disease Reversal Score</div>
+      <div class="ssub" id="vc-disease-sub">—</div>
+    </div>
+    <div id="vc-disease-content"></div>
+  </div>
+
+  <!-- VC Intrinsic Capacity -->
+  <div class="panel" id="vc-intrinsic-panel">
+    <div class="section-header">
+      <div class="eyebrow eyebrow-vc">AI Prediction</div>
+      <div class="stitle">Intrinsic Capacity</div>
+      <div class="ssub" id="vc-intrinsic-sub">Higher scores = better functional capacity</div>
+    </div>
+    <div id="vc-intrinsic-content"></div>
   </div>
 
   <!-- VC Summary panel -->
@@ -618,7 +702,7 @@ function makeRng(s){let seed=typeof s==='string'?s.split('').reduce((a,c)=>a+c.c
 
 // ═══════════════════ EXP STATE ═══════════════════
 const ES={mol:'M1',cell:'Fibroblasts',conc:'C1',panel:'longevity-panel',pwDir:'all',umapMode:'celltype'};
-const MOL_LABELS={M1:'Extract #1',M2:'Extract #2',M3:'Extract #3'};
+const MOL_LABELS={M1:'Molecule #1',M2:'Molecule #2',M3:'Molecule #3'};
 const CONC_LABELS={C1:'0.1 µM',C2:'1 µM'};
 const CONC_MULT={C1:0.65,C2:1.0};
 const MOL_PROFILE={M1:{strength:1.0,mito:4.2},M2:{strength:0.75,mito:5.1},M3:{strength:1.2,mito:3.8}};
@@ -639,8 +723,8 @@ const PHENO_META={
   eth_hispanic:{label:'Hispanic Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.88,icon:'🌎'},
   eth_caucasian:{label:'Caucasian Phototype',cat:'Ethnicity',cells:['Melanocytes','Keratinocytes'],conf:0.92,icon:'🌍'},
   scalp_healthy:{label:'Healthy Scalp',cat:'Scalp',cells:['HFDPCs','Keratinocytes'],conf:0.93,icon:'💆'},
-  sex_female:{label:'Woman',cat:'Gender',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.92,icon:'♀️'},
-  sex_male:{label:'Man',cat:'Gender',cells:['Fibroblasts','Keratinocytes','Sebocytes'],conf:0.91,icon:'♂️'},
+  sex_female:{label:'Female',cat:'Sex',cells:['Fibroblasts','Keratinocytes','Melanocytes'],conf:0.92,icon:'♀️'},
+  sex_male:{label:'Male',cat:'Sex',cells:['Fibroblasts','Keratinocytes','Sebocytes'],conf:0.91,icon:'♂️'},
   scalp_alopecia:{label:'Alopecia Areata',cat:'Scalp',cells:['HFDPCs','Lymphocytes T'],conf:0.84,icon:'⚠️'},
   cancer_bcc:{label:'Basal Cell Carcinoma',cat:'Cancer',cells:['Basal Keratinocytes','Stromal cells'],conf:0.82,icon:'🔬'},
   cancer_scc:{label:'Squamous Cell Carcinoma',cat:'Cancer',cells:['Keratinocytes','Tumor cells'],conf:0.80,icon:'🔬'},
@@ -844,10 +928,44 @@ function renderHallmarks(){
 }
 
 function renderClock(){
-  const{mol,conc}=ES;const cells=Object.keys(BASE_CLOCK);
-  document.getElementById('clock-grid').innerHTML=cells.flatMap(ct=>['M1','M2','M3'].map(m=>{const delta=getClockDelta(m,ct,conc);const pct=Math.min(Math.abs(delta)/8*100,100);return `<div class="clock-card"><div class="clock-type">${ct.length>10?ct.slice(0,10)+'…':ct} · ${m}</div><div class="clock-bar-wrap"><div class="clock-bar" style="width:${pct}%"></div></div><div class="clock-delta">${delta} yrs</div><div class="clock-p">p &lt; 0.001</div></div>`;})).join('');
+  const{mol,conc}=ES;
+  const cells=Object.keys(BASE_CLOCK);
+  const molLabel=MOL_LABELS[mol];
+  const concLabel=CONC_LABELS[conc];
+  // One card per cell type for the selected molecule only
+  document.getElementById('clock-grid').innerHTML=cells.map(ct=>{
+    const delta=getClockDelta(mol,ct,conc);
+    const pct=Math.min(Math.abs(delta)/8*100,100);
+    return '<div class="clock-card">'
+      +'<div class="clock-type">'+ct+'</div>'
+      +'<div class="clock-bar-wrap"><div class="clock-bar" style="width:'+pct+'%"></div></div>'
+      +'<div class="clock-delta">'+delta+' yrs</div>'
+      +'<div class="clock-p">p &lt; 0.001</div>'
+      +'</div>';
+  }).join('');
+  // Radar: selected molecule, one axis per cell type
   destroyChart('clockR');
-  charts['clockR']=new Chart(document.getElementById('clockRadar'),{type:'radar',data:{labels:cells,datasets:['M1','M2','M3'].map((m,i)=>({label:MOL_LABELS[m],data:cells.map(ct=>Math.abs(getClockDelta(m,ct,conc))),borderColor:['#7b72e8','#1faa7e','#e0622f'][i],backgroundColor:['rgba(123,114,232,0.1)','rgba(31,170,126,0.08)','rgba(224,98,47,0.07)'][i],pointBackgroundColor:['#7b72e8','#1faa7e','#e0622f'][i],borderWidth:1.5,borderDash:i===0?[]:(i===1?[4,2]:[2,4])}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:12}}},scales:{r:{min:0,max:8,ticks:{stepSize:2,color:'#5e5d58',font:{size:10},backdropColor:'transparent'},pointLabels:{color:'#9a9890',font:{size:13}},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}}});
+  charts['clockR']=new Chart(document.getElementById('clockRadar'),{
+    type:'radar',
+    data:{
+      labels:cells,
+      datasets:[{
+        label:molLabel+' · '+concLabel,
+        data:cells.map(ct=>Math.abs(getClockDelta(mol,ct,conc))),
+        borderColor:'#1faa7e',
+        backgroundColor:'rgba(31,170,126,0.1)',
+        pointBackgroundColor:'#1faa7e',
+        borderWidth:2,
+        pointRadius:4
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:12}}},
+      scales:{r:{min:0,max:8,ticks:{stepSize:2,color:'#5e5d58',font:{size:10},backdropColor:'transparent'},
+        pointLabels:{color:'#9a9890',font:{size:13}},
+        grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'}}}
+    }
+  });
 }
 
 // ═══════════════════ VC RENDERERS ═══════════════════
@@ -897,13 +1015,50 @@ function renderVCHallmarks(){
 
 function renderVCClock(){
   const{mol,pheno,conc}=VC;
-  const phenoList=['skin_normal','skin_eczema','skin_psoriasis','age_20','age_40','age_60','scalp_healthy','scalp_alopecia'];
-  const mols=['M1','M2','M3'];
-  document.getElementById('vc-clock-grid').innerHTML=mols.map(m=>{const delta=getVCClock(m,pheno,conc);const pct=Math.min(Math.abs(delta)/8*100,100);return `<div class="clock-card"><div class="clock-type">${MOL_LABELS[m]}</div><div class="clock-bar-wrap"><div class="clock-bar" style="width:${pct}%;background:var(--blue)"></div></div><div class="clock-delta" style="color:var(--blue)">${delta} yrs</div><div class="clock-p">confidence ${Math.round(PHENO_META[pheno].conf*100)}%</div></div>`;}).join('');
-  // Bar chart comparing phenotypes for current mol
+  const molLabel=MOL_LABELS[mol];
+  const concLabel=CONC_LABELS[conc];
+  const delta=getVCClock(mol,pheno,conc);
+  const pct=Math.min(Math.abs(delta)/8*100,100);
+  const conf=Math.round(PHENO_META[pheno].conf*100);
+
+  // Single big card for the selected molecule + phenotype
+  document.getElementById('vc-clock-grid').innerHTML=
+    '<div class="clock-card" style="grid-column:1/-1;max-width:320px;margin:0 auto;padding:20px 24px;text-align:center;">'
+    +'<div class="clock-type" style="font-size:12px;margin-bottom:10px;">'+molLabel+' · '+PHENO_META[pheno].label+' · '+concLabel+'</div>'
+    +'<div style="font-family:Syne,sans-serif;font-size:52px;font-weight:800;color:var(--blue);line-height:1;margin-bottom:8px;">'+delta+' yrs</div>'
+    +'<div style="font-size:12px;color:var(--text2);margin-bottom:10px;">Δ biological age · negative = rejuvenation</div>'
+    +'<div class="clock-bar-wrap" style="height:6px;margin-bottom:8px;"><div class="clock-bar" style="width:'+pct+'%;background:var(--blue)"></div></div>'
+    +'<div class="clock-p">Confidence '+conf+'%</div>'
+    +'</div>';
+
+  // Bar chart: delta across phenotypes for the selected molecule
   destroyChart('vc-clockBar');
-  const phenoDeltas=phenoList.map(p=>({label:PHENO_META[p]?PHENO_META[p].label:p,val:Math.abs(getVCClock(mol,p,conc))}));
-  charts['vc-clockBar']=new Chart(document.getElementById('vc-clockBar'),{type:'bar',data:{labels:phenoDeltas.map(p=>p.label.length>20?p.label.slice(0,20)+'…':p.label),datasets:[{label:`Δ age (${MOL_LABELS[mol]} · ${CONC_LABELS[conc]})`,data:phenoDeltas.map(p=>p.val),backgroundColor:phenoDeltas.map((p,i)=>i%2===0?'rgba(74,155,232,0.7)':'rgba(123,114,232,0.6)'),borderRadius:5,barThickness:28}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:10}}},scales:{x:{ticks:{color:'#9a9890',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{title:{display:true,text:'|Δ biological age| (years)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  const phenoList=['skin_normal','skin_eczema','skin_psoriasis','skin_acne','age_20','age_40','age_60','scalp_healthy','scalp_alopecia','sex_female','sex_male'];
+  const phenoDeltas=phenoList.filter(p=>PHENO_META[p]).map(p=>({
+    label:PHENO_META[p].label,
+    val:getVCClock(mol,p,conc)
+  }));
+  charts['vc-clockBar']=new Chart(document.getElementById('vc-clockBar'),{
+    type:'bar',
+    data:{
+      labels:phenoDeltas.map(p=>p.label.length>20?p.label.slice(0,20)+'…':p.label),
+      datasets:[{
+        label:molLabel+' · '+concLabel,
+        data:phenoDeltas.map(p=>p.val),
+        backgroundColor:phenoDeltas.map(p=>p.val<=-3?'rgba(31,170,126,0.75)':p.val<0?'rgba(74,155,232,0.7)':'rgba(224,98,47,0.6)'),
+        borderRadius:5,
+        barThickness:24
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#9a9890',font:{size:12},boxWidth:10}}},
+      scales:{
+        x:{title:{display:true,text:'Δ biological age (yrs)',color:'#9a9890',font:{size:11}},ticks:{color:'#5e5d58'},grid:{color:'rgba(255,255,255,0.04)'}},
+        y:{ticks:{color:'#9a9890',font:{size:11}},grid:{display:false}}
+      }
+    }
+  });
 }
 
 function renderVCCompare(){
@@ -964,6 +1119,8 @@ function refreshExp(){
   else if(p==='pathway-panel')renderPW();
   else if(p==='longevity-panel')renderHallmarks();
   else if(p==='clock-panel')renderClock();
+  else if(p==='disease-panel')renderDisease('exp');
+  else if(p==='intrinsic-panel')renderIntrinsic('exp');
   else if(p==='synthese-panel')renderSynth('exp');
 }
 
@@ -975,6 +1132,8 @@ function refreshVC(){
   else if(p==='vc-hallmarks-panel')renderVCHallmarks();
   else if(p==='vc-clock-panel')renderVCClock();
   else if(p==='vc-compare-panel')renderVCCompare();
+  else if(p==='vc-disease-panel')renderDisease('vc');
+  else if(p==='vc-intrinsic-panel')renderIntrinsic('vc');
   else if(p==='vc-synthese-panel')renderSynth('vc');
 }
 
@@ -1076,73 +1235,105 @@ function renderSynth(mode){
   const accentClass=isExp?'synth-verdict-exp':'synth-verdict-vc';
   const conclusionClass=isExp?'synth-conclusion-exp':'synth-conclusion-vc';
   const dotClass=isExp?'card-dot':'card-dot-vc';
-  const eyebrowClass=isExp?'eyebrow-exp':'eyebrow-vc';
 
-  // Compute summary scores from data
-  const m=CONC_MULT[conc]*MOL_PROFILE[mol].strength;
-  const rng=makeRng(mol+(cell||pheno)+conc+'synth');
-
+  // ── Clock delta ──────────────────────────────────────────────
+  // EXP: average across all cell types (matches what Clock tab shows overall)
+  // VC: delta for selected phenotype (matches VC Clock tab)
   const clockDelta = isExp
-    ? getClockDelta(mol,cell,conc)
+    ? +(Object.keys(BASE_CLOCK).reduce((sum,ct)=>sum+getClockDelta(mol,ct,conc),0)/Object.keys(BASE_CLOCK).length).toFixed(1)
     : getVCClock(mol,pheno,conc);
 
+  // ── Hallmarks — use selected cell (EXP) or pheno (VC), matches Aging Hallmarks tab ──
   const hmData = isExp ? getHM(mol,cell,conc) : getVCHM(mol,pheno,conc);
-  const senScore  = hmData.find(h=>h.id==='sen')?.score||70;
-  const infScore  = hmData.find(h=>h.id==='inf')?.score||65;
-  const rosScore  = hmData.find(h=>h.id==='ros')?.score||60;
-  const telScore  = hmData.find(h=>h.id==='tel')?.score||68;
-  const dnaScore  = hmData.find(h=>h.id==='dna')?.score||72;
-  const epiScore  = hmData.find(h=>h.id==='epi')?.score||75;
-  const autScore  = hmData.find(h=>h.id==='aut')?.score||66;
+  const senScore = hmData.find(h=>h.id==='sen')?.score||70;
+  const infScore = hmData.find(h=>h.id==='inf')?.score||65;
+  const rosScore = hmData.find(h=>h.id==='ros')?.score||60;
+  const telScore = hmData.find(h=>h.id==='tel')?.score||68;
+  const dnaScore = hmData.find(h=>h.id==='dna')?.score||72;
+  const epiScore = hmData.find(h=>h.id==='epi')?.score||75;
+  const autScore = hmData.find(h=>h.id==='aut')?.score||66;
 
-  // Overall efficacy score (0-100)
-  const efficacy = Math.min(100, Math.round((Math.abs(clockDelta)/7*40) + (senScore/100*25) + (infScore/100*20) + (telScore/100*15)));
+  // ── Disease Reversal — same function as Disease tab ──
+  const diseaseScores = DISEASES.map(d=>({name:d.name,score:getDiseaseScore(d,mol,conc)}));
+  const avgDiseaseScore = Math.round(diseaseScores.reduce((s,d)=>s+d.score,0)/diseaseScores.length);
+  const bestDisease = diseaseScores.reduce((a,b)=>a.score>b.score?a:b);
+  const worstDisease = diseaseScores.reduce((a,b)=>a.score<b.score?a:b);
 
-  // Verdict text generation
+  // ── Intrinsic Capacity — same clockDelta as above, same as IC tab (EXP uses avg clock) ──
+  const icScores = IC_DOMAINS.map(d=>({name:d.name,icon:d.icon,score:getICScore(d,mol,conc,clockDelta)}));
+  const globalIC = Math.round(icScores.reduce((s,d)=>s+d.score,0)/icScores.length);
+  const bestIC = icScores.reduce((a,b)=>a.score>b.score?a:b);
+  const worstIC = icScores.reduce((a,b)=>a.score<b.score?a:b);
+  const icDeltaVal = globalIC - 55; // baseline untreated ≈ 55
+
+  // ── Overall efficacy ──
+  const efficacy = Math.min(100, Math.round(
+    (Math.abs(clockDelta)/7*25) +
+    (senScore/100*20) +
+    (infScore/100*15) +
+    (avgDiseaseScore/100*20) +
+    (globalIC/100*20)
+  ));
+
+  // ── Helper functions ──
   function eff(v){return v>=75?'very high':v>=60?'high':v>=45?'moderate':'low';}
   function conj(v){return v>=70?'significantly':v>=50?'notably':'moderately';}
+  function direction(delta){return delta<0?'rejuvenation of':'acceleration of';}
 
-  const contextStr=isExp
-    ? `${cell} cells, at ${concLabel}`
-    : `In the ${phenoMeta.label} model at ${concLabel}`;
+  // ── Narrative strings — all use computed values from same functions as the tabs ──
+  const clockVerb = clockDelta<0?'reduces':'increases';
+  const clockAbs = Math.abs(clockDelta).toFixed(1);
+  const clockDir = clockDelta<0?'younger':'older';
 
-  const clockStr=`${contextStr}, ${molLabel} induces an estimated epigenetic rejuvenation of ${Math.abs(clockDelta).toFixed(1)} yrs according to the Youngr Labs clock.`;
+  const clockStr = isExp
+    ? `On ${cell} cells at ${concLabel}, ${molLabel} shifts the transcriptomic clock by ${clockAbs} yrs toward a ${clockDir} state (average across all cell types).`
+    : `In the ${phenoMeta.label} model at ${concLabel}, ${molLabel} shifts the transcriptomic clock by ${clockAbs} yrs toward a ${clockDir} state.`;
 
-  const antiAgeStr=`The extract ${conj(senScore)} reduces cellular senescence (score −${senScore}) and suppresses the inflammatory response (−${infScore}), two of the main drivers of skin aging.`;
+  const antiAgeStr = `${molLabel} ${conj(senScore)} reduces cellular senescence (score −${senScore}) and ${conj(infScore)} suppresses the inflammatory response (−${infScore}), two of the main drivers of skin aging.`;
 
-  const protectStr=`On the protective side, telomere maintenance is activated (+${telScore}) and DNA repair is enhanced (+${dnaScore}), suggesting an effect on long-term genomic stability.`;
+  const protectStr = `Telomere maintenance is activated (+${telScore}) and DNA repair is enhanced (+${dnaScore}), suggesting a stabilizing effect on long-term genomic integrity.`;
 
-  const epigStr=`Epigenetic regulation is also stimulated (+${epiScore}), consistent with a partial reprogramming mechanism toward a younger cellular state.`;
+  const epigStr = `Epigenetic regulation is stimulated (+${epiScore}), consistent with the transcriptomic clock shift toward a younger cellular state. Autophagy is also activated (+${autScore}) and oxidative stress is reduced (−${rosScore}).`;
 
-  const autophaStr=`Autophagy activation (+${autScore}) and oxidative stress reduction (−${rosScore}) complete this anti-aging profile.`;
+  const diseaseStr = avgDiseaseScore>=60
+    ? `The Disease Reversal Score averages ${avgDiseaseScore}/100 across 4 dermatological conditions, with the strongest effect on ${bestDisease.name} (${bestDisease.score}/100).`
+    : `The Disease Reversal Score averages ${avgDiseaseScore}/100. The strongest reversal is observed for ${bestDisease.name} (${bestDisease.score}/100); results for ${worstDisease.name} remain limited (${worstDisease.score}/100).`;
 
-  const concluStr=isExp
-    ? `In conclusion, ${molLabel} presents an anti-aging activity profile ${eff(efficacy)} on primary human ${cell}. Its estimated overall efficacy is ${efficacy}/100, with a preferential impact on senescence, inflammation and epigenetic reprogramming. These results support its evaluation in cosmetic or dermatological formulations targeting skin aging.`
-    : `In conclusion, ${molLabel} demonstrates an anti-aging potential ${eff(efficacy)} in the ${phenoMeta.label} context. The efficacy predicted by the Virtual Cell model is ${efficacy}/100. The impact is particularly pronounced on senescence and the epigenetic clock, with effects consistent with the biology of the targeted phenotype.`;
+  const icStr = globalIC>=70
+    ? `The Global Intrinsic Capacity Score is ${globalIC}/100 (+${icDeltaVal} pts vs. untreated baseline), with ${bestIC.icon} ${bestIC.name} as the most improved domain — consistent with the clock rejuvenation of ${clockAbs} yrs.`
+    : `The Global Intrinsic Capacity Score is ${globalIC}/100 (+${Math.max(0,icDeltaVal)} pts vs. untreated baseline). The ${clockDelta<0?'clock rejuvenation':'limited clock effect'} of ${clockAbs} yrs translates into a ${icDeltaVal>0?'modest':'limited'} functional improvement, most visible in the ${bestIC.icon} ${bestIC.name} domain.`;
 
-  // Score rows
+  const concluStr = isExp
+    ? `In conclusion, ${molLabel} presents an anti-aging profile of ${eff(efficacy)} overall efficacy (${efficacy}/100) on ${cell}. The transcriptomic clock indicates ${clockAbs} yrs of biological ${direction(clockDelta)}. ${diseaseStr} ${icStr} These results support its evaluation in cosmetic or dermatological formulations targeting skin aging and functional longevity.`
+    : `In conclusion, ${molLabel} demonstrates ${eff(efficacy)} anti-aging potential (${efficacy}/100) in the ${phenoMeta.label} context. The transcriptomic clock predicts ${clockAbs} yrs of biological ${direction(clockDelta)}. ${diseaseStr} ${icStr}`;
+
+  // ── Score rows (all values from same data sources as the tabs) ──
   const scores=[
-    ['Epigenetic Rejuvenation',Math.min(100,Math.round(Math.abs(clockDelta)/7*100)),'#1faa7e'],
-    ['Senescence Reduction',senScore,'#1faa7e'],
-    ['Anti-inflammatory Action',infScore,'#1faa7e'],
-    ['Telomere Protection',telScore,'#4a9be8'],
-    ['DNA Repair',dnaScore,'#4a9be8'],
-    ['Epigenetic Regulation',epiScore,'#7b72e8'],
-    ['Oxidative Stress Reduction',rosScore,'#c98318'],
-    ['Autophagy Activation',autScore,'#1faa7e'],
+    ['Transcriptomic Rejuvenation', Math.min(100,Math.round(Math.abs(clockDelta)/7*100)), '#1faa7e'],
+    ['Senescence Reduction',        senScore,         '#1faa7e'],
+    ['Anti-inflammatory Action',    infScore,         '#1faa7e'],
+    ['Telomere Protection',         telScore,         '#4a9be8'],
+    ['DNA Repair',                  dnaScore,         '#4a9be8'],
+    ['Epigenetic Regulation',       epiScore,         '#7b72e8'],
+    ['Oxidative Stress Reduction',  rosScore,         '#c98318'],
+    ['Autophagy Activation',        autScore,         '#1faa7e'],
+    ['Disease Reversal — avg',      avgDiseaseScore,  '#7b72e8'],
+    ['Intrinsic Capacity — global', globalIC,         '#1faa7e'],
   ];
 
-  // Key tags
+  // ── Key tags ──
   const posEffects=[];
   const negSuppressed=[];
-  if(senScore>60) negSuppressed.push('Senescence ↓');
-  if(infScore>60) negSuppressed.push('Inflammation ↓');
-  if(rosScore>55) negSuppressed.push('ROS ↓');
-  if(telScore>60) posEffects.push('Telomeres ↑');
-  if(dnaScore>65) posEffects.push('DNA Repair ↑');
-  if(epiScore>65) posEffects.push('Epigenetics ↑');
-  if(autScore>60) posEffects.push('Autophagy ↑');
-  if(Math.abs(clockDelta)>3) posEffects.push(`Clock −${Math.abs(clockDelta).toFixed(1)} yrs`);
+  if(clockDelta<0) posEffects.push(`Clock −${clockAbs} yrs`);
+  if(telScore>60)  posEffects.push('Telomeres ↑');
+  if(dnaScore>65)  posEffects.push('DNA Repair ↑');
+  if(epiScore>65)  posEffects.push('Epigenetics ↑');
+  if(autScore>60)  posEffects.push('Autophagy ↑');
+  if(globalIC>60)  posEffects.push(`IC +${icDeltaVal} pts`);
+  if(senScore>60)  negSuppressed.push('Senescence ↓');
+  if(infScore>60)  negSuppressed.push('Inflammation ↓');
+  if(rosScore>55)  negSuppressed.push('ROS ↓');
+  if(avgDiseaseScore>60) posEffects.push(`Disease Reversal ${avgDiseaseScore}/100`);
 
   const subId=isExp?'synth-sub':'vc-synth-sub';
   const contentId=isExp?'synth-content':'vc-synth-content';
@@ -1154,7 +1345,7 @@ function renderSynth(mode){
     <div class="synth-verdict ${accentClass}">
       <div class="synth-verdict-icon">🔬</div>
       <div class="synth-verdict-body">
-        <div class="synth-verdict-title" style="color:${isExp?'var(--teal)':'var(--blue)'}">Overall Anti-aging Efficacy : ${efficacy}/100 — ${eff(efficacy).charAt(0).toUpperCase()+eff(efficacy).slice(1)}</div>
+        <div class="synth-verdict-title" style="color:${isExp?'var(--teal)':'var(--blue)'}">Overall Anti-aging Efficacy: ${efficacy}/100 — ${eff(efficacy).charAt(0).toUpperCase()+eff(efficacy).slice(1)}</div>
         <div class="synth-verdict-text">${clockStr}</div>
       </div>
     </div>
@@ -1164,7 +1355,7 @@ function renderSynth(mode){
       ${scores.map(([label,val,col])=>`
         <div class="synth-score-row">
           <span class="synth-score-label">${label}</span>
-          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${val}%;background:${col}"></div></div>
+          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${Math.min(val,100)}%;background:${col}"></div></div>
           <span class="synth-score-val" style="color:${col}">${val}</span>
         </div>`).join('')}
     </div>
@@ -1180,13 +1371,283 @@ function renderSynth(mode){
         <div>${negSuppressed.map(t=>`<span class="synth-tag synth-tag-neg">${t}</span>`).join('')}</div>
       </div>
       <p style="font-size:13px;color:var(--text2);line-height:1.7;">${antiAgeStr} ${protectStr}</p>
-      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${epigStr} ${autophaStr}</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-top:10px;">${epigStr}</p>
+    </div>
+
+    <div class="card">
+      <div class="synth-section-title"><span class="${dotClass}" style="flex-shrink:0"></span>Disease Reversal Score</div>
+      ${diseaseScores.map(d=>{
+        const cls=d.score>=70?'high':d.score>=50?'medium':'low';
+        const col=d.score>=70?'#1faa7e':d.score>=50?'#c98318':'#e0622f';
+        return `<div class="synth-score-row">
+          <span class="synth-score-label">${d.name}</span>
+          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${d.score}%;background:${col}"></div></div>
+          <span class="synth-score-val" style="color:${col}">${d.score}</span>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="card">
+      <div class="synth-section-title"><span class="${dotClass}" style="flex-shrink:0"></span>Intrinsic Capacity — Functional Domains</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px;background:var(--bg3);border-radius:var(--radius);">
+        <span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:${globalIC>=70?'var(--teal)':globalIC>=55?'var(--amber)':'var(--coral)'};">${globalIC}</span>
+        <span style="font-size:12px;color:var(--text2);">Global IC Score /100 — <strong style="color:${icDeltaVal>0?'var(--teal)':'var(--coral)'};">${icDeltaVal>0?'+':''}${icDeltaVal} pts</strong> vs. untreated baseline. Higher is better.</span>
+      </div>
+      ${icScores.map(d=>{
+        const col=d.score>=70?'#1faa7e':d.score>=55?'#c98318':'#e0622f';
+        return `<div class="synth-score-row">
+          <span class="synth-score-label">${d.icon} ${d.name}</span>
+          <div class="synth-score-bar-wrap"><div class="synth-score-bar" style="width:${d.score}%;background:${col}"></div></div>
+          <span class="synth-score-val" style="color:${col}">${d.score}</span>
+        </div>`;
+      }).join('')}
     </div>
 
     <div class="${conclusionClass} synth-conclusion">
       <strong style="display:block;font-size:12px;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;color:${isExp?'var(--teal)':'var(--blue)'}">Conclusion</strong>
       ${concluStr}
     </div>`;
+}
+
+// ═══════════════════ DISEASE REVERSAL SCORE ═══════════════════
+const DISEASES = [
+  {
+    id:'atopic',
+    name:'Atopic Dermatitis',
+    icon:'🔴',
+    genes:['IL4','IL13','FLG','TSLP','CCL26','STAT6'],
+    mechDesc:'Reduction of Th2 immune response, restoration of skin barrier (FLG↑), inhibition of IL-4/IL-13 signaling.',
+    baseScores:{M1:102,M2:75,M3:81},
+    barColor:'#1faa7e'
+  },
+  {
+    id:'psoriasis',
+    name:'Psoriasis',
+    icon:'🟠',
+    genes:['IL17A','TNF','IL6','KRT16','KRT17','NF-κB'],
+    mechDesc:'Down-regulation of IL-17A and TNF-α inflammatory axes, reduction of keratinocyte hyperproliferation.',
+    baseScores:{M1:95,M2:68,M3:74},
+    barColor:'#4a9be8'
+  },
+  {
+    id:'acne',
+    name:'Acne Vulgaris',
+    icon:'🟡',
+    genes:['PPARG','FASN','TLR2','IL1B','CXCL1','SCD'],
+    mechDesc:'Regulation of sebaceous lipogenesis (FASN↓), dampening of innate immune TLR2 signaling.',
+    baseScores:{M1:90,M2:65,M3:70},
+    barColor:'#c98318'
+  },
+  {
+    id:'rosacea',
+    name:'Rosacea',
+    icon:'🌸',
+    genes:['CAMP','KLK5','MMP1','VEGFA','TLR2','IL8'],
+    mechDesc:'Reduction of cathelicidin (CAMP) overactivation, inhibition of vascular remodeling and neuroinflammation.',
+    baseScores:{M1:88,M2:60,M3:66},
+    barColor:'#c96fa0'
+  }
+];
+
+function getDiseaseScore(disease, mol, conc) {
+  const m = CONC_MULT[conc] * MOL_PROFILE[mol].strength;
+  const rng = makeRng(mol + disease.id + conc + 'dis');
+  return Math.min(100, Math.round(disease.baseScores[mol] * m * (0.9 + rng() * 0.2)));
+}
+
+function scoreClass(s){ return s>=70?'high':s>=50?'medium':'low'; }
+function scoreVerdict(s){ return s>=70?'Strong reversal potential':s>=50?'Moderate reversal potential':'Limited reversal potential'; }
+function scoreVerdictVC(s){ return s>=70?'Strong predicted reversal':s>=50?'Moderate predicted reversal':'Limited predicted reversal'; }
+
+function renderDisease(mode) {
+  const isExp = mode === 'exp';
+  const mol = isExp ? ES.mol : VC.mol;
+  const conc = isExp ? ES.conc : VC.conc;
+  const molLabel = MOL_LABELS[mol];
+  const concLabel = CONC_LABELS[conc];
+  const dotClass = isExp ? 'card-dot' : 'card-dot-vc';
+  const accentCol = isExp ? 'var(--teal)' : 'var(--blue)';
+  const subId = isExp ? 'disease-sub' : 'vc-disease-sub';
+  const contentId = isExp ? 'disease-content' : 'vc-disease-content';
+
+  document.getElementById(subId).textContent = `${molLabel} · ${concLabel}`;
+
+  const scores = DISEASES.map(d => ({ ...d, score: getDiseaseScore(d, mol, conc) }));
+  const avgScore = Math.round(scores.reduce((s,d)=>s+d.score,0)/scores.length);
+  const avgClass = scoreClass(avgScore);
+
+  // Chart IDs
+  const radarId = isExp ? 'dis-radar' : 'vc-dis-radar';
+  destroyChart(radarId);
+
+  // Build disease cards HTML
+  const verdictBg = avgClass==='high'?'rgba(31,170,126,.05)':avgClass==='medium'?'rgba(201,131,24,.05)':'rgba(224,98,47,.05)';
+  const verdictBorder = avgClass==='high'?'rgba(31,170,126,.2)':avgClass==='medium'?'rgba(201,131,24,.2)':'rgba(224,98,47,.2)';
+  const verdictScoreCol = avgClass==='high'?'var(--teal)':avgClass==='medium'?'var(--amber)':'var(--coral)';
+  const verdictText = isExp ? scoreVerdict(avgScore) : scoreVerdictVC(avgScore);
+
+  let disCardsHtml = '';
+  scores.forEach(d => {
+    const cls = scoreClass(d.score);
+    const barCol = cls==='high'?'#1faa7e':cls==='medium'?'#c98318':'#e0622f';
+    const genesHtml = d.genes.map(g => '<span class="disease-gene-tag">'+g+'</span>').join('');
+    disCardsHtml += '<div class="disease-card '+cls+'">'
+      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">'
+      +   '<div><div class="disease-name">'+d.icon+' '+d.name+'</div><div class="disease-label">Reversal Score</div></div>'
+      +   '<span class="verdict-chip '+cls+'" style="margin:0;">'+d.score+'/100</span>'
+      + '</div>'
+      + '<div class="disease-score-big '+cls+'">'+d.score+'</div>'
+      + '<div class="disease-bar-wrap"><div class="disease-bar" style="width:'+d.score+'%;background:'+barCol+'"></div></div>'
+      + '<div class="disease-desc">'+d.mechDesc+'</div>'
+      + '<div class="disease-genes">'+genesHtml+'</div>'
+      + '</div>';
+  });
+
+  document.getElementById(contentId).innerHTML =
+    '<div class="card" style="margin-bottom:1.25rem;background:'+verdictBg+';border-color:'+verdictBorder+'">'
+    +  '<div style="display:flex;align-items:center;gap:20px;">'
+    +    '<div style="font-family:Syne,sans-serif;font-size:52px;font-weight:800;line-height:1;color:'+verdictScoreCol+';">'+avgScore+'</div>'
+    +    '<div>'
+    +      '<div style="font-family:Syne,sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Average Disease Reversal Score · /100</div>'
+    +      '<span class="verdict-chip '+avgClass+'">'+verdictText+'</span>'
+    +      '<div style="font-size:12px;color:var(--text2);">Aggregated across 4 dermatological conditions. Higher = stronger predicted reversal of disease gene expression toward healthy state.</div>'
+    +    '</div>'
+    +  '</div>'
+    + '</div>'
+    + '<div class="disease-grid">'+disCardsHtml+'</div>'
+    + '<div class="card">'
+    +   '<div class="card-title"><span class="'+dotClass+'"></span>Reversal profile — '+molLabel+'</div>'
+    +   '<div class="chart-wrap" style="height:260px;"><canvas id="'+radarId+'"></canvas></div>'
+    + '</div>';
+
+  setTimeout(()=>{
+    const accentRgb = isExp ? '31,170,126' : '74,155,232';
+    destroyChart(radarId);
+    const c1=document.getElementById(radarId);
+    if(c1) charts[radarId]=new Chart(c1,{type:'radar',data:{labels:DISEASES.map(d=>d.name),datasets:[{data:scores.map(d=>d.score),borderColor:`rgb(${accentRgb})`,backgroundColor:`rgba(${accentRgb},.1)`,pointBackgroundColor:`rgb(${accentRgb})`,borderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{display:false},pointLabels:{color:'#9a9890',font:{size:11}},grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.06)'}}}}});
+  },30);
+}
+
+// ═══════════════════ INTRINSIC CAPACITY ═══════════════════
+const IC_DOMAINS = [
+  {id:'locomotor',  name:'Locomotor',  icon:'🦵', desc:'Muscle strength, balance, gait, mobility. Key genes: MYH7, MSTN, IGF1.',
+   genes:['MYH7','MSTN','IGF1','ACTN3','COL6A1'],
+   base:{M1:68,M2:55,M3:76}},
+  {id:'vitality',   name:'Vitality',   icon:'⚡', desc:'Mitochondrial function, energy metabolism, fatigue resistance.',
+   genes:['PPARGC1A','SIRT1','AMPK','COX4','ATP5A'],
+   base:{M1:74,M2:61,M3:83}},
+  {id:'cognitive',  name:'Cognitive',  icon:'🧠', desc:'Synaptic plasticity, neuroprotection, memory consolidation.',
+   genes:['BDNF','SIRT1','APOE','CLU','NRGN'],
+   base:{M1:65,M2:52,M3:72}},
+  {id:'psychological',name:'Psychological',icon:'😊',desc:'Stress resilience, mood regulation, HPA axis balance.',
+   genes:['FKBP5','NR3C1','BDNF','CRH','OXTR'],
+   base:{M1:70,M2:57,M3:78}},
+  {id:'sensory',    name:'Sensory',    icon:'👁️', desc:'Visual, auditory and sensory pathway integrity.',
+   genes:['CRYAB','ELOVL4','MYO7A','GJB2','PRPH2'],
+   base:{M1:62,M2:50,M3:69}}
+];
+
+function getICScore(domain, mol, conc, clockDelta) {
+  // clockDelta is negative when the molecule rejuvenates (e.g. -3.8 yrs)
+  // We use |clockDelta| as a boost: more rejuvenation → higher IC scores
+  const m = CONC_MULT[conc] * MOL_PROFILE[mol].strength;
+  const rng = makeRng(mol + domain.id + conc + 'ic');
+  const baseScore = domain.base[mol] * m * (0.9 + rng() * 0.2);
+  // Each year of clock rejuvenation boosts IC by ~2–4 pts (domain-specific sensitivity)
+  const clockBoost = Math.abs(clockDelta || 0) * (2 + rng() * 2);
+  return Math.min(100, Math.round(baseScore + clockBoost));
+}
+
+function icDeltaLabel(score, baseline=55){
+  const d = score - baseline;
+  return { val: d, str: `${d>0?'+':''}${d} pts`, cls: d>0?'pos':'neg' };
+}
+
+function renderIntrinsic(mode) {
+  const isExp = mode === 'exp';
+  const mol = isExp ? ES.mol : VC.mol;
+  const conc = isExp ? ES.conc : VC.conc;
+  const molLabel = MOL_LABELS[mol];
+  const concLabel = CONC_LABELS[conc];
+  const dotClass = isExp ? 'card-dot' : 'card-dot-vc';
+  const accentRgb = isExp ? '31,170,126' : '74,155,232';
+  const accentCol = isExp ? 'var(--teal)' : 'var(--blue)';
+  const subId = isExp ? 'intrinsic-sub' : 'vc-intrinsic-sub';
+  const contentId = isExp ? 'intrinsic-content' : 'vc-intrinsic-content';
+  const radarId = isExp ? 'ic-radar' : 'vc-ic-radar';
+
+  document.getElementById(subId).textContent = `${molLabel} · ${concLabel} · Higher = better`;
+
+  // Get clock delta for this molecule — IC must be consistent with clock direction
+  // EXP: average delta across all cell types; VC: delta for selected phenotype
+  const clockDelta = isExp
+    ? Object.keys(BASE_CLOCK).reduce((sum,ct)=>sum+getClockDelta(mol,ct,conc),0) / Object.keys(BASE_CLOCK).length
+    : getVCClock(mol, VC.pheno, conc);
+
+  const domainScores = IC_DOMAINS.map(d => ({ ...d, score: getICScore(d, mol, conc, clockDelta) }));
+  const globalScore = Math.round(domainScores.reduce((s,d)=>s+d.score,0) / domainScores.length);
+  const globalDelta = icDeltaLabel(globalScore);
+  const globalClass = globalScore>=70?'high':globalScore>=55?'medium':'low';
+
+  destroyChart(radarId);
+
+  document.getElementById(contentId).innerHTML = `
+    <!-- Global IC card -->
+    <div class="ic-global-card">
+      <div class="ic-global-score">${globalScore}</div>
+      <div class="ic-global-body">
+        <div class="ic-global-title">Global Intrinsic Capacity Score · /100</div>
+        <div style="margin-bottom:6px;"><span class="verdict-chip ${globalClass}">${globalDelta.str} vs. untreated baseline</span></div>
+        <div class="ic-global-sub">Composite score across the 5 WHO functional domains. An increase indicates that the molecule improves the overall biological capacity for healthy aging. The higher the better.</div>
+      </div>
+      <div class="ic-global-arrow">${globalScore>=70?'📈':globalScore>=55?'➡️':'📉'}</div>
+    </div>
+
+    <!-- Domain cards -->
+    <div class="ic-grid">
+      ${domainScores.map(d=>{
+        const delta = icDeltaLabel(d.score);
+        const barCol = d.score>=70?'#1faa7e':d.score>=55?'#c98318':'#e0622f';
+        const scoreCol = d.score>=70?'var(--teal)':d.score>=55?'var(--amber)':'var(--coral)';
+        return `<div class="ic-card">
+          <div class="ic-icon">${d.icon}</div>
+          <div class="ic-domain">${d.name}</div>
+          <div class="ic-score" style="color:${scoreCol}">${d.score}</div>
+          <div class="ic-delta ${delta.cls}">${delta.str}</div>
+          <div class="ic-mini-bar-wrap"><div class="ic-mini-bar" style="width:${d.score}%;background:${barCol}"></div></div>
+          <div class="ic-desc">${d.desc.split('.')[0]}.</div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Chart -->
+    <div class="card">
+      <div class="card-title"><span class="${dotClass}"></span>Functional domain profile — ${molLabel}</div>
+      <div class="chart-wrap" style="height:260px;"><canvas id="${radarId}"></canvas></div>
+    </div>
+
+    <!-- Key genes per domain -->
+    <div class="card">
+      <div class="card-title"><span class="${dotClass}"></span>Key genes per functional domain</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+        ${domainScores.map(d=>{
+          const scoreCol=d.score>=70?'var(--teal)':d.score>=55?'var(--amber)':'var(--coral)';
+          return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px;">
+            <div style="font-size:18px;margin-bottom:4px;">${d.icon}</div>
+            <div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:6px;">${d.name}</div>
+            ${d.genes.map(g=>`<span class="disease-gene-tag">${g}</span>`).join(' ')}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  setTimeout(()=>{
+    destroyChart(radarId);
+    const c1=document.getElementById(radarId);
+    if(c1) charts[radarId]=new Chart(c1,{type:'radar',data:{labels:IC_DOMAINS.map(d=>d.name),datasets:[{data:domainScores.map(d=>d.score),borderColor:`rgb(${accentRgb})`,backgroundColor:`rgba(${accentRgb},.1)`,pointBackgroundColor:`rgb(${accentRgb})`,borderWidth:2,pointRadius:5,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{stepSize:25,display:false},pointLabels:{color:'#9a9890',font:{size:12}},grid:{color:'rgba(255,255,255,.07)'},angleLines:{color:'rgba(255,255,255,.07)'}}}}});
+
+
+  },30);
 }
 
 window.addEventListener('load',()=>{setTimeout(()=>{updateExpContext();renderHallmarks();applyAnalysisMode('exp','brief');applyAnalysisMode('vc','brief');},60);});
@@ -1204,7 +1665,7 @@ function applyAnalysisMode(section,mode){
   });
   // If current panel is now hidden, switch to first visible panel
   const prefix=section==='exp'?'':'vc-';
-  const briefPanels=section==='exp'?['biomarqueurs-panel','longevity-panel','clock-panel','synthese-panel']:['vc-biomarqueurs-panel','vc-hallmarks-panel','vc-clock-panel','vc-compare-panel','vc-synthese-panel'];
+  const briefPanels=section==='exp'?['biomarqueurs-panel','longevity-panel','clock-panel','disease-panel','intrinsic-panel','synthese-panel']:['vc-biomarqueurs-panel','vc-hallmarks-panel','vc-clock-panel','vc-compare-panel','vc-disease-panel','vc-intrinsic-panel','vc-synthese-panel'];
   const currentPanel=section==='exp'?ES.panel:VC.panel;
   const isHidden=mode==='brief'&&!briefPanels.includes(currentPanel);
   if(isHidden){
